@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/packageFragment">
+
+    <fragment
+        android:id="@+id/packageFragment"
+        android:name="com.sessac.travel_agency.fragment.PackageFragment"
+        android:label="fragment_package"
+        tools:layout="@layout/fragment_package" />
+
+    <fragment
+        android:id="@+id/lodgingFragment"
+        android:name="com.sessac.travel_agency.fragment.LodgingFragment"
+        android:label="fragment_lodging"
+        tools:layout="@layout/fragment_lodging" />
+
+    <fragment
+        android:id="@+id/guideFragment"
+        android:name="com.sessac.travel_agency.fragment.GuideFragment"
+        android:label="fragment_guide"
+        tools:layout="@layout/fragment_guide" />
+
+</navigation>
