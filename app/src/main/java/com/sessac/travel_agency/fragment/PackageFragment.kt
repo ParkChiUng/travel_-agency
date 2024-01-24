@@ -5,7 +5,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import com.sessac.travel_agency.R
 import com.sessac.travel_agency.databinding.FragmentPackageBinding
+
 
 class PackageFragment : Fragment() {
 
@@ -21,6 +24,14 @@ class PackageFragment : Fragment() {
         binding = FragmentPackageBinding.inflate(inflater, container, false)
 
         return binding.root
+    }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        binding.packageTV.setOnClickListener {
+
+            findNavController().navigate(R.id.packageFragment_to_packageAddFragment)
+        }
     }
 }

@@ -1,3 +1,19 @@
 <resources>
     <string name="app_name">travel_agency</string>
+
+    <string name="register">등록</string>
+
+    <string-array name="select_region">
+        <item>서울</item>
+        <item>인천</item>
+        <item>대전</item>
+        <item>대구</item>
+        <item>광주</item>
+        <item>부산</item>
+        <item>울산</item>
+        <item>세종특별자치시</item>
+        <item>경기도</item>
+        <item>강원특별자치도</item>
+    </string-array>
+
 </resources>
