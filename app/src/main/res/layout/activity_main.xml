@@ -19,7 +19,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:background="@android:color/darker_gray"
+        android:background="@color/divider_color"
+        app:itemActiveIndicatorStyle="@style/CustomBottomNav"
         app:menu="@menu/bottom_menu" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

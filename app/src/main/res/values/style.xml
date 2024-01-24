@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- 커스텀 네비게이션 바텀 스타일 -->
+    <style name="CustomBottomNav" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/white</item>
+    </style>
+
+    <!-- 커스텀 달력 스타일 -->
+    <style name="CustomCalendar" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/dark_primary</item>
+        <item name="colorAccent">@color/accent_color</item>
+        <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+    </style>
+
+    <!-- 커스텀 Spinner Divide 스타일 -->
+    <style name="CustomSpinnerDivideStyle" parent="android:style/Widget.ListView.DropDown">
+        <item name="android:divider">#000000</item> <!-- divider 색 -->
+        <item name="android:dividerHeight">2dp</item> <!-- divider 높이 -->
+    </style>
+
+    <style name="SpinnerTheme" parent="Widget.AppCompat.DropDownItem.Spinner">
+        <item name="android:dropDownListViewStyle">@style/CustomSpinnerDivideStyle</item>
+    </style>
+
+</resources>

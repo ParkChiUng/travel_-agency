@@ -9,7 +9,11 @@
         android:id="@+id/packageFragment"
         android:name="com.sessac.travel_agency.fragment.PackageFragment"
         android:label="fragment_package"
-        tools:layout="@layout/fragment_package" />
+        tools:layout="@layout/fragment_package">
+        <action
+            android:id="@+id/packageFragment_to_packageAddFragment"
+            app:destination="@id/packageAddFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/lodgingFragment"
@@ -22,5 +26,15 @@
         android:name="com.sessac.travel_agency.fragment.GuideFragment"
         android:label="fragment_guide"
         tools:layout="@layout/fragment_guide" />
+
+    <fragment
+        android:id="@+id/packageAddFragment"
+        android:name="com.sessac.travel_agency.fragment.PackageAddFragment"
+        android:label="fragment_packageAdd"
+        tools:layout="@layout/fragment_package_add" >
+        <argument
+            android:name="packageId"
+            app:argType="integer" />
+    </fragment>
 
 </navigation>
