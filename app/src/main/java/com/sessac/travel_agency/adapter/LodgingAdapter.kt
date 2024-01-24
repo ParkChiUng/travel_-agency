@@ -1,4 +1,4 @@
-package com.sessac.travel_agency
+package com.sessac.travel_agency.adapter
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,6 +7,7 @@ import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.sessac.travel_agency.R
 import com.sessac.travel_agency.data.LodgingItem
 
 class LodgingAdapter(private val lodgingList:ArrayList<LodgingItem>) : RecyclerView.Adapter<LodgingAdapter.LodgingHolder>() {
