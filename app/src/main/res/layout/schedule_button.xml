@@ -4,7 +4,9 @@
     android:orientation="horizontal"
     android:layout_width="100dp"
     android:layout_height="50dp"
+    android:id="@+id/scheduleItem"
     android:background="@color/divider_color">
+
     <ImageView
         android:id="@+id/scheduleLayoutIV"
         android:src="@drawable/ic_plus"

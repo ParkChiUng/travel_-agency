@@ -1,5 +1,8 @@
 package com.sessac.travel_agency.fragment
 
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
+import android.graphics.Rect
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -13,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.ScheduleAdapter
+import com.sessac.travel_agency.common.TravelAgencyApplication
 import com.sessac.travel_agency.databinding.FragmentPackageAddBinding
+import com.sessac.travel_agency.helper.TravelAgencyOpenHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Locale
@@ -21,7 +26,8 @@ import java.util.concurrent.TimeUnit
 
 
 class PackageAddFragment : Fragment() {
-
+    private lateinit var dbHelper: TravelAgencyOpenHelper
+    private lateinit var db: SQLiteDatabase
     private lateinit var binding: FragmentPackageAddBinding
     private val TAG = "PackageAddFragment"
 
@@ -31,8 +37,11 @@ class PackageAddFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         super.onCreate(savedInstanceState)
-
         binding = FragmentPackageAddBinding.inflate(inflater, container, false)
+
+        val app = TravelAgencyApplication.getTravelApplication()
+        dbHelper = app.dbHelper
+        db = app.db
 
         return binding.root
     }
@@ -42,14 +51,38 @@ class PackageAddFragment : Fragment() {
 
         spinnerHandler()
 
-        with(binding){
+        insertPackageData()
+
+        with(binding) {
             packageAddDateET.setOnClickListener {
                 calendarHandler()
             }
         }
     }
 
-    private fun spinnerHandler(){
+    //    private fun insertPackageData(guideInfo: GuideItem, area: String, pName: String, pImage: String, status: Int, pStartDate: Date, pEndDate: Date) {
+    private fun insertPackageData() {
+        val values = ContentValues().apply {
+            put("guideInfo", 1)
+            put("area", "test")
+            put("pName", "test")
+            put("pImage", "test")
+            put("status", 1)
+            put("pStartDate", "test")
+            put("pEndDate", "test")
+
+//            put("guideInfo", guideInfo.guideId)
+//            put("area", area)
+//            put("pName", pName)
+//            put("pImage", pImage)
+//            put("status", status)
+//            put("pStartDate", pStartDate.time) // Date를 long 타입으로 변환하여 저장합니다.
+//            put("pEndDate", pEndDate.time) // Date를 long 타입으로 변환하여 저장합니다.
+        }
+        db.insert(TravelAgencyOpenHelper.TABLE_PACKAGE, null, values)
+    }
+
+    private fun spinnerHandler() {
         val items = resources.getStringArray(R.array.select_region)
 
         val adapter =
@@ -59,7 +92,7 @@ class PackageAddFragment : Fragment() {
         autoCompleteTextView.setAdapter(adapter)
     }
 
-    private fun calendarHandler(){
+    private fun calendarHandler() {
         val dateRangePicker = MaterialDatePicker.Builder.dateRangePicker()
         dateRangePicker.setTitleText("기간 선택")
         dateRangePicker.setTheme(R.style.CustomCalendar)
@@ -85,31 +118,39 @@ class PackageAddFragment : Fragment() {
             val diffInMillies = Math.abs(endDate.time - startDate.time)
             val day = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS)
 
-            addScheduleLayout(day)
+            addScheduleLayout(day.toInt())
 
             binding.packageAddDateET.setText("$startDateText ~ $endDateText")
         }
     }
 
-    private fun addScheduleLayout(day : Long){
+    private fun addScheduleLayout(day: Int) {
         Log.d(TAG, "addScheduleLayout: $day")
 
-        val recyclerView: RecyclerView = binding.scheduleRV
-        recyclerView.setHasFixedSize(true)
         val layoutManager: RecyclerView.LayoutManager = LinearLayoutManager(requireContext())
+
+        val recyclerView: RecyclerView = binding.scheduleRV
+        recyclerView.setHasFixedSize(false)
+
         recyclerView.layoutManager = layoutManager
 
-        val buttonText: MutableList<String> = ArrayList()
-        buttonText.add("버튼 1")
-        buttonText.add("버튼 2")
-        buttonText.add("버튼 3")
-        buttonText.add("버튼 4")
-        buttonText.add("버튼 5")
-        buttonText.add("버튼 6")
-        buttonText.add("버튼 7")
-        buttonText.add("버튼 8")
-        buttonText.add("버튼 9")
-        val adapter = ScheduleAdapter(buttonText)
+        val itemDecoration = VerticalSpaceItemDecoration(10) // 10은 원하는 간격입니다.
+        recyclerView.addItemDecoration(itemDecoration)
+
+        val adapter = ScheduleAdapter(day)
         recyclerView.adapter = adapter
+    }
+
+    class VerticalSpaceItemDecoration(private val verticalSpaceHeight: Int) :
+        RecyclerView.ItemDecoration() {
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            outRect.bottom = verticalSpaceHeight
+        }
     }
 }
