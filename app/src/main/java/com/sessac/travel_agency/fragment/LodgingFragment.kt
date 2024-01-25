@@ -1,5 +1,6 @@
 package com.sessac.travel_agency.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -9,8 +10,10 @@ import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sessac.travel_agency.adapter.LodgingAdapter
 import com.sessac.travel_agency.R
+import com.sessac.travel_agency.common.BottomSheetFragment
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.databinding.FragmentLodgingBinding
 
@@ -76,7 +79,6 @@ class LodgingFragment: Fragment() {
     private fun setupRecyclerviewAdapter() {
         lodgingList = ArrayList()
 
-
         recyclerView = binding.lodgingfragmentRecyclerview
         recyclerView.setHasFixedSize(true) // 리사이클러뷰의 크기가 변할 일이 없음 명시. 리사이클러뷰 레이아웃 다시 잡을 필요 없이 아이템 자리만 다시 잡기
         recyclerView.layoutManager = LinearLayoutManager(activity)
@@ -85,11 +87,17 @@ class LodgingFragment: Fragment() {
         lodgingAdapter = LodgingAdapter(lodgingList)
         recyclerView.adapter = lodgingAdapter
 
-//        lodgingAdapter.onItemClick = {
-//            val intent = Intent(context, LodgingDetailedFragment::class.java)
-//            intent.putExtra("lodging", it)
-//            startActivity(intent)
-//        }
+
+        // 아이템 하나 클릭되면 모달 바텀시트 띄우기 -> Intent 기존데이터 가져가서 바인딩
+        lodgingAdapter.onItemClick = {
+            //val intent = Intent(context, BottomSheetFragment::class.java)
+            //intent.putExtra("lodging", it)
+            //startActivity(intent)
+            val view: View = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
+            val dialog = BottomSheetDialog(requireContext())
+            dialog.setContentView(view)
+            dialog.show()
+        }
 
     }
 
@@ -113,9 +121,14 @@ class LodgingFragment: Fragment() {
         lodgingList.add(hotel8)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //바인딩 널처리?
+
+    // 프래그먼트 화면을 벗어나면 기존 선택된 데이터 제거.
+    override fun onPause() {
+        super.onPause()
+
+        // 기존에 선택된 지역을 제거하여 화면전환 후 돌아올시 새롭게 보이도록하기위함
+        binding.dropLocations.text = null
+        
     }
 
 }

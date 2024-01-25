@@ -12,7 +12,7 @@ import com.sessac.travel_agency.data.LodgingItem
 
 class LodgingAdapter(private val lodgingList:ArrayList<LodgingItem>) : RecyclerView.Adapter<LodgingAdapter.LodgingHolder>() {
 
-    //var onItemClick : ((LodgingItem) -> Unit)? = null
+    var onItemClick : ((LodgingItem) -> Unit)? = null
 
     inner class LodgingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView : ImageView = itemView.findViewById(R.id.lodging_thumbnail)
@@ -41,9 +41,9 @@ class LodgingAdapter(private val lodgingList:ArrayList<LodgingItem>) : RecyclerV
         holder.rateView.rating = lodging.starNum.toFloat()
 
         // 카드 클릭시
-//        holder.itemView.setOnClickListener {
-//            onItemClick?.invoke(lodging)
-//        }
+        holder.itemView.setOnClickListener {
+            onItemClick?.invoke(lodging)
+        }
 
     }
 }
