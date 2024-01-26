@@ -10,5 +10,5 @@ import android.graphics.Bitmap
 data class GuideItem(
     val guideId : Int,
     val gName : String,
-    val gImage : Bitmap,
+    val gImage : Int, //샘플
 )
