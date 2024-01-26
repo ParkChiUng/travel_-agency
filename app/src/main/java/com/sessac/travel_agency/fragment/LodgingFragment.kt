@@ -1,6 +1,5 @@
 package com.sessac.travel_agency.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sessac.travel_agency.adapter.LodgingAdapter
 import com.sessac.travel_agency.R
-import com.sessac.travel_agency.common.BottomSheetFragment
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.databinding.FragmentLodgingBinding
 
@@ -45,6 +43,15 @@ class LodgingFragment: Fragment() {
 
         //리사이클러뷰
         setupRecyclerviewAdapter()
+
+        //플로팅버튼
+        val fab: View = binding.fab
+        fab.setOnClickListener { view ->
+            val view: View = layoutInflater.inflate(R.layout.fragment_lodging_add, null)
+            val dialog = BottomSheetDialog(requireContext())
+            dialog.setContentView(view)
+            dialog.show()
+        }
 
         return root
     }
@@ -93,7 +100,7 @@ class LodgingFragment: Fragment() {
             //val intent = Intent(context, BottomSheetFragment::class.java)
             //intent.putExtra("lodging", it)
             //startActivity(intent)
-            val view: View = layoutInflater.inflate(R.layout.fragment_bottom_sheet, null)
+            val view: View = layoutInflater.inflate(R.layout.fragment_lodging_edit, null)
             val dialog = BottomSheetDialog(requireContext())
             dialog.setContentView(view)
             dialog.show()
@@ -128,7 +135,7 @@ class LodgingFragment: Fragment() {
 
         // 기존에 선택된 지역을 제거하여 화면전환 후 돌아올시 새롭게 보이도록하기위함
         binding.dropLocations.text = null
-        
+
     }
 
 }
