@@ -19,8 +19,9 @@ data class PackageItem(
     val guideInfo : GuideItem,
     val area : String,
     val pName : String,
-    val pImage : Bitmap,
+    val pImage : Int, // 샘플
     val status : Int,
     val pStartDate : Date,
     val pEndDate : Date,
+    val star : Double? = null // 종료된 패키지 별점
 )
