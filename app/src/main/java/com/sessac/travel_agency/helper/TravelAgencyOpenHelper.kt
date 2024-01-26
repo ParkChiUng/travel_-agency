@@ -9,10 +9,10 @@ class TravelAgencyOpenHelper(context: Context) : SQLiteOpenHelper(context, DB_NA
         const val DB_NAME = "travelAgency.db"
         const val CURRENT_DB_VERSION = 1
         const val TABLE_PACKAGE = "package"
-        private const val TABLE_LODGING = "lodging"
-        private const val TABLE_GUIDE = "guide"
-        private const val TABLE_GUIDE_SCHEDULE = "guide_schedule"
-        private const val TABLE_SCHEDULE = "schedule"
+        const val TABLE_LODGING = "lodging"
+        const val TABLE_GUIDE = "guide"
+        const val TABLE_GUIDE_SCHEDULE = "guide_schedule"
+        const val TABLE_SCHEDULE = "schedule"
 
         const val CREATE_PACKAGE_TABLE = """CREATE TABLE $TABLE_PACKAGE (
            packageId INTEGER PRIMARY KEY AUTOINCREMENT,

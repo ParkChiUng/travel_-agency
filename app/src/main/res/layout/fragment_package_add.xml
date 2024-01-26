@@ -153,22 +153,9 @@
                 android:text="지역"
                 android:textSize="20dp" />
 
-<!--            <Spinner-->
-<!--                android:id="@+id/areaSpinner"-->
-<!--                android:layout_width="0dp"-->
-<!--                android:layout_height="40dp"-->
-<!--                android:entries="@array/area_items"-->
-<!--                android:background="@drawable/spinner_border"-->
-<!--                android:layout_centerHorizontal="true"-->
-<!--                android:theme="@style/SpinnerTheme"-->
-<!--                android:layout_marginLeft="20dp"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/packageAreaTV"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintEnd_toEndOf="parent" />-->
-
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/areaSpinnerTIL"
-                style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                 android:layout_width="330dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/packageAreaTV"
@@ -194,24 +181,34 @@
                 android:text="가이드"
                 android:textSize="20dp" />
 
-            <Spinner
-                android:id="@+id/guideSpinner"
-                android:layout_width="0dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:background="@drawable/spinner_border"
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/guideSpinnerTIL"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:layout_width="330dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintTop_toBottomOf="@+id/packageGuideTV"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent" />
+                app:layout_constraintEnd_toEndOf="parent"
+                android:hint="지역을 선택해주세요">
+
+                <AutoCompleteTextView
+                    android:id="@+id/guideSpinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="none" />
+            </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/scheduleRV"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
+                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
-                app:layout_constraintTop_toBottomOf="@id/guideSpinner"
+                android:layout_marginRight="20dp"
+                app:layout_constraintTop_toBottomOf="@id/guideSpinnerTIL"
                 app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

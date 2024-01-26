@@ -13,6 +13,12 @@
         <item>제주도</item>
     </string-array>
 
+    <string-array name="select_theme">
+        <item>관광지</item>
+        <item>축제</item>
+        <item>음식점</item>
+    </string-array>
+
     <string-array name="select_star">
         <item>5</item>
         <item>4</item>

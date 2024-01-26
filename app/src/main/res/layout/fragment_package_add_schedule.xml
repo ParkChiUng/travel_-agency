@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/leftVGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_begin="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/rightVGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_end="20dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/topHGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="50dp" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/bottomHGuideline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_end="80dp" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_back"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/ic_arrow_back"
+        app:backgroundTint="@color/black"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@id/topHGuideline" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:text="등록"
+        android:textColor="@color/black"
+        android:textSize="25sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@id/rightVGuideline"
+        app:layout_constraintTop_toBottomOf="@id/topHGuideline" />
+
+    <TextView
+        android:id="@+id/packageThemeTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:text="테마"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@id/button_back" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/themeSpinnerTIL"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="테마를 선택해주세요"
+        app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/packageThemeTV">
+
+        <AutoCompleteTextView
+            android:id="@+id/areaSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/packageGuideTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:text="가이드"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@id/themeSpinnerTIL" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/guideSpinnerTIL"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:hint="가이드를 선택해주세요"
+        app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@+id/packageGuideTV">
+
+        <AutoCompleteTextView
+            android:id="@+id/guideSpinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="none" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="330dp"
+        android:layout_height="200dp"
+        android:background="@drawable/spinner_border"
+        android:layout_marginTop="20dp"
+        android:paddingLeft="10dp"
+        android:hint="설명"
+        app:layout_constraintBottom_toTopOf="@id/bottomHGuideline"
+        app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
+        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
+        app:layout_constraintTop_toBottomOf="@id/guideSpinnerTIL" />
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -10,18 +10,19 @@ import com.sessac.travel_agency.R
 
 class ScheduleAdapter(private val day: Int) : RecyclerView.Adapter<ScheduleAdapter.ViewHolder>() {
 
+    var onItemClick: ((Int) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.schedule_button, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.schedule_button, parent, false)
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-
         val text = "${position + 1} 일차"
-
         holder.scheduleTextView.text = text
-
         holder.scheduleItem.setOnClickListener {
+            onItemClick?.invoke(position)
         }
     }
 

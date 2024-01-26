@@ -10,7 +10,7 @@ package com.sessac.travel_agency.data
  */
 data class ScheduleItem(
     val scheduleId : Int,
-    val lodgingInfo : LodgingItem,
+    val lodgingInfo : Int,
     val theme : String,
     val detail : String,
     val day : Int
