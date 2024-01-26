@@ -53,7 +53,7 @@
         app:layout_constraintVertical_bias="0.15">
 
         <AutoCompleteTextView
-            android:id="@+id/drop_detailed_area"
+            android:id="@+id/drop_detailed_area2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
