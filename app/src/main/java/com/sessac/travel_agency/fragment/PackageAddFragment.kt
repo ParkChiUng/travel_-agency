@@ -24,7 +24,7 @@ import com.sessac.travel_agency.common.TravelAgencyApplication
 import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.data.ScheduleItem
 import com.sessac.travel_agency.databinding.FragmentPackageAddBinding
-import com.sessac.travel_agency.databinding.FragmentPackageAddScheduleBinding
+import com.sessac.travel_agency.databinding.FragmentPackageScheduleAddBinding
 import com.sessac.travel_agency.helper.TravelAgencyOpenHelper
 import java.text.SimpleDateFormat
 import java.util.Calendar
@@ -37,7 +37,7 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
     private lateinit var dbHelper: TravelAgencyOpenHelper
     private lateinit var db: SQLiteDatabase
     private lateinit var binding: FragmentPackageAddBinding
-    private lateinit var scheduleBinding: FragmentPackageAddScheduleBinding
+    private lateinit var scheduleBinding: FragmentPackageScheduleAddBinding
     private lateinit var regionItem: Array<String>
     private lateinit var scheduleList: ArrayList<ScheduleItem>
     private lateinit var scheduleAdapter: ScheduleAdapter
@@ -98,11 +98,11 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
     override fun onScheduleAddItemClicked() {
         // 스케쥴 바텀 시트 레이아웃, 뷰
         //val view: View = layoutInflater.inflate(R.layout.fragment_package_add_schedule, null)
-        val view: View = layoutInflater.inflate(R.layout.fragment_package_add_schedule, null)
+        val view: View = layoutInflater.inflate(R.layout.fragment_package_schedule_add, null)
 
         val addButton: Button = view.findViewById(R.id.button_add)
-        val theme: AutoCompleteTextView = view.findViewById(R.id.themeSpinnerTIL)
-        val lodging: AutoCompleteTextView = view.findViewById(R.id.lodgingSpinnerTIL)
+        val theme: AutoCompleteTextView = view.findViewById(R.id.themeSpinner)
+        val lodging: AutoCompleteTextView = view.findViewById(R.id.lodgingSpinner)
 
         dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme) // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
         dialog.setContentView(view)
@@ -153,7 +153,7 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
     // Btn_addSchedule을 눌렀을 때의 스케쥴 데이터 생성
     private fun createScheduleItemFromBottomSheet(): ScheduleItem {
 
-        scheduleBinding = FragmentPackageAddScheduleBinding.inflate(layoutInflater, null, false)
+        scheduleBinding = FragmentPackageScheduleAddBinding.inflate(layoutInflater, null, false)
         // 스피너에서 선택된 특정 text 가져오기
         val selectedTheme = scheduleBinding.themeSpinnerTIL.editText?.text.toString()
         val selectedLodging = scheduleBinding.lodgingSpinnerTIL.editText?.text.toString()
