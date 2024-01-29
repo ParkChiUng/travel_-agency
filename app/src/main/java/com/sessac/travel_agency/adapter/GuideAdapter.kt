@@ -8,10 +8,13 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.data.GuideItem
+import com.sessac.travel_agency.data.LodgingItem
 
-class GuideAdapter(private val guideList:ArrayList<GuideItem>) : RecyclerView.Adapter<GuideAdapter.GuideHolder>() {
+class GuideAdapter(private val guideList:ArrayList<GuideItem>, private val listener: GuideAdapter.OnGuideItemClickListener) : RecyclerView.Adapter<GuideAdapter.GuideHolder>() {
 
-    var onItemClick : ((GuideItem) -> Unit)? = null
+    interface OnGuideItemClickListener {
+        fun onGuideItemClicked(guide: GuideItem)
+    }
 
     inner class GuideHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView : ImageView = itemView.findViewById(R.id.guide_image)
@@ -37,7 +40,8 @@ class GuideAdapter(private val guideList:ArrayList<GuideItem>) : RecyclerView.Ad
 
         // 카드 클릭시
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(guide)
+            // Invoke 리스너
+            listener.onGuideItemClicked(guide)
         }
 
     }
