@@ -7,29 +7,12 @@
     tools:context=".fragment.PackageAddFragment">
 
     <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/leftVGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_begin="20dp" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/rightVGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        app:layout_constraintGuide_end="20dp" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/topHGuideline"
+        android:id="@+id/guideline_bottom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintGuide_begin="20dp" />
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/bottomHGuideline"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_end="80dp" />
+        app:layout_constraintGuide_percent="0.9">
+    </androidx.constraintlayout.widget.Guideline>
 
 
     <com.google.android.material.appbar.MaterialToolbar
@@ -52,19 +35,20 @@
             android:layout_gravity="center"
             android:text="@string/register"
             android:textColor="@color/white"
-            android:textSize="18sp" />
+            android:textStyle="bold"
+            android:textSize="20sp" />
     </com.google.android.material.appbar.MaterialToolbar>
 
-    <ScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintStart_toStartOf="@id/leftVGuideline"
-        app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
-        app:layout_constraintBottom_toTopOf="@id/bottomHGuideline"
+        android:fillViewport="true"
         android:scrollbars="none"
-        android:fillViewport="true">
+        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -73,63 +57,44 @@
 
             <ImageView
                 android:id="@+id/packageAddImage"
-                android:layout_width="150dp"
-                android:layout_height="150dp"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@mipmap/ic_splash_foreground"
-                android:importantForAccessibility="no" />
-
-            <TextView
-                android:id="@+id/packageAddNameTV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@id/packageAddImage"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginLeft="20dp"
-                android:text="패키지명"
-                android:textSize="20dp" />
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                app:srcCompat="@mipmap/ic_launcher"
+                tools:ignore="NotSibling" />
 
             <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.Material3.TextInputEditText.FilledBox"
                 android:id="@+id/packageAddNameTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                app:layout_constraintTop_toBottomOf="@+id/packageAddNameTV"
+                android:layout_margin="10dp"
+                app:layout_constraintTop_toBottomOf="@+id/packageAddImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:padding="0dp"
-                >
+                android:padding="0dp">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/packageAddNameET"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:hint="패키지명 입력"
-                    />
+                    android:hint="패키지명" />
             </com.google.android.material.textfield.TextInputLayout>
-
-            <TextView
-                android:id="@+id/packageDateTV"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/packageAddNameTIL"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="날짜"
-                android:textSize="20dp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/packageAddDateTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
-                app:layout_constraintTop_toBottomOf="@+id/packageDateTV"
+                app:layout_constraintTop_toBottomOf="@+id/packageAddNameTIL"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                android:padding="0dp">
+                android:padding="0dp"
+                tools:ignore="NotSibling">
 
                 <EditText
                     android:id="@+id/packageAddDateET"
@@ -137,31 +102,35 @@
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     android:focusable="false"
-                    android:hint="날짜를 선택하세요"
+                    android:hint="날짜"
                     android:clickable="true"
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/packageAreaTV"
-                android:layout_width="0dp"
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/leftGuideline"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/packageAddDateTIL"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="지역"
-                android:textSize="20dp" />
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.04" />
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/rightVGuideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.96" />
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/areaSpinnerTIL"
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="330dp"
+                android:id="@+id/areaSpinnerTIL"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/packageAreaTV"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:hint="지역을 선택해주세요">
+                android:layout_margin="10dp"
+                android:hint="지역"
+                app:layout_constraintTop_toBottomOf="@+id/packageAddDateTIL"
+                app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
 
                 <AutoCompleteTextView
                     android:id="@+id/areaSpinner"
@@ -170,32 +139,32 @@
                     android:inputType="none" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <TextView
-                android:id="@+id/packageGuideTV"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/guideSpinnerTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:hint="가이드"
                 app:layout_constraintTop_toBottomOf="@+id/areaSpinnerTIL"
-                app:layout_constraintStart_toStartOf="parent"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="20dp"
-                android:text="가이드"
-                android:textSize="20dp" />
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/guideSpinnerTIL"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-                android:layout_width="330dp"
-                android:layout_height="wrap_content"
-                app:layout_constraintTop_toBottomOf="@+id/packageGuideTV"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                android:hint="지역을 선택해주세요">
+                app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
+                app:layout_constraintStart_toStartOf="@id/leftGuideline">
 
                 <AutoCompleteTextView
                     android:id="@+id/guideSpinner"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="none" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/areaSpinner"
+                    app:layout_constraintStart_toStartOf="@id/areaSpinner"
+                    android:layout_marginTop="15dp"
+                    android:text="일자별 스케쥴"
+                    android:textStyle="bold"
+                    android:textSize="18dp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -203,14 +172,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
                 app:layout_constraintTop_toBottomOf="@id/guideSpinnerTIL"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintBottom_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-    </ScrollView>
+    </androidx.core.widget.NestedScrollView>
 </androidx.constraintlayout.widget.ConstraintLayout>

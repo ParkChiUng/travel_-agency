@@ -23,4 +23,27 @@
         <item name="android:dropDownListViewStyle">@style/CustomSpinnerDivideStyle</item>
     </style>
 
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="bottomSheetDialogTheme">@style/AppBottomSheetDialogTheme</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustPan</item>
+    </style>
+
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_corners</item>
+    </style>
+
+    <!-- 바텀시트 키보드 -->
+    <!--    <style name="DialogStyle" parent="Theme.Design.Light.BottomSheetDialog">-->
+    <!--        <item name="android:windowSoftInputMode">adjustPan</item>-->
+    <!--        <item name="android:background">@drawable/rounded_corners</item> &lt;!&ndash; 모서리 radius drawable 지정 &ndash;&gt;-->
+    <!--    </style>-->
+
+
 </resources>
