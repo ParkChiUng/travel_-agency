@@ -10,9 +10,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.data.LodgingItem
 
-class LodgingAdapter(private val lodgingList:ArrayList<LodgingItem>) : RecyclerView.Adapter<LodgingAdapter.LodgingHolder>() {
+class LodgingAdapter(
+    private val lodgingList: ArrayList<LodgingItem>,
+    private val listener: OnLodgingItemClickListener
+) : RecyclerView.Adapter<LodgingAdapter.LodgingHolder>() {
 
-    var onItemClick : ((LodgingItem) -> Unit)? = null
+    interface OnLodgingItemClickListener {
+        fun onLodgingItemClicked(lodging: LodgingItem)
+    }
 
     inner class LodgingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val imageView : ImageView = itemView.findViewById(R.id.lodging_thumbnail)
@@ -42,7 +47,8 @@ class LodgingAdapter(private val lodgingList:ArrayList<LodgingItem>) : RecyclerV
 
         // 카드 클릭시
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(lodging)
+            // Invoke 리스너
+            listener.onLodgingItemClicked(lodging)
         }
 
     }
