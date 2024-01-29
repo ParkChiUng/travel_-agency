@@ -1,6 +1,9 @@
 package com.sessac.travel_agency.data
 
 import android.graphics.Bitmap
+import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.Date
 
 /**
@@ -14,9 +17,23 @@ import java.util.Date
  * @param pEndDate : 패키지 종료 날짜
  *
  */
+
+//@Entity(
+//    tableName = "package_item",
+//    foreignKeys = [
+//        ForeignKey(
+//            entity = GuideItem::class,
+//            parentColumns = ["guideId"],
+//            childColumns = ["guideId"],
+//            onDelete = ForeignKey.CASCADE
+//        )
+//    ]
+//)
+@Entity(tableName = "table_package")
 data class PackageItem(
+    @PrimaryKey(autoGenerate = true)
     val packageId : Int,
-    val guideInfo : GuideItem,
+    val guideInfo : Int,
     val area : String,
     val pName : String,
     val pImage : Int, // 샘플

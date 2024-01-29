@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.data.PackageItem
@@ -13,7 +14,8 @@ import java.text.SimpleDateFormat
 import java.util.Locale
 
 
-class PackageAdapter (private val packageList:ArrayList<PackageItem>) : RecyclerView.Adapter<PackageAdapter.PackageHolder>() {
+//class PackageAdapter (private val packageList:ArrayList<PackageItem>) : RecyclerView.Adapter<PackageAdapter.PackageHolder>() {
+class PackageAdapter (private val packageList: MutableLiveData<List<PackageItem>>) : RecyclerView.Adapter<PackageAdapter.PackageHolder>() {
 
     var onItemClick : ((PackageItem) -> Unit)? = null
 
@@ -34,23 +36,24 @@ class PackageAdapter (private val packageList:ArrayList<PackageItem>) : Recycler
 
     // 데이터세트 크기 가져옴
     override fun getItemCount(): Int {
-        return packageList.size
+        return packageList.value?.size ?: 0
     }
 
     // 뷰홀더를 데이터와 연결
     override fun onBindViewHolder(holder: PackageAdapter.PackageHolder, position: Int) {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
 
-        val packageItem = packageList[position]
-        holder.imageView.setImageResource(packageItem.pImage)
-        holder.locationTextView.text = packageItem.area
-        holder.nameTextView.text = packageItem.pName
-        holder.startDateTextView.text = "${dateFormat.format(packageItem.pStartDate)}"
-        holder.endDateTextView.text = " ~ ${dateFormat.format(packageItem.pEndDate)}"
-
+        val packageItem = packageList.value?.get(position)
+        packageItem?.let {
+            holder.imageView.setImageResource(it.pImage)
+            holder.locationTextView.text = it.area
+            holder.nameTextView.text = it.pName
+            holder.startDateTextView.text = "${dateFormat.format(it.pStartDate)}"
+            holder.endDateTextView.text = " ~ ${dateFormat.format(it.pEndDate)}"
+        }
 
         // 패키지 아이템에서 star 값 가져오기
-        val star = packageItem.star
+        val star = packageItem?.star
 
         // star가 null인 경우 RatingBar가 안보이도록 GONE으로 설정
         if (star != null) {
@@ -62,7 +65,9 @@ class PackageAdapter (private val packageList:ArrayList<PackageItem>) : Recycler
 
         // 카드 클릭시
         holder.itemView.setOnClickListener {
-            onItemClick?.invoke(packageItem)
+            if (packageItem != null) {
+                onItemClick?.invoke(packageItem)
+            }
         }
     }
 

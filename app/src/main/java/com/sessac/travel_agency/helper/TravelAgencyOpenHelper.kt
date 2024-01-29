@@ -21,8 +21,8 @@ class TravelAgencyOpenHelper(context: Context) : SQLiteOpenHelper(context, DB_NA
            pName TEXT,
            pImage TEXT,
            status INTEGER,
-           pStartDate TEXT,
-           pEndDate TEXT
+           pStartDate INTEGER,
+           pEndDate INTEGER
            );"""
 
 //        const val CREATE_PACKAGE_TABLE = """CREATE TABLE $TABLE_PACKAGE (

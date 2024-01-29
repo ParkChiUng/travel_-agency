@@ -16,8 +16,7 @@ class PackageFragment : Fragment() {
     private lateinit var tabLayout: TabLayout
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: PackageFragmentAdapter
-    private var tabTitleArray = arrayOf("종료","진행중","예정")
-
+    private var tabTitleArray = arrayOf("종료", "진행중", "예정")
     private lateinit var binding: FragmentPackageBinding
 
     override fun onCreateView(
@@ -54,8 +53,8 @@ class PackageFragment : Fragment() {
         viewPager.adapter = adapter
         tabLayout = binding.tabLayout
 
-        TabLayoutMediator(tabLayout, viewPager) {
-                tab, position -> tab.text = tabTitleArray[position]
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = tabTitleArray[position]
         }.attach()
 
 

@@ -1,6 +1,8 @@
 package com.sessac.travel_agency.data
 
-import android.graphics.Bitmap
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
 //import android.os.Parcelable
 //import kotlinx.parcelize.Parcelize
 
@@ -12,7 +14,9 @@ import android.graphics.Bitmap
  * @param starNum : 숙소 등급
  */
 //@Parcelize //gradle 플러그인에 parcelize 추가함. 데이터 넘기기 위해
+@Entity(tableName = "table_lodging")
 data class LodgingItem(
+    @PrimaryKey(autoGenerate = true)
     val lodgeId : Int,
     val area : String,
     val lName : String,
