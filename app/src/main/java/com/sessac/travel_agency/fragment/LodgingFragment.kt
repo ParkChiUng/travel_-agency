@@ -7,12 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -20,13 +18,14 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sessac.travel_agency.adapter.LodgingAdapter
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.common.CommonHandler
+import com.sessac.travel_agency.common.ImageViewHandler
 import com.sessac.travel_agency.common.TravelAgencyApplication
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.databinding.FragmentLodgingBinding
-import com.sessac.travel_agency.databinding.FragmentPackageAddBinding
 import com.sessac.travel_agency.helper.TravelAgencyOpenHelper
 
-class LodgingFragment : Fragment() {
+// LodgingFragment 클래스가 OnLodgingItemClickListener 구현하도록 함
+class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
 
     // 지역 선택
     private lateinit var location: String
@@ -37,9 +36,7 @@ class LodgingFragment : Fragment() {
     private lateinit var lodgingList: ArrayList<LodgingItem>
     private lateinit var lodgingAdapter: LodgingAdapter
 
-
-    private val commonHandler: CommonHandler = CommonHandler()
-
+    private lateinit var commonHandler: CommonHandler
     private lateinit var areaList: Array<String>
 
     // DB
@@ -47,37 +44,40 @@ class LodgingFragment : Fragment() {
     private lateinit var db: SQLiteDatabase
     private val TAG = "LodgingAddFragment"
 
+    // 이미지 핸들러
+    private lateinit var imageViewHandler: ImageViewHandler
 
+
+
+    // Fragment의 레이아웃 생성
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreate(savedInstanceState)
-
         binding = FragmentLodgingBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+
+        return binding.root
+    }
+
+    // 실제 데이터나 리소스와 관련된 변수들은 생성된 뷰를 기반으로 한 onViewCreated 단계에서 초기화
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         // 지역선택 드롭다운 메뉴
-        val areaText: AutoCompleteTextView = binding.dropLocations
         areaList = resources.getStringArray(R.array.select_region)
+        val areaText: AutoCompleteTextView = binding.dropLocations
+        commonHandler = CommonHandler()
         commonHandler.spinnerHandler(areaList, areaText, requireContext())
 
-        // 선택된지역->리사이클러뷰로 where지역 데이터가져오기
-        setupLocationSpinnerHandler()
-
-        //리사이클러뷰
-        setupRecyclerviewAdapter()
-
-        //플로팅버튼(숙소등록 프래그먼트로)
-        setupFloatingButton()
-
-        // DB
+        // DB 초기화
         val app = TravelAgencyApplication.getTravelApplication()
         dbHelper = app.dbHelper
         db = app.db
 
-        return root
+        setupRecyclerviewAdapter() //리사이클러뷰
+        setupFloatingButton() //플로팅버튼(숙소등록 프래그먼트로)
+        setupLocationSpinnerHandler() // 선택된지역->리사이클러뷰로 where지역 데이터가져오기
     }
 
 
@@ -107,11 +107,12 @@ class LodgingFragment : Fragment() {
     //플로팅버튼(숙소등록)
     private fun setupFloatingButton() {
         val fab: View = binding.fab
-        fab.setOnClickListener { view ->
+        fab.setOnClickListener {
             insertLodgingData()
             val view: View = layoutInflater.inflate(R.layout.fragment_lodging_add, null)
 
-            val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_new_area)
+            //val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_new_area)
+            val img: ImageView = view.findViewById(R.id.lodging_new_image)
             val starText: AutoCompleteTextView = view.findViewById(R.id.drop_new_rating)
             val addBtn: Button = view.findViewById(R.id.button_addLodging)
 
@@ -120,13 +121,14 @@ class LodgingFragment : Fragment() {
             dialog.show()
 
             // 지역선택, 숙소등급 선택 드롭다운 메뉴 세팅
-            areaList = resources.getStringArray(R.array.select_region)
-
             val starList = resources.getStringArray(R.array.select_star)
 
             // 스피너 핸들러
-            commonHandler.spinnerHandler(areaList, areaText, requireContext()) // 지역
+            //commonHandler.spinnerHandler(areaList, areaText, requireContext()) // 지역
             commonHandler.spinnerHandler(starList, starText, requireContext()) // 숙소등급
+
+            // 이미지 핸들러
+            //...
 
             // 등록 버튼
             addBtn.setOnClickListener {
@@ -138,45 +140,40 @@ class LodgingFragment : Fragment() {
 
     private fun setupRecyclerviewAdapter() {
         lodgingList = ArrayList()
-
         recyclerView = binding.lodgingfragmentRecyclerview
         recyclerView.setHasFixedSize(true) // 리사이클러뷰의 크기가 변할 일이 없음 명시. 리사이클러뷰 레이아웃 다시 잡을 필요 없이 아이템 자리만 다시 잡기
         recyclerView.layoutManager = LinearLayoutManager(activity)
         initData()
-
-        lodgingAdapter = LodgingAdapter(lodgingList)
+        lodgingAdapter = LodgingAdapter(lodgingList, this)
         recyclerView.adapter = lodgingAdapter
-
-
-        // 아이템 하나 클릭되면 모달 바텀시트 띄우기 -> Intent 기존데이터 가져가서 바인딩
-        lodgingAdapter.onItemClick = {
-
-            // 프래그먼트, 뷰 가져오기
-            val view: View = layoutInflater.inflate(R.layout.fragment_lodging_edit, null) //레이아웃
-            val img: ImageView = view.findViewById(R.id.lodging_detailed_image) // ID
-            val nameText: EditText = view.findViewById(R.id.lodging_detailed_name)
-            val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_area2)
-            val starText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_rating)
-
-            // 아이템의 데이터 Set
-            img.setImageResource(it.lImage)
-            nameText.setText(it.lName)
-            areaText.setText(it.area)
-            starText.setText(it.starNum.toString())
-
-            val dialog = BottomSheetDialog(requireContext())
-            dialog.setContentView(view)
-            dialog.show()
-
-            val starList = resources.getStringArray(R.array.select_star)
-
-            // 스피너 핸들러
-            commonHandler.spinnerHandler(areaList, areaText, requireContext()) // 지역
-            commonHandler.spinnerHandler(starList, starText, requireContext()) // 별점
-
-        }
-
     }
+
+    // 아이템 하나 클릭되면 모달 바텀시트 띄우기 -> 기존데이터 가져가서 바인딩
+    override fun onLodgingItemClicked(lodging: LodgingItem) {
+        // 클릭된 숙소 아이템을 기반으로 모달 바텀시트 띄우기
+        val view: View = layoutInflater.inflate(R.layout.fragment_lodging_edit, null)
+        val img: ImageView = view.findViewById(R.id.lodging_detailed_image)
+        val nameText: EditText = view.findViewById(R.id.lodging_detailed_name)
+        val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_area2)
+        val starText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_rating)
+
+        // 클릭된 숙소 아이템의 데이터 Set
+        img.setImageResource(lodging.lImage)
+        nameText.setText(lodging.lName)
+        areaText.setText(lodging.area)
+        starText.setText(lodging.starNum.toString())
+
+        val dialog = BottomSheetDialog(requireContext())
+        dialog.setContentView(view)
+        dialog.show()
+
+        val starList = resources.getStringArray(R.array.select_star)
+
+        // 스피너 핸들러
+        commonHandler.spinnerHandler(areaList, areaText, requireContext()) // 지역
+        commonHandler.spinnerHandler(starList, starText, requireContext()) // 별점
+    }
+
 
     // DB data 가져오기(우선 샘플데이터로)
     private fun initData() {
@@ -198,7 +195,6 @@ class LodgingFragment : Fragment() {
         lodgingList.add(hotel7)
         lodgingList.add(hotel8)
     }
-
 
     private fun insertLodgingData() {
         val values = ContentValues().apply {
