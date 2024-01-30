@@ -1,5 +1,7 @@
 package com.sessac.travel_agency.data
 
+import android.net.Uri
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
@@ -12,7 +14,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "table_guide")
 data class GuideItem(
     @PrimaryKey(autoGenerate = true)
-    val guideId : Int,
-    val gName : String,
-    val gImage : Int, //샘플
+    @ColumnInfo(name = "guideId")
+    val guideId: Int = 0,
+    val gName: String,
+    val gImage: String
 )

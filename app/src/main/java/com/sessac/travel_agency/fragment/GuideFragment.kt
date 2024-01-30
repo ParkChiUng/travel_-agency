@@ -1,44 +1,51 @@
 package com.sessac.travel_agency.fragment
 
-import android.app.Activity
-import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.bumptech.glide.Glide
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.GuideAdapter
+import com.sessac.travel_agency.common.CommonHandler
 import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.databinding.FragmentGuideBinding
+import com.sessac.travel_agency.viewmodels.GuideViewModel
+import kotlinx.coroutines.launch
 
 // GuideFragment 클래스가 OnGuideItemClickListener를 구현하도록 함
-class GuideFragment : Fragment(), GuideAdapter.OnGuideItemClickListener {
+class GuideFragment : Fragment() {
     // 리사이클러뷰
     private lateinit var recyclerView: RecyclerView
-    private lateinit var guideList: ArrayList<GuideItem>
-    private lateinit var guideAdapter: GuideAdapter
+    private var guideAdapter: GuideAdapter? = null
 
     private lateinit var binding: FragmentGuideBinding
 
-    private lateinit var img: ImageView
-    private val galleryLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-        if (result.resultCode == Activity.RESULT_OK) {
-            result.data?.let { data ->
-                handleGalleryResult(data)
-            }
-        }
-    }
+    private lateinit var commonHandler: CommonHandler
 
+    private lateinit var guideAddView: View
+    private lateinit var guideDetailView: View
+    private lateinit var selectGalleryView: View
 
+    private lateinit var imageView: ImageView
+    private lateinit var addButton: Button
+    private lateinit var guideName: EditText
+
+    private var selectImageUri: Uri? = null
+
+    private val viewModel: GuideViewModel by viewModels()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,7 +53,6 @@ class GuideFragment : Fragment(), GuideAdapter.OnGuideItemClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentGuideBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -54,107 +60,131 @@ class GuideFragment : Fragment(), GuideAdapter.OnGuideItemClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        commonHandler = CommonHandler()
+        commonHandler.imageCallback(requireActivity().activityResultRegistry)
+        guideAddView = layoutInflater.inflate(R.layout.fragment_guide_add, null)
+        guideDetailView = layoutInflater.inflate(R.layout.fragment_guide_edit, null)
+        selectGalleryView = layoutInflater.inflate(R.layout.bottom_sheet_image_picker, null)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.CREATED) {
+                viewModel.findAllGuideList()
+            }
+        }
+
         setupRecyclerviewAdapter()  // 리사이클러뷰
         setupFloatingButton()  // 플로팅버튼
+        setupObserver()
+    }
+
+    private fun setupObserver() {
+        viewModel.guideLists.observe(viewLifecycleOwner) { guides ->
+            guides.let {
+                guideAdapter?.setGuideList(it)
+            }
+        }
     }
 
     //플로팅버튼(가이드 등록)
     private fun setupFloatingButton() {
-        val fab: View = binding.fab
-        fab.setOnClickListener { view ->
-            val view: View = layoutInflater.inflate(R.layout.fragment_guide_add, null)
-            val dialog = BottomSheetDialog(requireContext())
-            dialog.setContentView(view)
-            dialog.show()
+        binding.fab.setOnClickListener {
+            commonHandler.showDialog(guideAddView, requireContext())
+            newGuideButtonListener()
         }
     }
 
-    private fun setupRecyclerviewAdapter() {
-        guideList = ArrayList()
+    private fun newGuideButtonListener() {
+        imageView = guideAddView.findViewById(R.id.guide_new_image)
+        addButton = guideAddView.findViewById(R.id.button_newGuide)
+        guideName = guideAddView.findViewById(R.id.guide_new_name)
 
-        recyclerView = binding.guideRecyclerview
-        recyclerView.setHasFixedSize(true) // 리사이클러뷰의 크기가 변할 일이 없음 명시. 리사이클러뷰 레이아웃 다시 잡을 필요 없이 아이템 자리만 다시 잡기
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
-        initData()
-
-        guideAdapter = GuideAdapter(guideList, this)
-        recyclerView.adapter = guideAdapter
-    }
-
-
-    // 아이템 하나 클릭되면 모달 바텀시트 띄우기 -> 기존데이터 가져가서 바인딩
-    override fun onGuideItemClicked(guide: GuideItem) {
-        val view: View = layoutInflater.inflate(R.layout.fragment_guide_edit, null)
-        img = view.findViewById(R.id.guide_detailed_image)
-        val guideName: EditText = view.findViewById(R.id.guide_detailed_name)
-
-        // 클릭된 가이드 아이템의 데이터 Set
-        img.setImageResource(guide.gImage)
-        guideName.setText(guide.gName)
-
-        // 이미지뷰 클릭시 이미지 핸들러
-        img.setOnClickListener {
-            handleImageClick()
+        imageView.setOnClickListener {
+            handleImageClick(imageView)
         }
 
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(view)
-        dialog.show()
+        addButton.setOnClickListener {
+            viewModel.insertGuide(
+                GuideItem(
+                    gName = guideName.text.toString(),
+                    gImage = selectImageUri.toString()
+                )
+            )
+            selectImageUri = null
+            commonHandler.dismissDialog(guideAddView)
+        }
     }
+
 
     // 이미지 클릭 핸들러
-    private fun handleImageClick() {
-        val view: View = layoutInflater.inflate(R.layout.bottom_sheet_image_picker, null)
-        val galleryOption: TextView = view.findViewById(R.id.text_gallery)
-        val closeOption: TextView = view.findViewById(R.id.text_close)
+    private fun handleImageClick(imageView: ImageView) {
+        val galleryOption: TextView = selectGalleryView.findViewById(R.id.text_gallery)
+        val closeOption: TextView = selectGalleryView.findViewById(R.id.text_close)
 
-        val dialog = BottomSheetDialog(requireContext())
-        dialog.setContentView(view)
-        dialog.show()
+        commonHandler.showDialog(selectGalleryView, requireContext())
 
         // 갤러리에서 가져오기 클릭
         galleryOption.setOnClickListener {
-            openGallery()
-            dialog.dismiss()
+            commonHandler.imageSelect { imageUri ->
+                selectImageUri = imageUri
+                imageView.setImageURI(imageUri)
+            }
+
+            commonHandler.dismissDialog(selectGalleryView)
         }
 
         // 닫기 클릭
         closeOption.setOnClickListener {
-            dialog.dismiss()
+            commonHandler.dismissDialog(selectGalleryView)
         }
     }
 
-    // 갤러리 열기
-    private fun openGallery() {
-        val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        galleryLauncher.launch(galleryIntent)
-    }
+    private fun setupRecyclerviewAdapter() {
+        recyclerView = binding.guideRecyclerview
+        recyclerView.setHasFixedSize(true) // 리사이클러뷰의 크기가 변할 일이 없음 명시. 리사이클러뷰 레이아웃 다시 잡을 필요 없이 아이템 자리만 다시 잡기
+        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
 
+        // 아이템 클릭 시 디테일 BottomSheet에 이미지, 이름 저장
+        guideAdapter = GuideAdapter { guide ->
+            imageView = guideDetailView.findViewById(R.id.guide_detailed_image)
+            guideName = guideDetailView.findViewById(R.id.guide_detailed_name)
+            val deleteButton: Button = guideDetailView.findViewById(R.id.button_delGuide)
+            val updateButton: Button = guideDetailView.findViewById(R.id.button_editGuide)
 
-    private fun handleGalleryResult(data: Intent?) {
-        data?.data?.let { uri ->
-            // 선택한 이미지를 이미지뷰에 설정
-            img.setImageURI(uri)
+            Glide.with(imageView.context)
+                .load(guide.gImage)
+                .into(imageView)
+
+            guideName.setText(guide.gName)
+
+            imageView.setOnClickListener {
+                handleImageClick(imageView)
+            }
+
+            deleteButton.setOnClickListener {
+                viewModel.deleteGuide(guide.guideId)
+                commonHandler.dismissDialog(guideDetailView)
+            }
+
+            updateButton.setOnClickListener {
+
+                guideName = guideDetailView.findViewById(R.id.guide_detailed_name)
+
+                viewModel.updateGuide(
+                    GuideItem(
+                        guideId = guide.guideId,
+                        gName = guideName.text.toString(),
+                        gImage = if (selectImageUri == null) guide.gImage else selectImageUri.toString()
+                    )
+                )
+
+                selectImageUri = null
+
+                commonHandler.dismissDialog(guideDetailView)
+            }
+
+            commonHandler.showDialog(guideDetailView, requireContext())
         }
+
+        recyclerView.adapter = guideAdapter
     }
-
-
-
-    // DB data 가져오기(우선 샘플데이터로)
-    private fun initData() {
-        val guide1 = GuideItem(1, "김철수", R.drawable.hotel3)
-        val guide2 = GuideItem(2, "데이빗", R.drawable.hotel4)
-        val guide3 = GuideItem(3, "조안나", R.drawable.hotel5)
-        guideList.add(guide1)
-        guideList.add(guide2)
-        guideList.add(guide3)
-        guideList.add(guide1)
-        guideList.add(guide3)
-        guideList.add(guide2)
-        guideList.add(guide1)
-        guideList.add(guide2)
-        guideList.add(guide3)
-    }
-
-
 }

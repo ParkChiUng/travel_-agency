@@ -60,9 +60,9 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
         super.onViewCreated(view, savedInstanceState)
 
         // DB 초기화
-        val app = TravelAgencyApplication.getTravelApplication()
-        dbHelper = app.dbHelper
-        db = app.db
+//        val app = TravelAgencyApplication.getTravelApplication()
+//        dbHelper = app.dbHelper
+//        db = app.db
 
         // insertPackageData()
 

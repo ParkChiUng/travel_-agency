@@ -71,9 +71,9 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
         commonHandler.spinnerHandler(areaList, areaText, requireContext())
 
         // DB 초기화
-        val app = TravelAgencyApplication.getTravelApplication()
-        dbHelper = app.dbHelper
-        db = app.db
+//        val app = TravelAgencyApplication.getTravelApplication()
+//        dbHelper = app.dbHelper
+//        db = app.db
 
         setupRecyclerviewAdapter() //리사이클러뷰
         setupFloatingButton() //플로팅버튼(숙소등록 프래그먼트로)

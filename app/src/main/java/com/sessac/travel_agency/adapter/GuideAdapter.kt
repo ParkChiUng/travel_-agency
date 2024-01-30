@@ -1,48 +1,48 @@
 package com.sessac.travel_agency.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.sessac.travel_agency.R
+import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.GuideItem
-import com.sessac.travel_agency.data.LodgingItem
+import com.sessac.travel_agency.databinding.ItemGuideBinding
 
-class GuideAdapter(private val guideList:ArrayList<GuideItem>, private val listener: GuideAdapter.OnGuideItemClickListener) : RecyclerView.Adapter<GuideAdapter.GuideHolder>() {
+class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
+    RecyclerView.Adapter<GuideAdapter.GuideViewHolder>() {
 
-    interface OnGuideItemClickListener {
-        fun onGuideItemClicked(guide: GuideItem)
+    private var guideList = emptyList<GuideItem>()
+
+    class GuideViewHolder(val binding: ItemGuideBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideViewHolder {
+        return GuideViewHolder(
+            ItemGuideBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    inner class GuideHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView : ImageView = itemView.findViewById(R.id.guide_image)
-        val nameTextView : TextView = itemView.findViewById(R.id.guide_name)
-    }
-
-    // 뷰홀더와 그에 연결된 뷰를 생성하고 초기화
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_guide, parent, false )
-        return GuideHolder(view)
-    }
-
-    // 데이터세트 크기 가져옴
-    override fun getItemCount(): Int {
-        return guideList.size
-    }
-
-    // 뷰홀더를 데이터와 연결
-    override fun onBindViewHolder(holder: GuideHolder, position: Int) {
+    override fun onBindViewHolder(holder: GuideViewHolder, position: Int) {
         val guide = guideList[position]
-        holder.imageView.setImageResource(guide.gImage)
-        holder.nameTextView.text = guide.gName
+        with(holder.binding) {
+            Glide.with(guideImage.context)
+                .load(guide.gImage)
+                .into(guideImage)
+            guideName.text = guide.gName
 
-        // 카드 클릭시
-        holder.itemView.setOnClickListener {
-            // Invoke 리스너
-            listener.onGuideItemClicked(guide)
+            // 카드 클릭시
+            root.setOnClickListener {
+                itemOnClick(guide)
+            }
         }
-
     }
+
+    fun setGuideList(guide: List<GuideItem>) {
+        guideList = guide
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = guideList.size
 }
