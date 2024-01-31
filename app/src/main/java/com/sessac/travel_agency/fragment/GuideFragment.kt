@@ -25,9 +25,11 @@ import com.sessac.travel_agency.databinding.FragmentGuideBinding
 import com.sessac.travel_agency.viewmodels.GuideViewModel
 import kotlinx.coroutines.launch
 
-// GuideFragment 클래스가 OnGuideItemClickListener를 구현하도록 함
+/**
+ *
+ */
 class GuideFragment : Fragment() {
-    // 리사이클러뷰
+
     private lateinit var recyclerView: RecyclerView
     private var guideAdapter: GuideAdapter? = null
 
@@ -60,7 +62,7 @@ class GuideFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commonHandler = CommonHandler()
+        commonHandler = CommonHandler.generateCommonHandler()
         commonHandler.imageCallback(requireActivity().activityResultRegistry)
         guideAddView = layoutInflater.inflate(R.layout.fragment_guide_add, null)
         guideDetailView = layoutInflater.inflate(R.layout.fragment_guide_edit, null)
@@ -140,8 +142,10 @@ class GuideFragment : Fragment() {
 
     private fun setupRecyclerviewAdapter() {
         recyclerView = binding.guideRecyclerview
-        recyclerView.setHasFixedSize(true) // 리사이클러뷰의 크기가 변할 일이 없음 명시. 리사이클러뷰 레이아웃 다시 잡을 필요 없이 아이템 자리만 다시 잡기
-        recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
+        with(recyclerView){
+            setHasFixedSize(true)
+            layoutManager = GridLayoutManager(requireContext(), 2)
+        }
 
         // 아이템 클릭 시 디테일 BottomSheet에 이미지, 이름 저장
         guideAdapter = GuideAdapter { guide ->

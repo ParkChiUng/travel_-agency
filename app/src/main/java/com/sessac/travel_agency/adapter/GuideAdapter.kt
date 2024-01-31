@@ -1,5 +1,6 @@
 package com.sessac.travel_agency.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -39,6 +40,7 @@ class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
         }
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setGuideList(guide: List<GuideItem>) {
         guideList = guide
         notifyDataSetChanged()
