@@ -5,6 +5,24 @@
     <string name="sample_text_tour">얼음의 나라 과거 유럽사람들이 세상의 가장 끝은 라플란드라 믿고 그 곳에 일년내내 얼음과 눈으로 덮여 있는 눈의 여왕궁전이 있다고 믿었다고 한다. 현재, 제주 그 속에 수목원 안의 얼음의나라는 1년 365일 꿈과 감동이 가득한 얼음조각상들과 관람객들이 직접 만지고 느끼고 교감할 수 있는 체험을 통해 차갑지만 따뜻함을 전하고 있다.</string>
     <string name="lorem_ipsum">At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat</string>
     <string name="register">등록</string>
+
+    <!-- 다이얼로그 -->
+    <string name="alert_title_err">에러</string>
+    <string name="alert_title_del">삭제</string>
+    <string name="alert_title_create">등록</string>
+    <string name="alert_title_update">수정</string>
+    <string name="alert_title_warning">경고</string>
+    <string name="alert_message_try_again">다시 시도하세요</string>
+    <string name="alert_message_waring">다른 페이지로 이동하시면 작성중인 글이 모두 사라집니다.</string>
+    <string name="alert_message_del">정말 삭제하시겠습니까?</string>
+    <string name="alert_message_update">수정되었습니다.</string>
+    <string name="alert_message_create">등록되었습니다.</string>
+    <string name="alert_message_del_done">삭제되었습니다.</string>
+
+    <string name="alert_yes">네</string>
+    <string name="alert_no">취소</string>
+
+
     <string-array name="select_region">
         <!--        <item>전체</item>-->
         <item>서울시</item>
