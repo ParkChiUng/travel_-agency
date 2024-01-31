@@ -43,10 +43,10 @@ class GuideViewModel : ViewModel(){
         }
     }
 
-    fun deleteGuide(id: Int) {
+    fun deleteGuide(guideId: Int) {
         viewModelScope.launch {
             async(ioDispatchers.coroutineContext) {
-                repository.deleteGuide(id)
+                repository.deleteGuide(guideId)
                 findAllGuideList()
             }.await()
         }
