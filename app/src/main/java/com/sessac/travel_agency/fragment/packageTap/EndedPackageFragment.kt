@@ -20,7 +20,7 @@ import com.sessac.travel_agency.viewmodels.PackageViewModel
 /**
  * 패키지(홈)의 종료 페이지
  */
-class EndedPackage : Fragment() {
+class EndedPackageFragment : Fragment() {
 
     private lateinit var binding: FragmentOngoingPackageBinding
 

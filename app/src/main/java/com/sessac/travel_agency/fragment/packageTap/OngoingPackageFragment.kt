@@ -28,7 +28,7 @@ import java.util.Locale
 /**
  * 패키지(홈)의 진행중 페이지
  */
-class OngoingPackage : Fragment() {
+class OngoingPackageFragment : Fragment() {
 
     private lateinit var binding: FragmentOngoingPackageBinding
 

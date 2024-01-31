@@ -11,19 +11,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.PackageAdapter
-import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
 import com.sessac.travel_agency.factory.PackageViewModelFactory
 import com.sessac.travel_agency.repository.PackageRepository
 import com.sessac.travel_agency.viewmodels.PackageViewModel
-import java.text.SimpleDateFormat
-import java.util.Locale
 
 /**
  * 패키지(홈)의 예정 페이지
  */
-class ScheduledPackage : Fragment() {
+class ScheduledPackageFragment : Fragment() {
 
     private lateinit var binding: FragmentOngoingPackageBinding
 
