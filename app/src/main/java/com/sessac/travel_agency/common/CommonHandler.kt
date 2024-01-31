@@ -19,6 +19,9 @@ import com.sessac.travel_agency.R
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * 모든 프래그먼트에서 사용하는 공통적 스피너, 이미지피커, 바텀시트, 알럿 다이얼로그 팩토리
+ */
 class CommonHandler {
     private lateinit var dialog: BottomSheetDialog
     private lateinit var pickMedia: ActivityResultLauncher<Intent>
@@ -26,6 +29,15 @@ class CommonHandler {
     private lateinit var onImageSelected: ((Uri) -> Unit)
     private val dialogMap = HashMap<View, BottomSheetDialog>()
 
+    companion object{
+        private  var commonHandler: CommonHandler? = null
+        fun generateCommonHandler() : CommonHandler{
+            if(commonHandler != null){
+                return commonHandler as CommonHandler
+            }
+            return CommonHandler()
+        }
+    }
     fun spinnerHandler(items: Array<String>, binding: AutoCompleteTextView, context: Context) {
         val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, items)
         val autoCompleteTextView: AutoCompleteTextView = binding
@@ -128,7 +140,7 @@ class CommonHandler {
         var alertMsgResId = R.string.alert_message_try_again
 
         when (mode) {
-            "delete" -> {
+            DELETE -> { //상수값
                 alertTitleResId = R.string.alert_title_del
                 alertMsgResId = R.string.alert_message_del
                 if (todo != null) {
@@ -142,17 +154,17 @@ class CommonHandler {
                 }
             }
 
-            "update" -> {
+            UPDATE -> {
                 alertTitleResId = R.string.alert_title_update
                 alertMsgResId = R.string.alert_message_update
             }
 
-            "create" -> {
+            CREATE -> {
                 alertTitleResId = R.string.alert_title_create
                 alertMsgResId = R.string.alert_message_create
             }
 
-            "warning" -> {
+            WARNING -> {
                 alertTitleResId = R.string.alert_title_warning
                 alertMsgResId = R.string.alert_message_waring
                 builder.setNegativeButton(R.string.alert_no, null)
