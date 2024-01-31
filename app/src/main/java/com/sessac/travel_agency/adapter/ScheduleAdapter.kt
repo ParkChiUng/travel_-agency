@@ -38,7 +38,7 @@ class ScheduleAdapter(private var day: Int, private val listener: OnScheduleAddI
 
     // 뷰홀더 생성 메서드
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.schedule_button, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_schedule, parent, false)
         return ViewHolder(view)
     }
 
@@ -77,7 +77,7 @@ class ScheduleAdapter(private var day: Int, private val listener: OnScheduleAddI
         val scheduleTextView: TextView = itemView.findViewById(R.id.scheduleLayoutTV)
         val detailsText: TextView = itemView.findViewById(R.id.detailsText)
         val theme: TextView = itemView.findViewById(R.id.schedule_theme)
-        val lodging: CardView = itemView.findViewById(R.id.lodgingView)
+        val lodging: CardView = itemView.findViewById(R.id.lodgingViews)
         val expand: View = itemView.findViewById(R.id.expandable)
         val addBtn: ImageView = itemView.findViewById(R.id.Btn_addSchedule)
     }

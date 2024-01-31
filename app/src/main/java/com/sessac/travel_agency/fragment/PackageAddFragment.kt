@@ -12,8 +12,10 @@ import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.sessac.travel_agency.R
@@ -38,6 +40,7 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
     private lateinit var db: SQLiteDatabase
     private lateinit var binding: FragmentPackageAddBinding
     private lateinit var scheduleBinding: FragmentPackageScheduleAddBinding
+    private lateinit var bottomNav: BottomNavigationView
     private lateinit var regionItem: Array<String>
     private lateinit var scheduleList: ArrayList<ScheduleItem>
     private lateinit var scheduleAdapter: ScheduleAdapter
@@ -58,6 +61,12 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        // BottomNavigationView 초기화(바텀 네비 뷰 전환 클릭 이벤트 감지하기 위함)
+        bottomNav = requireActivity().findViewById(R.id.bottomNav)  // 프래그먼트가 속한 액티비티requireActivity()에서 BottomNavigationView를 찾아 bottomNav 변수에 할당
+
+        // BottomNavigationView를 숨김
+        bottomNav.visibility = View.GONE
 
         // DB 초기화
 //        val app = TravelAgencyApplication.getTravelApplication()
@@ -81,7 +90,21 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
 
         // RecyclerView 초기화 및 어댑터 설정
         initRecyclerView()
+
+        // Toolbar의 Navigation Icon 클릭 시 뒤로 가기 동작 설정
+        binding.toolbar.setNavigationOnClickListener {
+            commonHandler.alertDialog(requireContext(), "warning") {
+                findNavController().popBackStack()  // yes클릭시 뒤로 화면전환 됨
+            }
+        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+
+        bottomNav.visibility = View.VISIBLE
+    }
+
 
 
     private fun initRecyclerView() {
@@ -168,6 +191,7 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
             day = 1
         )
     }
+
 
 
 //    private fun insertPackageData() {

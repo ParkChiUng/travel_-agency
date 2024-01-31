@@ -34,7 +34,7 @@
             android:textStyle="bold"
             android:textColor="@color/primary_text"
             android:textSize="22sp"
-            tools:text="NAME" />
+            tools:text="@string/guide_name" />
 
     </LinearLayout>
 

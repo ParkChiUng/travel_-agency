@@ -10,7 +10,7 @@ class PackageRepository(context: Context) {
 
     private val packageDao = AppDatabase.getDatabase(context).packageDao()
 
-    suspend fun getPackageList() = packageDao.getAll()
+     fun getPackageList() = packageDao.getAll()
 
 //    suspend fun setPackageList() = packageDao.insertAll()
 }

@@ -33,7 +33,7 @@
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="304dp"
-        android:hint="숙소명"
+        android:hint="@string/lodging_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -47,7 +47,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="지역"
+        android:hint="@string/region"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lodging_detailed_image"
         app:layout_constraintVertical_bias="0.15">
@@ -55,8 +55,7 @@
         <AutoCompleteTextView
             android:id="@+id/drop_detailed_area2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_height="wrap_content" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -65,7 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="숙소 등급"
+        android:hint="@string/lodging_grade"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lodging_detailed_image"
         app:layout_constraintVertical_bias="0.4">
@@ -83,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent_color"
-        android:text="수정"
+        android:text="@string/modify"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_delLodging"
@@ -97,7 +96,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent_color"
-        android:text="삭제"
+        android:text="@string/delete"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

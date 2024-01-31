@@ -108,7 +108,7 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
     private fun setupFloatingButton() {
         val fab: View = binding.fab
         fab.setOnClickListener {
-            insertLodgingData()
+            //insertLodgingData()
             val view: View = layoutInflater.inflate(R.layout.fragment_lodging_add, null)
 
             //val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_new_area)
@@ -196,15 +196,15 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
         lodgingList.add(hotel8)
     }
 
-    private fun insertLodgingData() {
-        val values = ContentValues().apply {
-            put("area", "제주도")
-            put("lName", "그랜드 조선")
-            put("lImage", R.drawable.hotel1)
-            put("starNum", 4)
-        }
-        db.insert(TravelAgencyOpenHelper.TABLE_LODGING, null, values)
-    }
+//    private fun insertLodgingData() {
+//        val values = ContentValues().apply {
+//            put("area", "제주도")
+//            put("lName", "그랜드 조선")
+//            put("lImage", R.drawable.hotel1)
+//            put("starNum", 4)
+//        }
+//        db.insert(TravelAgencyOpenHelper.TABLE_LODGING, null, values)
+//    }
 
 
     // 프래그먼트 화면을 벗어나면 기존 선택된 데이터 제거.

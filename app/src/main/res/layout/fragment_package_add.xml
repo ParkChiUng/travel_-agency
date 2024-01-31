@@ -6,14 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".fragment.PackageAddFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline_bottom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.9">
-    </androidx.constraintlayout.widget.Guideline>
-
 
     <com.google.android.material.appbar.MaterialToolbar
         android:id="@+id/toolbar"
@@ -45,7 +37,7 @@
         android:layout_height="0dp"
         android:fillViewport="true"
         android:scrollbars="none"
-        app:layout_constraintBottom_toBottomOf="@id/guideline_bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar">
@@ -81,7 +73,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:inputType="text"
-                    android:hint="패키지명" />
+                    android:hint="@string/package_name" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
@@ -102,7 +94,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="none"
                     android:focusable="false"
-                    android:hint="날짜"
+                    android:hint="@string/date"
                     android:clickable="true"
                     tools:ignore="TextFields" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -127,7 +119,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:hint="지역"
+                android:hint="@string/region"
                 app:layout_constraintTop_toBottomOf="@+id/packageAddDateTIL"
                 app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
                 app:layout_constraintStart_toStartOf="@id/leftGuideline">
@@ -145,7 +137,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_margin="10dp"
-                android:hint="가이드"
+                android:hint="@string/guide"
                 app:layout_constraintTop_toBottomOf="@+id/areaSpinnerTIL"
                 app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
                 app:layout_constraintStart_toStartOf="@id/leftGuideline">
@@ -162,7 +154,7 @@
                     app:layout_constraintTop_toBottomOf="@id/areaSpinner"
                     app:layout_constraintStart_toStartOf="@id/areaSpinner"
                     android:layout_marginTop="15dp"
-                    android:text="일자별 스케쥴"
+                    android:text="@string/daily_schedule"
                     android:textStyle="bold"
                     android:textSize="18dp" />
             </com.google.android.material.textfield.TextInputLayout>

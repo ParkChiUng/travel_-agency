@@ -6,8 +6,7 @@ import com.sessac.travel_agency.database.AppDatabase
 
 class GuideRepository {
 
-    private val guideDao =
-        AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).guideDao()
+    private val guideDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).guideDao()
 
     fun insertGuide(newGuide: GuideItem) {
         guideDao.insertGuide(newGuide)
