@@ -16,7 +16,7 @@ tools:context=".common.BottomSheetFragment">
     </androidx.constraintlayout.widget.Guideline>
 
 
-    <ImageView
+    <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/lodging_detailed_image"
         android:layout_width="140dp"
         android:layout_height="100dp"
@@ -36,7 +36,7 @@ tools:context=".common.BottomSheetFragment">
         android:layout_marginHorizontal="20dp"
         android:layout_marginTop="0dp"
         android:layout_marginBottom="304dp"
-        android:hint="숙소명"
+        android:hint="@string/lodging_name"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -50,7 +50,7 @@ tools:context=".common.BottomSheetFragment">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="지역"
+        android:hint="@string/region"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.15"
         app:layout_constraintTop_toBottomOf="@id/lodging_detailed_image">
@@ -59,7 +59,7 @@ tools:context=".common.BottomSheetFragment">
             android:id="@+id/drop_detailed_area"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+            />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -68,7 +68,7 @@ tools:context=".common.BottomSheetFragment">
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="숙소 등급"
+        android:hint="@string/lodging_grade"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.4"
         app:layout_constraintTop_toBottomOf="@id/lodging_detailed_image">
@@ -77,7 +77,7 @@ tools:context=".common.BottomSheetFragment">
             android:id="@+id/drop_detailed_rating"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="none" />
+             />
     </com.google.android.material.textfield.TextInputLayout>
 
 
@@ -86,7 +86,7 @@ tools:context=".common.BottomSheetFragment">
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent_color"
-        android:text="수정"
+        android:text="@string/modify"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/button_delLodging"
@@ -95,12 +95,12 @@ tools:context=".common.BottomSheetFragment">
         app:layout_constraintTop_toBottomOf="@+id/lodging_detailed_rating"
         app:layout_constraintVertical_bias="0.4" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_delLodging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent_color"
-        android:text="삭제"
+        android:text="@string/delete"
         android:textColor="@color/primary_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

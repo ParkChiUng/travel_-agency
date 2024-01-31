@@ -38,7 +38,7 @@
             app:layout_constraintHorizontal_bias="0"
             app:layout_constraintStart_toStartOf="@id/package_thumbnail"
             app:layout_constraintTop_toBottomOf="@id/package_thumbnail"
-            tools:text="강원도" />
+            tools:text="@string/gangwon" />
 
         <RatingBar
             android:id="@+id/package_rating"
@@ -60,7 +60,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/package_area"
             app:layout_constraintTop_toBottomOf="@+id/package_thumbnail"
-            tools:text="삼척 바다낚시 2박3일" />
+            tools:text="@string/sample_package" />
 
         <TextView
             android:id="@+id/package_startdate"
@@ -71,7 +71,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/package_area"
             app:layout_constraintTop_toBottomOf="@id/package_name"
-            tools:text="2024/12/23" />
+            tools:text="@string/date_2023_12_24" />
 
         <TextView
             android:id="@+id/package_enddate"
@@ -81,7 +81,7 @@
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/package_startdate"
             app:layout_constraintStart_toEndOf="@id/package_startdate"
-            tools:text="2023/12/25" />
+            tools:text="@string/date_2023_12_25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

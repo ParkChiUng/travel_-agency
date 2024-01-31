@@ -42,7 +42,7 @@
                 android:textColor="@color/secondary_text"
                 android:textSize="15sp"
                 android:textStyle="bold"
-                tools:text="제주" />
+                tools:text="@string/jeju" />
 
             <TextView
                 android:id="@+id/lodging_name"
@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/primary_text"
                 android:textSize="18sp"
-                tools:text="호텔명" />
+                tools:text="@string/hotel_name" />
 
             <RatingBar
                 android:id="@+id/lodging_rating"

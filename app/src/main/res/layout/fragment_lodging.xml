@@ -18,15 +18,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:hint="@string/select"
+        android:hint="@string/select_region"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
         tools:ignore="MissingConstraints">
 
         <AutoCompleteTextView
             android:id="@+id/dropLocations"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="none" />
+            android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
 
 
