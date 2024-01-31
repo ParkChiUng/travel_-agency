@@ -12,6 +12,7 @@ interface GuideDao {
     @Query("SELECT * FROM table_guide")
     fun getAllGuideList(): List<GuideItem>
 
+    @Transaction
     @Insert
     fun insertGuide(guideItem: GuideItem)
 
@@ -19,6 +20,7 @@ interface GuideDao {
     @Query("DELETE FROM table_guide WHERE guideId = :guideId")
     fun deleteGuide(guideId: Int)
 
+    @Transaction
     @Update
     fun updateGuide(guideItem: GuideItem)
 }
