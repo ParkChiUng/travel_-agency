@@ -116,7 +116,7 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
             val starText: AutoCompleteTextView = view.findViewById(R.id.drop_new_rating)
             val addBtn: Button = view.findViewById(R.id.button_addLodging)
 
-            val dialog = BottomSheetDialog(requireContext())
+            val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
             dialog.setContentView(view)
             dialog.show()
 
@@ -163,7 +163,7 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
         areaText.setText(lodging.area)
         starText.setText(lodging.starNum.toString())
 
-        val dialog = BottomSheetDialog(requireContext())
+        val dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme)
         dialog.setContentView(view)
         dialog.show()
 
