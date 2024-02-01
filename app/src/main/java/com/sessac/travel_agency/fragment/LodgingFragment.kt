@@ -154,7 +154,7 @@ class LodgingFragment : Fragment(), LodgingAdapter.OnLodgingItemClickListener  {
         val view: View = layoutInflater.inflate(R.layout.fragment_lodging_edit, null)
         val img: ImageView = view.findViewById(R.id.lodging_detailed_image)
         val nameText: EditText = view.findViewById(R.id.lodging_detailed_name)
-        val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_area2)
+        val areaText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_area)
         val starText: AutoCompleteTextView = view.findViewById(R.id.drop_detailed_rating)
 
         // 클릭된 숙소 아이템의 데이터 Set

@@ -33,7 +33,7 @@
         app:layout_constraintVertical_bias="0.1"
         app:layout_constraintTop_toBottomOf="@+id/guide_new_image" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/button_newGuide"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -41,6 +41,7 @@
         android:backgroundTint="@color/accent_color"
         android:text="@string/register"
         android:textColor="@color/primary_text"
+        android:layout_marginTop="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
