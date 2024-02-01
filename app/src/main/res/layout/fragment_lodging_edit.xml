@@ -69,7 +69,7 @@
         app:layout_constraintTop_toBottomOf="@id/lodging_detailed_nameTIL">
 
         <AutoCompleteTextView
-            android:id="@+id/drop_detailed_area"
+            android:id="@+id/areaListSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"/>
@@ -87,7 +87,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lodging_detailed_area">
 
         <AutoCompleteTextView
-            android:id="@+id/drop_detailed_rating"
+            android:id="@+id/lodgingStarList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"/>

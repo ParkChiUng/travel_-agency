@@ -23,7 +23,7 @@
         tools:ignore="MissingConstraints">
 
         <AutoCompleteTextView
-            android:id="@+id/dropLocations"
+            android:id="@+id/areaListSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none"/>
@@ -31,7 +31,7 @@
 
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/lodgingfragment_recyclerview"
+        android:id="@+id/lodgingRecyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:orientation="vertical"

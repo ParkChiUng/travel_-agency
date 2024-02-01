@@ -5,29 +5,30 @@ import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.database.AppDatabase
 import com.sessac.travel_agency.database.LodgingDao
 
-class LodgingRepository() {
-    //class LodgingRepository(private val lodgingDao: LodgingDao) {
-    private var lodgingDao: LodgingDao
-    init {
-        val travelDB = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication())
-        lodgingDao = travelDB.lodgingDao()
+/**
+ * RoomDB에 액세스하여 LodgingItem을 CRUD, 모든 LodgingItem을 가져옴
+ * */
+class LodgingRepository {
+
+    private val lodgingDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).lodgingDao()
+
+    fun insertLodging(newLodging: LodgingItem) {
+        lodgingDao.insertLodging(newLodging)
     }
 
-    val allLodging: List<LodgingItem> = lodgingDao.getAll()
+    fun updateLodging(updateLodging: LodgingItem) {
+        lodgingDao.updateLodging(updateLodging)
+    }
 
-    fun findAllLodging() : List<LodgingItem> {
+    fun deleteLodging(deleteLodging: LodgingItem) {
+        lodgingDao.deleteLodging(deleteLodging)
+    }
+
+    fun findAllLodgings(): List<LodgingItem> {
         return lodgingDao.getAll()
     }
 
-    fun findLodging(area: String) : List<LodgingItem> {
+    fun findLodgingsByArea(area: String): List<LodgingItem> {
         return lodgingDao.findLodging(area)
     }
-    fun insertLodging(lodging: LodgingItem) {
-        lodgingDao.insertLodging(lodging)
-    }
-
-    fun deleteLodging(lodging: LodgingItem) {
-        lodgingDao.deleteLodging(lodging)
-    }
-
 }

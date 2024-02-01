@@ -70,7 +70,7 @@
         app:layout_constraintTop_toBottomOf="@id/lodging_new_nameTIL">
 
         <AutoCompleteTextView
-            android:id="@+id/drop_new_area"
+            android:id="@+id/areaListSpinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lodging_new_areaTIL">
 
         <AutoCompleteTextView
-            android:id="@+id/drop_new_rating"
+            android:id="@+id/lodgingStarList"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="none" />
@@ -96,7 +96,7 @@
 
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/button_addLodging"
+        android:id="@+id/buttonNewLodging"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/accent_color"
