@@ -31,25 +31,19 @@ import kotlinx.coroutines.launch
  *
  */
 class GuideFragment : Fragment() {
-
     private lateinit var guideRecyclerView: RecyclerView
     private var guideAdapter: GuideAdapter? = null
-
     private lateinit var guideBinding: FragmentGuideBinding
     private lateinit var guideAddViewBinding: FragmentGuideAddBinding
     private lateinit var guideDetailViewBinding: FragmentGuideEditBinding
     private lateinit var galleryViewBinding: BottomSheetImagePickerBinding
-
     private lateinit var commonHandler: CommonHandler
-
     private lateinit var imageView: ImageView
     private lateinit var addButton: Button
     private lateinit var guideName: EditText
-
     private var selectImageUri: Uri? = null
 
     private val viewModel: GuideViewModel by viewModels()
-
 
     /**
      * 레이아웃 바인딩 설정
@@ -158,7 +152,7 @@ class GuideFragment : Fragment() {
      * 2. imageUri 갤러리에서 이미지 선택 시 commonHandler.imageSelect에서 imageUri를 콜백받는다.
      */
     private fun handleImageClick(imageView: ImageView) {
-        with(galleryViewBinding){
+        with(galleryViewBinding) {
 
             commonHandler.showDialog(root, requireContext())
 

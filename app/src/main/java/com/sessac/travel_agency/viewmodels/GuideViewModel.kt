@@ -55,7 +55,7 @@ class GuideViewModel : ViewModel(){
     fun findAllGuideList() {
         viewModelScope.launch {
             async(ioDispatchers.coroutineContext) {
-                _guideLists.postValue(repository.findAllProducts())
+                _guideLists.postValue(repository.findAllGuides())
             }.await()
         }
     }

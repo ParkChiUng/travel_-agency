@@ -20,7 +20,7 @@ class GuideRepository {
         guideDao.deleteGuide(id)
     }
 
-    fun findAllProducts(): List<GuideItem> {
+    fun findAllGuides(): List<GuideItem> {
         return guideDao.getAllGuideList()
     }
 }
