@@ -17,6 +17,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sessac.travel_agency.R
 import java.text.SimpleDateFormat
+import java.util.Date
 import java.util.Locale
 
 /**
@@ -62,12 +63,17 @@ class CommonHandler {
         pickMedia.launch(galleryIntent)
     }
 
-    fun dateHandler(firstDate: Array<String>, secondDate: AutoCompleteTextView, context: Context) {
+//    fun dateHandler(firstDate: Array<String>, secondDate: AutoCompleteTextView, context: Context) {
+//        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+//    }
+
+    fun dateHandler(date: Date, context: Context? = null): String {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
+        return dateFormat.format(date)
     }
 
-    fun showDialog(view: View, context: Context) {
-        dialog = BottomSheetDialog(context)
+    fun showDialog(view: View, context: Context, theme: Int? = null) {
+        dialog = if(theme == null) BottomSheetDialog(context) else BottomSheetDialog(context, theme)
 
         // viewGroup 삭제
         if (view.parent != null) (view.parent as ViewGroup).removeView(view)

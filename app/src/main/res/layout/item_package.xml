@@ -16,7 +16,7 @@
 
 
         <ImageView
-            android:id="@+id/package_thumbnail"
+            android:id="@+id/package_image"
             android:layout_width="match_parent"
             android:layout_height="180dp"
             android:scaleType="centerCrop"
@@ -36,8 +36,8 @@
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
-            app:layout_constraintStart_toStartOf="@id/package_thumbnail"
-            app:layout_constraintTop_toBottomOf="@id/package_thumbnail"
+            app:layout_constraintStart_toStartOf="@id/package_image"
+            app:layout_constraintTop_toBottomOf="@id/package_image"
             tools:text="@string/gangwon" />
 
         <RatingBar
@@ -48,7 +48,7 @@
             android:layout_margin="20dp"
 
             app:layout_constraintStart_toEndOf="@id/package_area"
-            app:layout_constraintTop_toBottomOf="@+id/package_thumbnail" />
+            app:layout_constraintTop_toBottomOf="@+id/package_image" />
 
         <TextView
             android:id="@+id/package_name"
@@ -59,7 +59,7 @@
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/package_area"
-            app:layout_constraintTop_toBottomOf="@+id/package_thumbnail"
+            app:layout_constraintTop_toBottomOf="@+id/package_image"
             tools:text="@string/sample_package" />
 
         <TextView
