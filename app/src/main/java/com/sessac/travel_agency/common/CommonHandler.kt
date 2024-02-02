@@ -66,8 +66,13 @@ class CommonHandler {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
     }
 
+
+    /**
+     * dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme) // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
+     *         dialog.setContentView(view)
+     *         dialog.show()*/
     fun showDialog(view: View, context: Context) {
-        dialog = BottomSheetDialog(context)
+        dialog = BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme)  // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
 
         // viewGroup 삭제
         if (view.parent != null) (view.parent as ViewGroup).removeView(view)
