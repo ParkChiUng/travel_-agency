@@ -53,7 +53,7 @@
                     android:layout_height="0dp"
                     android:layout_weight="1" />
 
-                <ImageView
+                <androidx.appcompat.widget.AppCompatImageView
                     android:id="@+id/Btn_addSchedule"
                     android:src="@drawable/ic_plus"
                     android:layout_width="wrap_content"
@@ -76,7 +76,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
-                    <ImageView
+                    <androidx.appcompat.widget.AppCompatImageView
                         android:id="@+id/lodging_thumbnail"
                         android:layout_width="140dp"
                         android:layout_height="100dp"

@@ -1,55 +1,56 @@
 package com.sessac.travel_agency.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.sessac.travel_agency.R
+import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.LodgingItem
+import com.sessac.travel_agency.databinding.ItemLodgingBinding
 
-class LodgingAdapter(
-    private val lodgingList: ArrayList<LodgingItem>,
-    private val listener: OnLodgingItemClickListener
-) : RecyclerView.Adapter<LodgingAdapter.LodgingHolder>() {
+/**
+ * Lodging RecyclerView의 데이터를 표시하기 위한 어댑터
+ */
+class LodgingAdapter(val itemOnClick: (LodgingItem) -> Unit) :
+    RecyclerView.Adapter<LodgingAdapter.LodgingViewHolder>() {
 
-    interface OnLodgingItemClickListener {
-        fun onLodgingItemClicked(lodging: LodgingItem)
+    private var lodgingList = emptyList<LodgingItem>()
+
+    inner class LodgingViewHolder(val binding: ItemLodgingBinding) : RecyclerView.ViewHolder(binding.root)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LodgingViewHolder {
+        return LodgingViewHolder(
+            ItemLodgingBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        )
     }
 
-    inner class LodgingHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView : ImageView = itemView.findViewById(R.id.lodging_thumbnail)
-        val locationTextView : TextView = itemView.findViewById(R.id.lodging_location)
-        val nameTextView : TextView = itemView.findViewById(R.id.lodging_name)
-        val rateView : RatingBar = itemView.findViewById(R.id.lodging_rating)
-    }
-
-    // 뷰홀더와 그에 연결된 뷰를 생성하고 초기화
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LodgingHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.item_lodging, parent, false )
-        return LodgingHolder(view)
-    }
-
-    // 데이터세트 크기 가져옴
-    override fun getItemCount(): Int {
-        return lodgingList.size
-    }
-
-    // 뷰홀더를 데이터와 연결
-    override fun onBindViewHolder(holder: LodgingHolder, position: Int) {
+    override fun onBindViewHolder(holder: LodgingViewHolder, position: Int) {
         val lodging = lodgingList[position]
-        holder.imageView.setImageResource(lodging.lImage)
-        holder.locationTextView.text = lodging.area
-        holder.nameTextView.text = lodging.lName
-        holder.rateView.rating = lodging.starNum.toFloat()
+        with(holder.binding) {
+            // Glide를 사용하여 이미지 로드
+            Glide.with(lodgingThumbnail.context)
+                .load(lodging.lImage)
+                .into(lodgingThumbnail)
+            lodgingLocation.text = lodging.area
+            lodgingName.text = lodging.lName
+            lodgingRating.rating = lodging.starNum.toFloat()
 
-        // 카드 클릭시
-        holder.itemView.setOnClickListener {
-            // Invoke 리스너
-            listener.onLodgingItemClicked(lodging)
+            // 카드 클릭시
+            root.setOnClickListener {
+                itemOnClick(lodging)
+            }
         }
-
     }
+
+    @SuppressLint("NotifyDataSetChanged")
+    fun setLodgingList(lodging: List<LodgingItem>) {
+        lodgingList = lodging
+        notifyDataSetChanged()
+    }
+
+    override fun getItemCount() = lodgingList.size
 }

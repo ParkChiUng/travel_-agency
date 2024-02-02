@@ -3,8 +3,6 @@ package com.sessac.travel_agency.data
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-//import android.os.Parcelable
-//import kotlinx.parcelize.Parcelize
 
 /**
  * @param lodgeId : Auto Increment 사용하여 자동으로 증가 예정
@@ -13,13 +11,13 @@ import androidx.room.PrimaryKey
  * @param lImage : 숙소 이미지
  * @param starNum : 숙소 등급
  */
-//@Parcelize //gradle 플러그인에 parcelize 추가함. 데이터 넘기기 위해
+
 @Entity(tableName = "table_lodging")
 data class LodgingItem(
     @PrimaryKey(autoGenerate = true)
-    val lodgeId : Int,
+    val lodgeId : Int = 0,
     val area : String,
     val lName : String,
-    val lImage : Int, // 샘플 Bitmap파일이 Int로 인식되어 잠시 Int로
+    val lImage : String,
     val starNum : Int
-) //: Parcelable
+)

@@ -17,7 +17,7 @@ class PackageFragment : Fragment() {
     private lateinit var viewPager: ViewPager2
     private lateinit var adapter: PackageFragmentAdapter
     private var tabTitleArray = arrayOf("종료", "진행중", "예정")
-    private lateinit var binding: FragmentPackageBinding
+    private lateinit var binding: FragmentPackageBinding  // 리소스가 누수되고 있음. onDestroyed되어도 계속 잡고있음. 추상클래스 적용
 
     override fun onCreateView(
         inflater: LayoutInflater,

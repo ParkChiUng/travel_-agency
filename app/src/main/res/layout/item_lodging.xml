@@ -7,14 +7,13 @@
     app:cardCornerRadius="20dp"
     android:layout_marginHorizontal="10dp"
     android:layout_marginVertical="10dp"
-    app:cardElevation="4dp"
-    >
+    app:cardElevation="4dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <ImageView
+        <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/lodging_thumbnail"
             android:layout_width="140dp"
             android:layout_height="100dp"
