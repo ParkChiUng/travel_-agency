@@ -142,35 +142,31 @@ class LodgingFragment : Fragment() {
 
         // AutoCompleteTextView에 어댑터 세팅
         lodgingBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
-        lodgingAddViewBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
-        lodgingDetailViewBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
 
         // AutoCompleteTextView에 아이템 클릭리스너 세팅
-        val onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+        lodgingBinding.areaListSpinner.setOnItemClickListener { parent, _, position, _ ->
+            // 어레이 어댑터에서 선택된 아이템 가져옴
+            val selectedArea = areaSpinnerAdapter.getItem(position)
+//            location = selectedArea
+            Log.d("test", "Selected Area: $selectedArea")
+
+            // ViewModel을 통해 해당 지역에 대한 숙소 데이터 가져오기(lodgingBinding 스피너일때만)
+            lodgingViewModel.findLodgingsByArea(selectedArea.toString())
+        }
+
+        lodgingAddViewBinding.areaListSpinner.setOnItemClickListener { parent, _, position, _ ->
             // 어레이 어댑터에서 선택된 아이템 가져옴
             val selectedArea = areaSpinnerAdapter.getItem(position)
             location = selectedArea.toString()
-
-            when (parent) {
-                lodgingBinding.areaListSpinner -> {
-                    Log.d("test", "Selected Area: $selectedArea")
-                    // ViewModel을 통해 해당 지역에 대한 숙소 데이터 가져오기(lodgingBinding 스피너일때만)
-                    lodgingViewModel.findLodgingsByArea(selectedArea.toString())
-                }
-                lodgingAddViewBinding.areaListSpinner -> {
-                    Log.d("test새 아이템 등록", "Selected Area: $selectedArea")
-                    // Handle for lodgingAddViewBinding
-                }
-                lodgingDetailViewBinding.areaListSpinner -> {
-                    Log.d("test아이템 디테일", "Selected Area: $selectedArea")
-                    // Handle for lodgingDetailViewBinding
-                }
-            }
+            Log.d("test새 아이템 등록", "Selected Area: $selectedArea")
         }
 
-        lodgingBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
-        lodgingAddViewBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
-        lodgingDetailViewBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
+        lodgingDetailViewBinding.areaListSpinner.setOnItemClickListener { parent, _, position, _ ->
+            // 어레이 어댑터에서 선택된 아이템 가져옴
+            val selectedArea = areaSpinnerAdapter.getItem(position)
+            location = selectedArea.toString()
+            Log.d("test아이템 디테일", "Selected Area: $selectedArea")
+        }
 
         // ViewModel에서 LiveData를 통해 반환된 숙소 데이터를 관찰하고, 변경이 감지되면 UI 업데이트
         lodgingViewModel.lodgingList.observe(viewLifecycleOwner) { lodgings ->
