@@ -2,14 +2,18 @@ package com.sessac.travel_agency.fragment
 
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -19,6 +23,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
+import com.google.android.material.textfield.TextInputLayout
 import com.sessac.travel_agency.adapter.LodgingAdapter
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.common.CommonHandler
@@ -30,7 +35,7 @@ import com.sessac.travel_agency.databinding.FragmentLodgingEditBinding
 import com.sessac.travel_agency.viewmodels.LodgingViewModel
 import kotlinx.coroutines.launch
 
-// LodgingFragment 클래스가 OnLodgingItemClickListener 구현하도록 함
+
 class LodgingFragment : Fragment() {
     private lateinit var lodgingBinding: FragmentLodgingBinding
     private lateinit var lodgingAddViewBinding: FragmentLodgingAddBinding
@@ -48,6 +53,8 @@ class LodgingFragment : Fragment() {
     private lateinit var lodgingName: EditText
     private var location: String = ""
     private lateinit var areaList: Array<String>
+
+    private lateinit var spinner: Spinner
 
     private val lodgingViewModel: LodgingViewModel by viewModels()
 
@@ -81,6 +88,8 @@ class LodgingFragment : Fragment() {
                 lodgingViewModel.findAllLodgingList()
             }
         }
+
+        lodgingBinding.areaListSpinner.onItemSelectedListener
 
         setupAreaSpinnerUI(lodgingBinding)
         setupRecyclerviewAdapter()
@@ -124,24 +133,44 @@ class LodgingFragment : Fragment() {
      * 1. 지역 선택 ClickListener 등록
      * 2. 지역 선택 시 viewModel의 findLodgingsByArea() 함수에서 lodgingList 초기화
      */
-    private fun setupLocationSpinnerHandler() {
-        lodgingBinding.areaListSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(
-                parent: AdapterView<*>,
-                view: View?,
-                position: Int,
-                id: Long
-            ) {
-                // 선택한 지역을 변수에 저장해두기
-                location = parent.getItemAtPosition(position).toString()
+    private fun setupLocationSpinnerHandler() { // TODO: 분기처리 깔끔하게
 
-                // ViewModel을 통해 해당 지역에 대한 숙소 데이터 가져오기(메인 스피너일때만)
-                //lodgingViewModel.findLodgingsByArea(location)
-            }
+        val areaList = resources.getStringArray(R.array.select_region)
 
-            override fun onNothingSelected(parent: AdapterView<*>?) {
+        // 어레이 어댑터
+        val areaSpinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, areaList)
+
+        // AutoCompleteTextView에 어댑터 세팅
+        lodgingBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
+        lodgingAddViewBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
+        lodgingDetailViewBinding.areaListSpinner.setAdapter(areaSpinnerAdapter)
+
+        // AutoCompleteTextView에 아이템 클릭리스너 세팅
+        val onItemClickListener = AdapterView.OnItemClickListener { parent, _, position, _ ->
+            // 어레이 어댑터에서 선택된 아이템 가져옴
+            val selectedArea = areaSpinnerAdapter.getItem(position)
+            location = selectedArea.toString()
+
+            when (parent) {
+                lodgingBinding.areaListSpinner -> {
+                    Log.d("test", "Selected Area: $selectedArea")
+                    // ViewModel을 통해 해당 지역에 대한 숙소 데이터 가져오기(lodgingBinding 스피너일때만)
+                    lodgingViewModel.findLodgingsByArea(selectedArea.toString())
+                }
+                lodgingAddViewBinding.areaListSpinner -> {
+                    Log.d("test새 아이템 등록", "Selected Area: $selectedArea")
+                    // Handle for lodgingAddViewBinding
+                }
+                lodgingDetailViewBinding.areaListSpinner -> {
+                    Log.d("test아이템 디테일", "Selected Area: $selectedArea")
+                    // Handle for lodgingDetailViewBinding
+                }
             }
         }
+
+        lodgingBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
+        lodgingAddViewBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
+        lodgingDetailViewBinding.areaListSpinner.setOnItemClickListener(onItemClickListener)
 
         // ViewModel에서 LiveData를 통해 반환된 숙소 데이터를 관찰하고, 변경이 감지되면 UI 업데이트
         lodgingViewModel.lodgingList.observe(viewLifecycleOwner) { lodgings ->
@@ -153,48 +182,36 @@ class LodgingFragment : Fragment() {
     }
 
 
+
     /**
      * [스타 스피너 버튼 이벤트 처리]
-     * 프래그먼트 바인딩이 특정되어 있지 않으면 뷰id 인식 못하여, 바인딩 특정해 각각 따로 만듬
-     * 인터페이스 활용하여 리팩토링 필요...?
+     * TODO : 기본 스피너가 아닌 setupLocationSpinnerHandler처럼 ArrayAdapter 이용 AutoCompleteTextView에 어댑터 세팅으로 바꾸기
+     *
      * */
     private fun setupStarSpinnerHandler(binding: ViewBinding): Int {
-        var star = 0
+        var star = 5
+
+        val starList = resources.getStringArray(R.array.select_star)
+        val starSpinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, starList)
 
         when (binding) {
             is FragmentLodgingAddBinding -> {
-                binding.lodgingStarList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        star = parent.getItemAtPosition(position).toString().toInt()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
+                binding.lodgingStarList.setAdapter(starSpinnerAdapter)
+                binding.lodgingStarList.setOnItemClickListener { parent, _, position, _ ->
+                    star = parent.getItemAtPosition(position).toString().toInt()
                 }
             }
             is FragmentLodgingEditBinding -> {
-                binding.lodgingStarList.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
-                    override fun onItemSelected(
-                        parent: AdapterView<*>,
-                        view: View?,
-                        position: Int,
-                        id: Long
-                    ) {
-                        star = parent.getItemAtPosition(position).toString().toInt()
-                    }
-
-                    override fun onNothingSelected(parent: AdapterView<*>?) {
-                    }
+                binding.lodgingStarList.setAdapter(starSpinnerAdapter)
+                binding.lodgingStarList.setOnItemClickListener { parent, _, position, _ ->
+                    star = parent.getItemAtPosition(position).toString().toInt()
                 }
             }
         }
+
         return star
     }
+
 
 
 
@@ -262,6 +279,7 @@ class LodgingFragment : Fragment() {
                 imageView.setImageResource(R.drawable.ic_package)
                 lodgingName.setText("")
                 selectImageUri = null
+                //TODO: 레이팅바 숙소등급, 지역
                 commonHandler.dismissDialog(root)
             }
         }
@@ -305,7 +323,7 @@ class LodgingFragment : Fragment() {
      */
     private fun setupRecyclerviewAdapter() {
         setupAreaSpinnerUI(lodgingDetailViewBinding)  // 지역 스피너
-        setupStarSpinnerUI(lodgingDetailViewBinding)
+        setupStarSpinnerUI(lodgingDetailViewBinding) // 숙소 등급 스피너
         lodgingRecyclerView = lodgingBinding.lodgingRecyclerview
         with(lodgingRecyclerView) {
             setHasFixedSize(true)
