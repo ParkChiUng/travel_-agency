@@ -48,6 +48,8 @@
     <string name="alert_yes">확인</string>
     <string name="alert_no">취소</string>
 
+    <string name="empty_List_Text">리스트가 존재하지 않습니다.</string>
+
 
     <!-- 스피너 -->
     <string-array name="select_region">

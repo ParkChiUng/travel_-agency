@@ -63,7 +63,7 @@
             tools:text="@string/sample_package" />
 
         <TextView
-            android:id="@+id/package_startdate"
+            android:id="@+id/package_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
@@ -72,16 +72,6 @@
             app:layout_constraintStart_toStartOf="@id/package_area"
             app:layout_constraintTop_toBottomOf="@id/package_name"
             tools:text="@string/date_2023_12_24" />
-
-        <TextView
-            android:id="@+id/package_enddate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/secondary_text"
-            android:textSize="18sp"
-            app:layout_constraintBaseline_toBaselineOf="@+id/package_startdate"
-            app:layout_constraintStart_toEndOf="@id/package_startdate"
-            tools:text="@string/date_2023_12_25" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

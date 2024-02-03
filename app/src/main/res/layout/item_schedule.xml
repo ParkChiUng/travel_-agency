@@ -31,7 +31,6 @@
 
                 <TextView
                     android:id="@+id/scheduleLayoutTV"
-                    android:text="@string/day_1"
                     android:textSize="16sp"
                     android:textColor="@color/primary_text"
                     android:layout_width="wrap_content"
@@ -39,7 +38,6 @@
 
                 <TextView
                     android:id="@+id/schedule_theme"
-                    android:text="@string/theme_name"
                     android:visibility="gone"
                     android:textSize="16sp"
                     android:textStyle="bold"
@@ -54,7 +52,7 @@
                     android:layout_weight="1" />
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/Btn_addSchedule"
+                    android:id="@+id/btn_addSchedule"
                     android:src="@drawable/ic_plus"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -77,7 +75,7 @@
                     android:layout_height="wrap_content">
 
                     <androidx.appcompat.widget.AppCompatImageView
-                        android:id="@+id/lodging_thumbnail"
+                        android:id="@+id/lodging_image"
                         android:layout_width="140dp"
                         android:layout_height="100dp"
                         android:scaleType="centerCrop"
@@ -92,9 +90,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
                         android:orientation="vertical"
-                        app:layout_constraintBottom_toBottomOf="@+id/lodging_thumbnail"
-                        app:layout_constraintStart_toEndOf="@+id/lodging_thumbnail"
-                        app:layout_constraintTop_toTopOf="@+id/lodging_thumbnail">
+                        app:layout_constraintBottom_toBottomOf="@+id/lodging_image"
+                        app:layout_constraintStart_toEndOf="@+id/lodging_image"
+                        app:layout_constraintTop_toTopOf="@+id/lodging_image">
 
                         <TextView
                             android:id="@+id/lodging_location"
@@ -119,15 +117,14 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="4dp"
-                            android:rating="4" />
+                            android:rating="3" />
                     </LinearLayout>
                 </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/detailsText"
+                android:id="@+id/description"
                 android:visibility="gone"
-                android:text="@string/lorem_ipsum"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"

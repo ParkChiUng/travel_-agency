@@ -20,8 +20,8 @@ class GuideViewModel : ViewModel(){
     private var _guideLists = MutableLiveData<List<GuideItem>>()
     val guideLists get() = _guideLists
 
-    private var _guide = MutableLiveData<GuideItem>()
-    val guide get() = _guide
+//    private var _guide = MutableLiveData<GuideItem>()
+//    val guide get() = _guide
 
     private val ioDispatchers = CoroutineScope(Dispatchers.IO)
 

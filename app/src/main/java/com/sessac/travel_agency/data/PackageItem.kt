@@ -21,6 +21,7 @@ data class PackageItem(
     @PrimaryKey(autoGenerate = true)
     val packageId : Int = 0,
     val guideName : String,
+    val guideId : Int,
     val area : String,
     val pName : String,
     val pImage : String,

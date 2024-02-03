@@ -81,7 +81,6 @@ class LodgingFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         commonHandler = CommonHandler.generateCommonHandler()
-        commonHandler.imageCallback(requireActivity().activityResultRegistry)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -295,7 +294,7 @@ class LodgingFragment : Fragment() {
             commonHandler.showDialog(root, requireContext())
 
             textGallery.setOnClickListener {
-                commonHandler.imageSelect { imageUri ->
+                commonHandler.imageSelectAndCallback(requireActivity().activityResultRegistry) { imageUri ->
                     selectImageUri = imageUri
                     imageView.setImageURI(imageUri)
                 }
