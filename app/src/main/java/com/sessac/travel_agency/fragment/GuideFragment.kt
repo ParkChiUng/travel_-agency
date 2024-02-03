@@ -8,6 +8,8 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
+import android.widget.Toast
+import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
@@ -91,7 +93,14 @@ class GuideFragment : Fragment() {
     private fun setupObserver() {
         viewModel.guideLists.observe(viewLifecycleOwner) { guides ->
             guides.let {
-                guideAdapter?.setGuideList(it)
+                if(guides.isNotEmpty()){
+                    guideAdapter?.setGuideList(it)
+                    guideBinding.emptyView.visibility = View.GONE
+                    guideBinding.guideRecyclerview.visibility = View.VISIBLE
+                }else{
+                    guideBinding.emptyView.visibility = View.VISIBLE
+                    guideBinding.guideRecyclerview.visibility = View.GONE
+                }
             }
         }
     }
@@ -126,20 +135,44 @@ class GuideFragment : Fragment() {
             imageView.setOnClickListener {
                 handleImageClick(imageView)
             }
-
             addButton.setOnClickListener {
-                viewModel.insertGuide(
-                    GuideItem(
-                        gName = guideName.text.toString(),
-                        gImage = selectImageUri.toString()
+                guideName = guideNewName
+                if(isValid()) {
+                    viewModel.insertGuide(
+                        GuideItem(
+                            gName = guideName.text.toString(),
+                            gImage = selectImageUri.toString()
+                        )
                     )
-                )
-                imageView.setImageResource(R.drawable.ic_guide)
-                guideName.setText("")
-                selectImageUri = null
-                commonHandler.dismissDialog(root)
+                    imageView.setImageResource(R.drawable.ic_guide)
+                    guideName.setText("")
+                    selectImageUri = null
+                    commonHandler.dismissDialog(root)
+                }
             }
         }
+    }
+
+    /**
+     * [유효성 체크]
+     * 가이드 등록 버튼 클릭 시, 수정 버튼 클릭 시 호출
+     *
+     * 1. selectImageUri -> 갤러리에서 이미지 선택 시, 가이드 상세 클릭 시 uri 할당한다.
+     *                      가이드 등록 시 이미지 선택을 안했을 때만 null
+     *
+     * 2. guideName -> 가이드 등록 버튼 클릭 시, 수정 버튼 클릭 시 기입한 가이드 이름을 guideName에 할당한다. null이라면 기입 안한 것
+     */
+    private fun isValid():Boolean{
+        var check = true
+        if (selectImageUri == null) {
+            Toast.makeText(context, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
+            check = false
+        }
+        if (guideName.text.toString() == "") {
+            Toast.makeText(context, "가이드 이름을 입력해주세요.", Toast.LENGTH_SHORT).show()
+            check = false
+        }
+        return check
     }
 
 
@@ -189,7 +222,6 @@ class GuideFragment : Fragment() {
         }
 
         guideAdapter = GuideAdapter { guide ->
-
             with(guideDetailViewBinding) {
                 imageView = guideDetailedImage
                 guideName = guideDetailedName
@@ -210,18 +242,21 @@ class GuideFragment : Fragment() {
                 }
 
                 buttonEditGuide.setOnClickListener {
+                    selectImageUri = guide.gImage.toUri()
                     guideName = guideDetailedName
-                    viewModel.updateGuide(
-                        GuideItem(
-                            guideId = guide.guideId,
-                            gName = guideName.text.toString(),
-                            gImage = if (selectImageUri == null) guide.gImage else selectImageUri.toString()
+                    if(isValid()) {
+                        viewModel.updateGuide(
+                            GuideItem(
+                                guideId = guide.guideId,
+                                gName = guideName.text.toString(),
+                                gImage = selectImageUri.toString()
+                            )
                         )
-                    )
-                    selectImageUri = null
-                    commonHandler.dismissDialog(root)
+                        guideName.setText("")
+                        selectImageUri = null
+                        commonHandler.dismissDialog(root)
+                    }
                 }
-
                 commonHandler.showDialog(root, requireContext())
             }
         }
