@@ -33,8 +33,8 @@
         android:label="fragment_packageAdd"
         tools:layout="@layout/fragment_package_add" >
         <argument
-            android:name="packageId"
-            app:argType="integer" />
+            android:name="packageItem"
+            app:argType="com.sessac.travel_agency.data.PackageItem"/>
     </fragment>
 
 </navigation>

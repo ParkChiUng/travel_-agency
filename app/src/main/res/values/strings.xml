@@ -45,7 +45,7 @@
     <string name="alert_message_update">수정되었습니다.</string>
     <string name="alert_message_create">등록되었습니다.</string>
     <string name="alert_message_del_done">삭제되었습니다.</string>
-    <string name="alert_yes">네</string>
+    <string name="alert_yes">확인</string>
     <string name="alert_no">취소</string>
 
 
