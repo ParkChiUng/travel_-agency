@@ -51,12 +51,7 @@ class EndedPackageFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-//        commonHandler = CommonHandler.generateCommonHandler()
-//        commonHandler.imageCallback(requireActivity().activityResultRegistry)
-
         val currentTime = Calendar.getInstance().time
-        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        val formattedTime = dateFormat.format(currentTime)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -71,13 +66,19 @@ class EndedPackageFragment : Fragment() {
         }
 
         setupRecyclerviewAdapter()
-//        setupFloatingButton()
         setupObserver()
     }
     private fun setupObserver() {
         viewModel.packageLists.observe(viewLifecycleOwner) { packageItem ->
             packageItem.let {
-                packageAdapter.setPackageList(it)
+                if(packageItem.isNotEmpty()){
+                    packageAdapter.setPackageList(it)
+                    binding.emptyView.visibility = View.GONE
+                    binding.ongoingPackageRecyclerview.visibility = View.VISIBLE
+                }else{
+                    binding.emptyView.visibility = View.VISIBLE
+                    binding.ongoingPackageRecyclerview.visibility = View.GONE
+                }
             }
         }
     }

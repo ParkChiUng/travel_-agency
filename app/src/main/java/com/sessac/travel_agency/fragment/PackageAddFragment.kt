@@ -186,6 +186,10 @@ class PackageAddFragment : Fragment(), ScheduleAdapter.OnScheduleAddItemClickLis
         }
     }
 
+    /**
+     * [유효성 체크]
+     * 패키지 등록 버튼 클릭 시 호출
+     */
     private fun isValid():Boolean{
         var check = true
         with(packageBinding) {
