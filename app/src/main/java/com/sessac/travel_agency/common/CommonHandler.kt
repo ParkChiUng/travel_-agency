@@ -72,8 +72,12 @@ class CommonHandler {
         return dateFormat.format(date)
     }
 
-    fun showDialog(view: View, context: Context, theme: Int? = null) {
-        dialog = if(theme == null) BottomSheetDialog(context) else BottomSheetDialog(context, theme)
+    /**
+     * dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme) // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
+     *         dialog.setContentView(view)
+     *         dialog.show()*/
+    fun showDialog(view: View, context: Context) {
+        dialog = BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme)  // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
 
         // viewGroup 삭제
         if (view.parent != null) (view.parent as ViewGroup).removeView(view)
