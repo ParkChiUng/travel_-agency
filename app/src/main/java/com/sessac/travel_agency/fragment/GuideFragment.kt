@@ -71,7 +71,6 @@ class GuideFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         commonHandler = CommonHandler.generateCommonHandler()
-        commonHandler.imageCallback(requireActivity().activityResultRegistry)
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -191,7 +190,7 @@ class GuideFragment : Fragment() {
 
             // 갤러리에서 가져오기 클릭
             textGallery.setOnClickListener {
-                commonHandler.imageSelect { imageUri ->
+                commonHandler.imageSelectAndCallback(requireActivity().activityResultRegistry) { imageUri ->
                     selectImageUri = imageUri
                     imageView.setImageURI(imageUri)
                 }

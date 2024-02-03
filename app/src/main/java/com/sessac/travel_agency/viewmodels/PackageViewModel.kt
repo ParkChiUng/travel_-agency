@@ -5,9 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.data.GuideScheduleItem
+import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
+import com.sessac.travel_agency.data.ScheduleItem
 import com.sessac.travel_agency.repository.GuideScheduleRepository
+import com.sessac.travel_agency.repository.LodgingRepository
 import com.sessac.travel_agency.repository.PackageRepository
+import com.sessac.travel_agency.repository.ScheduleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -25,17 +29,45 @@ class PackageViewModel : ViewModel(){
         GuideScheduleRepository()
     }
 
+    private val lodgingRepository: LodgingRepository by lazy {
+        LodgingRepository()
+    }
 
-    // 패키지
+    private val scheduleRepository: ScheduleRepository by lazy {
+        ScheduleRepository()
+    }
+
+
+    /**
+     * 패키지 리스트
+     */
     private var _packageLists = MutableLiveData<List<PackageItem>>()
     val packageLists get() = _packageLists
 
-//    private var _package = MutableLiveData<PackageItem>()
-//    val packageItem get() = _package
+    /**
+     * insert한 패키지 Id
+     */
+    private var _package = MutableLiveData<Long>()
+    val packageId get() = _package
 
-    // 가이드
+    /**
+     * 날짜에 따른 가이드 리스트
+     */
     private var _guideLists = MutableLiveData<List<GuideItem>>()
     val guideLists get() = _guideLists
+
+    /**
+     * 숙소 리스트
+     */
+    private var _lodging = MutableLiveData<List<LodgingItem>>()
+    val lodgingList get() = _lodging
+
+
+    /**
+     * 숙소 리스트
+     */
+    private var _schedule = MutableLiveData<List<ScheduleItem>>()
+    val scheduleList get() = _schedule
 
     private val ioDispatchers = CoroutineScope(Dispatchers.IO)
 
@@ -45,8 +77,7 @@ class PackageViewModel : ViewModel(){
     fun insertPackage(packageItem: PackageItem) {
         viewModelScope.launch {
             withContext(ioDispatchers.coroutineContext) {
-                packageRepository.insertPackage(packageItem)
-//                findPackageList(packageItem.status)
+                _package.postValue(packageRepository.insertPackage(packageItem))
             }
         }
     }
@@ -55,7 +86,6 @@ class PackageViewModel : ViewModel(){
         viewModelScope.launch {
             withContext(ioDispatchers.coroutineContext) {
                 packageRepository.updatePackage(packageItem)
-//                findPackageList(packageItem.status)
             }
         }
     }
@@ -64,7 +94,6 @@ class PackageViewModel : ViewModel(){
         viewModelScope.launch {
             async(ioDispatchers.coroutineContext) {
                 packageRepository.deletePackage(packageId)
-//                findPackageList(1)
             }.await()
         }
     }
@@ -92,14 +121,6 @@ class PackageViewModel : ViewModel(){
             }.await()
         }
     }
-
-//    fun findPackageList(status: Int) {
-//        viewModelScope.launch {
-//            async(ioDispatchers.coroutineContext) {
-//                _packageLists.postValue(packageRepository.findPackage(status))
-//            }.await()
-//        }
-//    }
 
 
     /**
@@ -136,6 +157,33 @@ class PackageViewModel : ViewModel(){
             async(ioDispatchers.coroutineContext) {
                 _guideLists.postValue(guideScheduleRepository.findGuideSchedule(startDate, endDate))
             }.await()
+        }
+    }
+
+    /**
+     * 숙소
+     */
+    fun findLodging(area: String) {
+        viewModelScope.launch {
+            async(ioDispatchers.coroutineContext) {
+                _lodging.postValue(lodgingRepository.findLodgingsByArea(area))
+            }.await()
+        }
+    }
+
+    fun findSchedule(packageId: Int){
+        viewModelScope.launch {
+            async(ioDispatchers.coroutineContext) {
+                _schedule.postValue(scheduleRepository.findSchedules(packageId))
+            }.await()
+        }
+    }
+
+    fun insertSchedule(scheduleItem: ScheduleItem) {
+        viewModelScope.launch {
+            withContext(ioDispatchers.coroutineContext) {
+                scheduleRepository.insertSchedule(scheduleItem)
+            }
         }
     }
 }

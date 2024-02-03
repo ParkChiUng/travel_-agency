@@ -24,7 +24,7 @@ interface PackageDao {
 
     @Transaction
     @Insert
-    fun insertPackage(packageItem: PackageItem)
+    fun insertPackage(packageItem: PackageItem): Long
 
     @Transaction
     @Query("DELETE FROM table_package WHERE packageId = :packageId")

@@ -1,6 +1,7 @@
 package com.sessac.travel_agency.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
@@ -30,6 +31,7 @@ class PackageAdapter (val itemOnClick: (PackageItem) -> (Unit)) :
     }
 
     // 뷰홀더를 데이터와 연결
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: PackageViewHolder, position: Int) {
 
         val packageItem = packageList[position]
@@ -42,8 +44,7 @@ class PackageAdapter (val itemOnClick: (PackageItem) -> (Unit)) :
             packageName.text = packageItem.pName
             packageArea.text = packageItem.area
             packageRating.rating = packageItem.star?: 0F
-            packageStartdate.text = commonHandler.dateHandler(packageItem.pStartDate) + " ~ "
-            packageEnddate.text = commonHandler.dateHandler(packageItem.pEndDate)
+            packageDate.text = commonHandler.dateHandler(packageItem.pStartDate, packageItem.pEndDate)
 
             // 카드 클릭시
             root.setOnClickListener {

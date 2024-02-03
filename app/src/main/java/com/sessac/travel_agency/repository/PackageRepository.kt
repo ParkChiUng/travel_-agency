@@ -10,8 +10,8 @@ class PackageRepository{
 
     private val packageDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).packageDao()
 
-    fun insertPackage(newPackage: PackageItem) {
-        packageDao.insertPackage(newPackage)
+    fun insertPackage(newPackage: PackageItem): Long {
+        return packageDao.insertPackage(newPackage)
     }
 
     fun updatePackage(updatePackage: PackageItem) {

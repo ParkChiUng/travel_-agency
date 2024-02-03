@@ -19,14 +19,14 @@ import com.sessac.travel_agency.R
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.concurrent.TimeUnit
 
 /**
  * 모든 프래그먼트에서 사용하는 공통적 스피너, 이미지피커, 바텀시트, 알럿 다이얼로그 팩토리
  */
 class CommonHandler {
     private lateinit var dialog: BottomSheetDialog
-    private lateinit var pickMedia: ActivityResultLauncher<Intent>
-    private lateinit var imageUri: Uri
+    private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var onImageSelected: ((Uri) -> Unit)
     private val dialogMap = HashMap<View, BottomSheetDialog>()
 
@@ -39,37 +39,69 @@ class CommonHandler {
             return CommonHandler()
         }
     }
-    fun spinnerHandler(items: Array<String>, binding: AutoCompleteTextView, context: Context) {
+
+    /**
+     * [spinner 핸들러]
+     * @param items 스피너에서 보여질 item 리스트
+     * @param spinner 스피너 레이아웃
+     * @param context 프레그먼트 context
+     */
+    fun spinnerHandler(items: Array<String>, spinner: AutoCompleteTextView, context: Context) {
         val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, items)
-        val autoCompleteTextView: AutoCompleteTextView = binding
-        autoCompleteTextView.setAdapter(adapter)
+        spinner.setAdapter(adapter)
     }
 
-    fun imageCallback(activityResultRegistry: ActivityResultRegistry) {
-        pickMedia = activityResultRegistry.register(
+    /**
+     * [갤러리 선택 이미지 콜백 함수]
+     * 1. 갤러리 앱 launch
+     * 2. 선택한 image callback
+     */
+    fun imageSelectAndCallback(activityResultRegistry: ActivityResultRegistry, onImageSelected: (Uri) -> Unit) {
+        this.onImageSelected = onImageSelected
+
+        galleryLauncher = activityResultRegistry.register(
             "key",
             ActivityResultContracts.StartActivityForResult()
         ) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
-                imageUri = result.data?.data!!
-                onImageSelected.invoke(imageUri)
+                onImageSelected.invoke(result.data?.data!!)
             }
         }
-    }
 
-    fun imageSelect(onImageSelected: (Uri) -> Unit) {
-        this.onImageSelected = onImageSelected
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        pickMedia.launch(galleryIntent)
+        galleryLauncher.launch(galleryIntent)
     }
 
-//    fun dateHandler(firstDate: Array<String>, secondDate: AutoCompleteTextView, context: Context) {
-//        val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-//    }
-
-    fun dateHandler(date: Date, context: Context? = null): String {
+    /**
+     * [날짜 Text 리턴 함수]
+     * 시작 날짜 종료 날짜 Text 리턴
+     *
+     * @param startDate 시작 날짜
+     * @param endDate 종료 날짜
+     * @return "startDate ~ endDate"
+     *
+     */
+    fun dateHandler(startDate: Date, endDate: Date): String {
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
-        return dateFormat.format(date)
+        return dateFormat.format(startDate) + " ~ " + dateFormat.format(endDate)
+    }
+
+    /**
+     * [day 구하는 함수]
+     * 시작 날짜와 종료 날짜를 통해 며칠인지 계산하여 리턴함.
+     *
+     * @param startDate 시작 날짜
+     * @param endDate 종료 날짜
+     * @return 일수
+     *
+     * 시작 날짜와 종료 날짜를 그냥 계산하면 당일은 포함되지 않아 일수를 구할 때 하루가 줄어든 상태가 됨.
+     * 따라서 하루를 추가하여 계산
+     */
+    fun dayCalculator(startDate: Date, endDate: Date): Int {
+        return TimeUnit.DAYS.convert(
+            Math.abs(endDate.time + TimeUnit.DAYS.toMillis(1) - startDate.time),
+            TimeUnit.MILLISECONDS
+        ).toInt()
     }
 
     /**

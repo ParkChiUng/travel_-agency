@@ -153,7 +153,7 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/areaSpinner"
                     app:layout_constraintStart_toStartOf="@id/areaSpinner"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="30dp"
                     android:text="@string/daily_schedule"
                     android:textStyle="bold"
                     android:textSize="18dp" />
@@ -175,7 +175,7 @@
                 android:id="@+id/button_addPackage"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="80dp"
+                android:layout_marginTop="30dp"
                 android:backgroundTint="@color/accent_color"
                 android:text="@string/register"
                 android:textColor="@color/primary_text"
