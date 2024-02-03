@@ -20,7 +20,7 @@ class PackageAdapter (private val packageList: MutableLiveData<List<PackageItem>
     var onItemClick : ((PackageItem) -> Unit)? = null
 
     inner class PackageHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val imageView : ImageView = itemView.findViewById(R.id.package_thumbnail)
+        //val imageView : ImageView = itemView.findViewById(R.id.package_thumbnail)
         val locationTextView : TextView = itemView.findViewById(R.id.package_area)
         val nameTextView : TextView = itemView.findViewById(R.id.package_name)
         val startDateTextView : TextView = itemView.findViewById(R.id.package_startdate)
@@ -45,7 +45,7 @@ class PackageAdapter (private val packageList: MutableLiveData<List<PackageItem>
 
         val packageItem = packageList.value?.get(position)
         packageItem?.let {
-            holder.imageView.setImageResource(it.pImage)
+            //holder.imageView.setImageResource(it.pImage)
             holder.locationTextView.text = it.area
             holder.nameTextView.text = it.pName
             holder.startDateTextView.text = "${dateFormat.format(it.pStartDate)}"

@@ -4,21 +4,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    app:cardCornerRadius="20dp"
-    android:layout_marginHorizontal="10dp"
-    android:layout_marginVertical="10dp"
-    app:cardElevation="4dp"
+    app:cardCornerRadius="@dimen/card_radius"
+    android:layout_marginHorizontal="@dimen/margin_cardview_horizontal"
+    android:layout_marginVertical="@dimen/margin_cardview_vertical"
+    app:cardElevation="@dimen/card_elevation"
     >
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="300dp">
+        android:layout_height="@dimen/package_layout_height">
 
 
         <ImageView
             android:id="@+id/package_image"
             android:layout_width="match_parent"
-            android:layout_height="180dp"
+            android:layout_height="@dimen/package_image_height"
             android:scaleType="centerCrop"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="14dp"
             android:textColor="@color/secondary_text"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_content"
             android:textStyle="bold"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0"
@@ -55,7 +55,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/primary_text"
-            android:textSize="22sp"
+            android:textSize="@dimen/text_size_packagename"
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/package_area"
@@ -67,7 +67,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="@id/package_area"
             app:layout_constraintTop_toBottomOf="@id/package_name"
@@ -78,7 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textColor="@color/secondary_text"
-            android:textSize="18sp"
+            android:textSize="@dimen/text_size_date"
             app:layout_constraintBaseline_toBaselineOf="@+id/package_startdate"
             app:layout_constraintStart_toEndOf="@id/package_startdate"
             tools:text="@string/date_2023_12_25" />

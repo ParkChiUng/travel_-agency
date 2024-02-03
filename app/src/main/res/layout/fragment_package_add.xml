@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:elevation="4dp"
+        android:elevation="@dimen/card_elevation"
         android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
         app:popupTheme="@style/ThemeOverlay.MaterialComponents.Light"
         app:navigationIcon="@drawable/ic_arrow_back"
@@ -28,7 +28,7 @@
             android:text="@string/register"
             android:textColor="@color/white"
             android:textStyle="bold"
-            android:textSize="20sp" />
+            android:textSize="@dimen/text_size_toolbar" />
     </com.google.android.material.appbar.MaterialToolbar>
 
     <androidx.core.widget.NestedScrollView
@@ -50,12 +50,13 @@
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/packageAddImage"
                 android:layout_width="match_parent"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/package_image_height"
                 android:scaleType="centerCrop"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_margin="@dimen/margin_package_recyclerview"
+                app:layout_constraintStart_toEndOf="@id/leftGuideline"
+                app:layout_constraintEnd_toStartOf="@id/rightVGuideline"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:srcCompat="@mipmap/ic_launcher"
+                app:srcCompat="@drawable/hotel1"
                 tools:ignore="NotSibling" />
 
             <com.google.android.material.textfield.TextInputLayout
@@ -63,7 +64,7 @@
                 android:id="@+id/packageAddNameTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_package_content"
                 app:layout_constraintTop_toBottomOf="@+id/packageAddImage"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -80,7 +81,7 @@
                 android:id="@+id/packageAddDateTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_package_content"
                 style="@style/Widget.Material3.TextInputEditText.OutlinedBox"
                 app:layout_constraintTop_toBottomOf="@+id/packageAddNameTIL"
                 app:layout_constraintStart_toStartOf="parent"
@@ -118,7 +119,7 @@
                 android:id="@+id/areaSpinnerTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_package_content"
                 android:hint="@string/region"
                 app:layout_constraintTop_toBottomOf="@+id/packageAddDateTIL"
                 app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
@@ -136,7 +137,7 @@
                 android:id="@+id/guideSpinnerTIL"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/margin_package_content"
                 android:hint="@string/guide"
                 app:layout_constraintTop_toBottomOf="@+id/areaSpinnerTIL"
                 app:layout_constraintEnd_toEndOf="@id/rightVGuideline"
@@ -153,10 +154,10 @@
                     android:layout_height="wrap_content"
                     app:layout_constraintTop_toBottomOf="@id/areaSpinner"
                     app:layout_constraintStart_toStartOf="@id/areaSpinner"
-                    android:layout_marginTop="15dp"
+                    android:layout_marginTop="@dimen/margin_package_content"
                     android:text="@string/daily_schedule"
                     android:textStyle="bold"
-                    android:textSize="18dp" />
+                    android:textSize="@dimen/text_size_content" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <androidx.recyclerview.widget.RecyclerView
@@ -164,9 +165,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:layout_constrainedHeight="true"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginBottom="20dp"
+                android:layout_marginLeft="@dimen/margin_package_recyclerview"
+                android:layout_marginRight="@dimen/margin_package_recyclerview"
+                android:layout_marginBottom="@dimen/margin_package_recyclerview"
                 app:layout_constraintTop_toBottomOf="@id/guideSpinnerTIL"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
