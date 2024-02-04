@@ -16,6 +16,12 @@ interface LodgingDao {
     @Query("SELECT * FROM table_lodging WHERE area = :area")
     fun findLodging(area: String): List<LodgingItem>
 
+    @Query("SELECT * FROM table_lodging WHERE lodgeId = :id")
+    fun findLodgingById(id: Int): LodgingItem
+
+    @Query("SELECT * FROM table_lodging WHERE lodgeId = :id")
+    suspend fun findLodgingByIdReturn(id: Int): LodgingItem
+
     @Transaction
     @Insert
     fun insertLodging(lodging: LodgingItem)

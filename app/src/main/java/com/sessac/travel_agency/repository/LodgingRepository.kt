@@ -31,4 +31,12 @@ class LodgingRepository {
     fun findLodgingsByArea(area: String): List<LodgingItem> {
         return lodgingDao.findLodging(area)
     }
+
+    fun findLodgingById(id: Int): LodgingItem {
+        return lodgingDao.findLodgingById(id)
+    }
+
+    suspend fun findLodgingByIdReturn(id: Int): LodgingItem {
+        return lodgingDao.findLodgingByIdReturn(id)
+    }
 }

@@ -56,6 +56,9 @@ class LodgingFragment : Fragment() {
 
     private lateinit var spinner: Spinner
 
+    private var star = 0
+
+
     private val lodgingViewModel: LodgingViewModel by viewModels()
 
 
@@ -183,9 +186,7 @@ class LodgingFragment : Fragment() {
      * TODO : 기본 스피너가 아닌 setupLocationSpinnerHandler처럼 ArrayAdapter 이용 AutoCompleteTextView에 어댑터 세팅으로 바꾸기
      *
      * */
-    private fun setupStarSpinnerHandler(binding: ViewBinding): Int {
-        var star = 5
-
+    private fun setupStarSpinnerHandler(binding: ViewBinding){
         val starList = resources.getStringArray(R.array.select_star)
         val starSpinnerAdapter = ArrayAdapter(requireContext(), android.R.layout.simple_dropdown_item_1line, starList)
 
@@ -203,8 +204,6 @@ class LodgingFragment : Fragment() {
                 }
             }
         }
-
-        return star
     }
 
 
@@ -261,15 +260,16 @@ class LodgingFragment : Fragment() {
                 handleImageClick(imageView)
             }
 
+            // 여기에서 setupStarSpinnerHandler 메서드를 사용하여 선택된 등급을 가져옴
+            setupStarSpinnerHandler(lodgingAddViewBinding)
+
             addButton.setOnClickListener {
-                // 여기에서 setupStarSpinnerHandler 메서드를 사용하여 선택된 등급을 가져옴
-                val selectedStar = setupStarSpinnerHandler(lodgingAddViewBinding)
                 lodgingViewModel.insertLodging(
                     LodgingItem(
                         area = location,
                         lName = lodgingName.text.toString(),
                         lImage = selectImageUri.toString(),
-                        starNum = selectedStar)
+                        starNum = star)
                 )
                 imageView.setImageResource(R.drawable.ic_package)
                 lodgingName.setText("")
@@ -319,6 +319,10 @@ class LodgingFragment : Fragment() {
     private fun setupRecyclerviewAdapter() {
         setupAreaSpinnerUI(lodgingDetailViewBinding)  // 지역 스피너
         setupStarSpinnerUI(lodgingDetailViewBinding) // 숙소 등급 스피너
+
+        // 여기에서 setupStarSpinnerHandler 메서드를 사용하여 선택된 등급을 가져옴
+        setupStarSpinnerHandler(lodgingDetailViewBinding)
+
         lodgingRecyclerView = lodgingBinding.lodgingRecyclerview
         with(lodgingRecyclerView) {
             setHasFixedSize(true)
@@ -347,15 +351,13 @@ class LodgingFragment : Fragment() {
 
                 buttonEditLodging.setOnClickListener {
                     lodgingName = lodgingDetailedName
-                    // 여기에서 setupStarSpinnerHandler 메서드를 사용하여 선택된 등급을 가져옴
-                    val selectedStar = setupStarSpinnerHandler(lodgingAddViewBinding)
                     lodgingViewModel.updateLodging(
                         LodgingItem(
                             lodgeId = lodging.lodgeId,
                             area = location,  // 등록창의 스피너에서 선택된 지역은 findLodgingsByArea작업 필요없음
                             lName = lodgingName.text.toString(),
                             lImage = if (selectImageUri == null) lodging.lImage else selectImageUri.toString(),
-                            starNum = selectedStar
+                            starNum = star
                         )
                     )
                     selectImageUri = null

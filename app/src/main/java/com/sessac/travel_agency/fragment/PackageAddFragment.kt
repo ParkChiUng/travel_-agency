@@ -24,12 +24,14 @@ import com.sessac.travel_agency.adapter.PackageAdapter
 import com.sessac.travel_agency.adapter.ScheduleAdapter
 import com.sessac.travel_agency.common.CommonHandler
 import com.sessac.travel_agency.data.GuideScheduleItem
+import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.data.ScheduleItem
 import com.sessac.travel_agency.databinding.BottomSheetImagePickerBinding
 import com.sessac.travel_agency.databinding.FragmentPackageAddBinding
 import com.sessac.travel_agency.databinding.FragmentPackageScheduleAddBinding
 import com.sessac.travel_agency.viewmodels.PackageViewModel
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -48,15 +50,17 @@ class PackageAddFragment : Fragment(){
     private lateinit var packageRecyclerView: RecyclerView
     private lateinit var commonHandler: CommonHandler
 
-    private var scheduleList: MutableList<ScheduleItem>? = null
+    private var scheduleList = mutableListOf<ScheduleItem>()
+
     private lateinit var scheduleItem: ScheduleItem
+    private lateinit var lodgingItem: LodgingItem
 
     private var guideId: Int = 0
     private var guideName: String = ""
     private var packageId: Int = 0
 
     private var lodgingId: Int = 0
-    private var lodgingName: String = ""
+    private var schedulePosition: Int = 0
 
     private var selectImageUri: Uri? = null
     private var startDate: Date = Date()
@@ -86,7 +90,6 @@ class PackageAddFragment : Fragment(){
 
         commonHandler = CommonHandler.generateCommonHandler()
         parcelablePackageItem = arguments?.getParcelable("packageItem")
-        scheduleList = mutableListOf()
 
         initScheduleRecyclerView()
         setAreaSpinner()
@@ -105,7 +108,7 @@ class PackageAddFragment : Fragment(){
      *  각 화면에 가져온 값들 저장
      */
     private fun initData(packageItem: PackageItem) {
-        scheduleAdapter.setEditMode(true)
+//        scheduleAdapter.setEditMode(true)
 
         with(packageBinding) {
             Glide.with(packageAddImage.context)
@@ -124,6 +127,9 @@ class PackageAddFragment : Fragment(){
             packageAddDateET.setText(commonHandler.dateHandler(startDate, endDate))
             textRegister.text = getString(R.string.alert_title_update)
             buttonAddPackage.text = getString(R.string.alert_title_update)
+
+            calculatorDate = commonHandler.dayCalculator(startDate, endDate)
+            scheduleAdapter.scheduleDay(calculatorDate)
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.findSchedule(packageId)
@@ -221,7 +227,7 @@ class PackageAddFragment : Fragment(){
         var check = true
         with(packageBinding) {
 
-            Log.d(TAG, "isValid1: ${scheduleList?.size}")
+            Log.d(TAG, "isValid1: ${scheduleList.size}")
             Log.d(TAG, "isValid2: $calculatorDate")
 
             if (selectImageUri == null) {
@@ -241,7 +247,7 @@ class PackageAddFragment : Fragment(){
                 check = false
             }
 
-            if(scheduleList?.size != calculatorDate){
+            if(scheduleList.size != calculatorDate){
                 Toast.makeText(context, "일정을 추가해주세요.", Toast.LENGTH_SHORT).show()
                 check = false
             }
@@ -279,6 +285,7 @@ class PackageAddFragment : Fragment(){
      * 1. packageLists 변하면 (패키지 삭제, 등록, 수정 시 ) RecyclerView의 리스트를 다시 생성
      */
     private fun setupObserver() {
+
         viewModel.packageLists.observe(viewLifecycleOwner) { packageList ->
             packageList.let {
                 packageAdapter.setPackageList(it)
@@ -293,18 +300,16 @@ class PackageAddFragment : Fragment(){
          * 3. 클릭한 가이드 이름, db에 저장되어 있는 id 저장
          */
         viewModel.guideLists.observe(viewLifecycleOwner) { guideList ->
-            with(packageBinding){
+            with(packageBinding) {
                 if (guideList.isEmpty()) {
                     guideSpinner.setText("해당 날짜에 가능한 가이드가 없습니다.")
                     Toast.makeText(context, "해당 날짜에 가능한 가이드가 없습니다.", Toast.LENGTH_SHORT).show()
                     return@observe
-                }else
+                } else
                     guideSpinner.setText("")
 
-                val guideNameAndId = guideList.map { it.gName to it.guideId }
-
                 commonHandler.spinnerHandler(
-                    guideNameAndId.map { it.first }.toTypedArray(),
+                    guideList.map { it.gName }.toTypedArray(),
                     guideSpinner,
                     requireContext()
                 )
@@ -312,12 +317,12 @@ class PackageAddFragment : Fragment(){
                 guideSpinnerAdapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    guideNameAndId.map { it.first }.toTypedArray()
+                    guideList.map { it.gName }.toTypedArray(),
                 )
 
                 guideSpinner.setOnItemClickListener { _, _, position, _ ->
-                    guideName = guideNameAndId[position].first
-                    guideId = guideNameAndId[position].second
+                    guideName = guideList[position].gName
+                    guideId = guideList[position].guideId
                 }
             }
         }
@@ -330,18 +335,16 @@ class PackageAddFragment : Fragment(){
          * 3. 클릭한 숙소 이름, db에 저장되어 있는 id 저장
          */
         viewModel.lodgingList.observe(viewLifecycleOwner) { lodgingList ->
-            with(scheduleBinding){
+            with(scheduleBinding) {
                 if (lodgingList.isEmpty()) {
                     lodgingSpinner.setText("해당 지역의 숙소가 없습니다.")
                     Toast.makeText(context, "숙소 정보가 없습니다.", Toast.LENGTH_SHORT).show()
                     return@observe
-                }else
+                } else
                     lodgingSpinner.setText("")
 
-                val lodgingNameAndId = lodgingList.map { it.lName to it.lodgeId }
-
                 commonHandler.spinnerHandler(
-                    lodgingNameAndId.map { it.first }.toTypedArray(),
+                    lodgingList.map { it.lName }.toTypedArray(),
                     lodgingSpinner,
                     requireContext()
                 )
@@ -349,12 +352,11 @@ class PackageAddFragment : Fragment(){
                 lodgingSpinnerAdapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    lodgingNameAndId.map { it.first }.toTypedArray()
+                    lodgingList.map { it.lName }.toTypedArray()
                 )
 
                 lodgingSpinner.setOnItemClickListener { _, _, position, _ ->
-                    lodgingName = lodgingNameAndId[position].first
-                    lodgingId = lodgingNameAndId[position].second
+                    lodgingId = lodgingList[position].lodgeId
                 }
             }
         }
@@ -372,7 +374,7 @@ class PackageAddFragment : Fragment(){
                 )
             )
 
-            for(scheduleItem in scheduleList!!){
+            for (scheduleItem in scheduleList) {
                 scheduleItem.packageId = packageId.toInt()
                 viewModel.insertSchedule(scheduleItem)
             }
@@ -380,8 +382,20 @@ class PackageAddFragment : Fragment(){
             findNavController().popBackStack()
         }
 
-        viewModel.scheduleList.observe(viewLifecycleOwner) { scheduleList ->
-            scheduleAdapter.setScheduleList(scheduleList)
+        viewModel.scheduleList.observe(viewLifecycleOwner) { findScheduleList ->
+            for (it in findScheduleList) {
+                scheduleList.add(it)
+                Log.d(TAG, "setupObserver: ${it.description}")
+                viewLifecycleOwner.lifecycleScope.launch {
+                    lodgingItem = viewModel.findLodgingReturn(it.lodgingId)
+                    scheduleAdapter.setSchedule(it, lodgingItem, it.day)
+                }
+            }
+
+        }
+
+        viewModel.lodgingItem.observe(viewLifecycleOwner) { lodgingItem->
+            scheduleAdapter.setSchedule(scheduleItem, lodgingItem, schedulePosition)
         }
     }
 
@@ -438,7 +452,7 @@ class PackageAddFragment : Fragment(){
 
             calculatorDate = commonHandler.dayCalculator(startDate, endDate)
 
-            scheduleAdapter.updateDay(calculatorDate)
+            scheduleAdapter.scheduleDay(calculatorDate)
 
             viewLifecycleOwner.lifecycleScope.launch {
                 viewModel.findGuideSchedule(startDate, endDate)
@@ -473,28 +487,19 @@ class PackageAddFragment : Fragment(){
         packageRecyclerView.setHasFixedSize(true)
         packageRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        scheduleAdapter = ScheduleAdapter(
-            { event, position ->
-                when(event){
-                    "item" -> scheduleItem()
-                    "button" -> scheduleBottomSheetHandler(position)
-                }
-            },
-            { schedule, event , position->
-                when(event){
-                    "item" -> scheduleItem()
-                    "button" -> scheduleBottomSheetHandler(position)
-                }
-            },
-        )
+        scheduleAdapter = ScheduleAdapter{ position->
+
+            /**
+             * 스케줄 리스트의 +버튼 클릭 시 몇 번째 item인지 position 콜백
+             */
+            schedulePosition = position
+            scheduleBottomSheetHandler()
+        }
+
         packageRecyclerView.adapter = scheduleAdapter
     }
 
-    private fun scheduleItem(){
-    }
-
-
-    private fun scheduleBottomSheetHandler(position: Int) {
+    private fun scheduleBottomSheetHandler() {
         if(packageBinding.areaSpinner.text.isBlank()){
             Toast.makeText(context, "해당 지역에는 숙소 정보가 없습니다.", Toast.LENGTH_SHORT).show()
         }else{
@@ -502,7 +507,7 @@ class PackageAddFragment : Fragment(){
                 commonHandler.showDialog(root, requireContext())
 
                 viewLifecycleOwner.lifecycleScope.launch {
-                    viewModel.findLodging(packageBinding.areaSpinner.text.toString())
+                    viewModel.findLodgingList(packageBinding.areaSpinner.text.toString())
                 }
 
                 // 테마
@@ -514,18 +519,19 @@ class PackageAddFragment : Fragment(){
 
                 buttonAdd.setOnClickListener {
                     if(isValidBottomSheet()){
+                        viewLifecycleOwner.lifecycleScope.launch {
+                            viewModel.findLodging(lodgingId)
+                        }
+
                         scheduleItem = ScheduleItem(
-                            lodgingId = lodgingId,
                             packageId = 0,
-                            lodgingName = lodgingName,
+                            lodgingId = lodgingId,
                             theme = themeSpinner.text.toString(),
                             description = scheduleDescription.text.toString(),
-                            day = position
+                            day = schedulePosition
                         )
 
-                        scheduleList?.add(scheduleItem)
-
-                        scheduleAdapter.setSchedule(scheduleItem, position)
+                        scheduleList.add(scheduleItem)
 
                         themeSpinner.setText("")
                         scheduleDescription.setText("")

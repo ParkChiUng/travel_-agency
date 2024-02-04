@@ -7,7 +7,6 @@ import androidx.room.PrimaryKey
  * @param scheduleId : Auto Increment 사용하여 자동으로 증가 예정
  * @param packageId : 패키지 아이디
  * @param lodgingId : 숙소 아이디
- * @param lodgingName : 숙소명
  * @param theme : 테마명
  * @param description : 일정 상세 설명
  * @param day : 일차 ex) day == 1 -> 1일차
@@ -19,7 +18,6 @@ data class ScheduleItem(
     val scheduleId : Int = 0,
     var packageId : Int,
     val lodgingId : Int,
-    val lodgingName : String,
     val theme : String,
     val description : String,
     val day : Int

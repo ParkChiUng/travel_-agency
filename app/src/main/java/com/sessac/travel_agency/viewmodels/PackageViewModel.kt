@@ -15,6 +15,12 @@ import com.sessac.travel_agency.repository.ScheduleRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.Date
@@ -59,12 +65,14 @@ class PackageViewModel : ViewModel(){
     /**
      * 숙소 리스트
      */
-    private var _lodging = MutableLiveData<List<LodgingItem>>()
-    val lodgingList get() = _lodging
+    private var _lodgingList = MutableLiveData<List<LodgingItem>>()
+    val lodgingList get() = _lodgingList
 
+    private var _lodgingItem = MutableLiveData<LodgingItem>()
+    val lodgingItem get() = _lodgingItem
 
     /**
-     * 숙소 리스트
+     * 스케줄 리스트
      */
     private var _schedule = MutableLiveData<List<ScheduleItem>>()
     val scheduleList get() = _schedule
@@ -161,14 +169,25 @@ class PackageViewModel : ViewModel(){
     }
 
     /**
-     * 숙소
+     * 지역 명으로 전체 숙소 리스트 가져오기
      */
-    fun findLodging(area: String) {
+    fun findLodgingList(area: String) {
         viewModelScope.launch {
             async(ioDispatchers.coroutineContext) {
-                _lodging.postValue(lodgingRepository.findLodgingsByArea(area))
+                _lodgingList.postValue(lodgingRepository.findLodgingsByArea(area))
             }.await()
         }
+    }
+    fun findLodging(id: Int) {
+        viewModelScope.launch {
+            async(ioDispatchers.coroutineContext) {
+                _lodgingItem.postValue(lodgingRepository.findLodgingById(id))
+            }.await()
+        }
+    }
+
+    suspend fun findLodgingReturn(id: Int) : LodgingItem{
+        return lodgingRepository.findLodgingByIdReturn(id)
     }
 
     /**
