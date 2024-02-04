@@ -1,4 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="text_size_region">15sp</dimen>
     <dimen name="text_size_content">18sp</dimen>
+    <dimen name="text_size_date">18sp</dimen>
+    <dimen name="text_size_toolbar">20sp</dimen>
+    <dimen name="text_size_guidename">22sp</dimen>
+    <dimen name="text_size_packagename">22sp</dimen>
+
+    <dimen name="common_padding">16dp</dimen>
+
+    <dimen name="image_size_width">100dp</dimen>
+    <dimen name="image_size_height">100dp</dimen>
+    <dimen name="package_layout_height">300dp</dimen>
+    <dimen name="package_image_height">200dp</dimen>
+
+    <dimen name="margin_top_content">24dp</dimen>
+    <dimen name="margin_horizontal_content">24dp</dimen>
+    <dimen name="margin_cardview">24dp</dimen>
+    <dimen name="margin_cardview_horizontal">10dp</dimen>
+    <dimen name="margin_cardview_vertical">10dp</dimen>
+    <dimen name="card_elevation">4dp</dimen>
+    <dimen name="card_radius">20dp</dimen>
+    <dimen name="margin_bottom_fab">90dp</dimen>
+    <dimen name="margin_end_fab">15dp</dimen>
+    <dimen name="margin_bottom_guideline">70dp</dimen>
+    <dimen name="margin_top_photo">10dp</dimen>
+    <dimen name="margin_plus_button">10dp</dimen>
+    <dimen name="margin_guidename_vertical">10dp</dimen>
+    <dimen name="margin_package_recyclerview">24dp</dimen>
+    <dimen name="margin_package_content">10dp</dimen>
+    <dimen name="margin_schedule_top">2dp</dimen>
+    <dimen name="margin_schedule_text">100dp</dimen>
+    <dimen name="margin_grade">4dp</dimen>
 </resources>

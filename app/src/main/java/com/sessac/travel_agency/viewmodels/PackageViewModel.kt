@@ -171,6 +171,9 @@ class PackageViewModel : ViewModel(){
         }
     }
 
+    /**
+     * 스케줄
+     */
     fun findSchedule(packageId: Int){
         viewModelScope.launch {
             async(ioDispatchers.coroutineContext) {
