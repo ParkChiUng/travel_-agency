@@ -6,12 +6,18 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.GuideItem
+import com.sessac.travel_agency.data.GuideItemFireStore
 import com.sessac.travel_agency.databinding.ItemGuideBinding
+//tutor pyo Diff-Util ListAdapter 로 바꾸기
+//RxBinding, Flow Binding
+//class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
 
-class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
+//tutor pyo ListAdapter
+class GuideAdapter(val itemOnClick: (GuideItemFireStore) -> (Unit)) :
     RecyclerView.Adapter<GuideAdapter.GuideViewHolder>() {
 
-    private var guideList = emptyList<GuideItem>()
+//    private var guideList = emptyList<GuideItem>()
+    private var guideList = emptyList<GuideItemFireStore>()
 
     class GuideViewHolder(val binding: ItemGuideBinding) : RecyclerView.ViewHolder(binding.root)
 
@@ -41,7 +47,8 @@ class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
     }
 
     @SuppressLint("NotifyDataSetChanged")
-    fun setGuideList(guide: List<GuideItem>) {
+//    fun setGuideList(guide: List<GuideItem>) {
+    fun setGuideList(guide: List<GuideItemFireStore>) {
         guideList = guide
         notifyDataSetChanged()
     }

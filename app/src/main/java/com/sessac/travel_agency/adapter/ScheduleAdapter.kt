@@ -15,16 +15,15 @@ import com.sessac.travel_agency.databinding.ItemScheduleBinding
  * addPageOnclick -> 패키지 추가 페이지일 때 콜백
  * editPageOnClick -> 패키지 수정 페이지일 때 콜백
  */
+//tutor pyo rxbinding, flow binding
 class ScheduleAdapter(
     val itemOnClick: (Int) -> (Unit),
 ) :
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
-    private lateinit var dayText: String
     private var schedule: ScheduleItem? = null
     private var lodging: LodgingItem? = null
-    private var isEditMode: Boolean = false
-    private var scheduleList = emptyList<ScheduleItem>()
+//    private var scheduleList = emptyList<ScheduleItem>()
     private var day = 0
 
     class ScheduleViewHolder(val binding: ItemScheduleBinding) :

@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.sessac.travel_agency.data.GuideItem
+import com.sessac.travel_agency.data.GuideItemFireStore
 import com.sessac.travel_agency.repository.GuideRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ class GuideViewModel : ViewModel(){
         GuideRepository()
     }
 
-    private var _guideLists = MutableLiveData<List<GuideItem>>()
+    private var _guideLists = MutableLiveData<List<GuideItemFireStore>>()
     val guideLists get() = _guideLists
 
 //    private var _guide = MutableLiveData<GuideItem>()
@@ -25,7 +26,7 @@ class GuideViewModel : ViewModel(){
 
     private val ioDispatchers = CoroutineScope(Dispatchers.IO)
 
-    fun insertGuide(guide: GuideItem) {
+    fun insertGuide(guide: GuideItemFireStore) {
         viewModelScope.launch {
             withContext(ioDispatchers.coroutineContext) {
                 repository.insertGuide(guide)
@@ -34,7 +35,7 @@ class GuideViewModel : ViewModel(){
         }
     }
 
-    fun updateGuide(guide: GuideItem) {
+    fun updateGuide(guide: GuideItemFireStore) {
         viewModelScope.launch {
             withContext(ioDispatchers.coroutineContext) {
                 repository.updateGuide(guide)

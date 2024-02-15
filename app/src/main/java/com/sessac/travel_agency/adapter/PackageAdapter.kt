@@ -10,7 +10,7 @@ import com.sessac.travel_agency.common.CommonHandler
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.databinding.ItemPackageBinding
 
-
+//tutor ListAdapter
 class PackageAdapter (val itemOnClick: (PackageItem) -> (Unit)) :
     RecyclerView.Adapter<PackageAdapter.PackageViewHolder>() {
 

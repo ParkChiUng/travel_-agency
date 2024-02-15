@@ -1,26 +1,52 @@
 package com.sessac.travel_agency.repository
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.SetOptions
 import com.sessac.travel_agency.common.TravelAgencyApplication
 import com.sessac.travel_agency.data.GuideItem
+import com.sessac.travel_agency.data.GuideItemFireStore
 import com.sessac.travel_agency.database.AppDatabase
+import kotlinx.coroutines.tasks.await
 
 class GuideRepository {
 
-    private val guideDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).guideDao()
+//    private val guideDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).guideDao()
+//
+//    fun insertGuide(newGuide: GuideItem) {
+//        guideDao.insertGuide(newGuide)
+//    }
+//
+//    fun updateGuide(updateGuide: GuideItem) {
+//        guideDao.updateGuide(updateGuide)
+//    }
+//
+//    fun deleteGuide(id: Int) {
+//        guideDao.deleteGuide(id)
+//    }
+//
+//    fun findAllGuides(): List<GuideItem> {
+//        return guideDao.getAllGuideList()
+//    }
 
-    fun insertGuide(newGuide: GuideItem) {
-        guideDao.insertGuide(newGuide)
+    private val db = FirebaseFirestore.getInstance()
+    private val guideCollection = db.collection("GuideItemFireStore")
+
+//    fun findAllGuides(): Task<QuerySnapshot> {
+    suspend fun findAllGuides(): List<GuideItemFireStore>{
+        return guideCollection.get().await().toObjects(GuideItemFireStore::class.java)
     }
 
-    fun updateGuide(updateGuide: GuideItem) {
-        guideDao.updateGuide(updateGuide)
+    fun insertGuide(guideItem: GuideItemFireStore){
+        guideCollection.document(guideItem.guideId.toString()).set(guideItem)
     }
 
-    fun deleteGuide(id: Int) {
-        guideDao.deleteGuide(id)
+    fun deleteGuide(guideId: Int){
+        guideCollection.document(guideId.toString()).delete()
     }
 
-    fun findAllGuides(): List<GuideItem> {
-        return guideDao.getAllGuideList()
+    fun updateGuide(guideItem: GuideItemFireStore){
+        guideCollection.document(guideItem.guideId.toString()).set(guideItem, SetOptions.merge())
     }
 }

@@ -19,3 +19,9 @@ data class GuideItem(
     val gName: String,
     val gImage: String
 )
+
+data class GuideItemFireStore(
+    val guideId: Int = 0,
+    val gName: String,
+    val gImage: String
+)

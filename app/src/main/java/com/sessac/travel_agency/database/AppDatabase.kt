@@ -11,7 +11,10 @@ import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.data.ScheduleItem
 
-@Database(entities = [GuideItem::class, GuideScheduleItem::class, LodgingItem::class, PackageItem::class, ScheduleItem::class], version = 2)
+@Database(
+    entities = [GuideItem::class, GuideScheduleItem::class, LodgingItem::class, PackageItem::class, ScheduleItem::class],
+    version = 2
+)
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun guideDao(): GuideDao
@@ -21,11 +24,17 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun scheduleDao(): ScheduleDao
 
     companion object {
+        // tutor pyo lateinit
         @Volatile
-        private var INSTANCE: AppDatabase? = null
+        //private var INSTANCE: AppDatabase? = null
+        private lateinit var instance : AppDatabase
 
         fun getDatabase(context: Context): AppDatabase {
-            if(INSTANCE != null) return INSTANCE as AppDatabase
+            if(!::instance.isInitialized){
+
+            }
+            return instance
+           /* if (INSTANCE != null) return INSTANCE as AppDatabase
             synchronized(this) {
                 val instance: AppDatabase = Room.databaseBuilder(
                     context.applicationContext,
@@ -41,7 +50,7 @@ abstract class AppDatabase : RoomDatabase() {
 //                ).build()
                 INSTANCE = instance
                 return instance
-            }
+            }*/
         }
     }
 }

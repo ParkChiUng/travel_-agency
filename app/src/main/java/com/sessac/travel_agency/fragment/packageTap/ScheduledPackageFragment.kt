@@ -70,11 +70,11 @@ class ScheduledPackageFragment : Fragment() {
     private fun setupObserver() {
         viewModel.packageLists.observe(viewLifecycleOwner) { packageItem ->
             packageItem.let {
-                if(packageItem.isNotEmpty()){
+                if (packageItem.isNotEmpty()) {
                     packageAdapter.setPackageList(it)
                     binding.emptyView.visibility = View.GONE
                     binding.ongoingPackageRecyclerview.visibility = View.VISIBLE
-                }else{
+                } else {
                     binding.emptyView.visibility = View.VISIBLE
                     binding.ongoingPackageRecyclerview.visibility = View.GONE
                 }
@@ -83,16 +83,16 @@ class ScheduledPackageFragment : Fragment() {
     }
 
     private fun setupRecyclerviewAdapter() {
-
+        //tutor pyo
         recyclerView = binding.ongoingPackageRecyclerview
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        packageAdapter = PackageAdapter {packageItem ->
-            val bundle = Bundle().apply {
+        packageAdapter = PackageAdapter { packageItem ->
+            Bundle().apply {
                 putParcelable("packageItem", packageItem)
+                findNavController().navigate(R.id.packageFragment_to_packageAddFragment, this)
             }
-            findNavController().navigate(R.id.packageFragment_to_packageAddFragment, bundle)
         }
         recyclerView.adapter = packageAdapter
     }
