@@ -329,7 +329,7 @@ class LodgingFragment : Fragment() {
             layoutManager = LinearLayoutManager(requireContext())
         }
 
-        lodgingAdapter = LodgingAdapter { lodging ->
+        lodgingAdapter = LodgingAdapter({ lodging ->
             with(lodgingDetailViewBinding) {
                 imageView = lodgingDetailedImage
                 lodgingName = lodgingDetailedName
@@ -366,7 +366,7 @@ class LodgingFragment : Fragment() {
 
                 commonHandler.showDialog(root, requireContext())
             }
-        }
+        }, viewLifecycleOwner.lifecycleScope)
 
         lodgingRecyclerView.adapter = lodgingAdapter
     }

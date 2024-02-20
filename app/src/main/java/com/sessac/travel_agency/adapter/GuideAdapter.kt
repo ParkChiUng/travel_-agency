@@ -40,7 +40,7 @@ class GuideAdapter(
                         .into(guideImage)
                     guideName.text = guide.gName
 
-                    binding.root.clicks()
+                    root.clicks()
                         .onEach {
                             itemOnClick(guide)
                         }

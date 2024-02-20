@@ -93,12 +93,12 @@ class OngoingPackageFragment :
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        packageAdapter = PackageAdapter {packageItem ->
+        packageAdapter = PackageAdapter({packageItem ->
             val bundle = Bundle().apply {
                 putParcelable("packageItem", packageItem)
             }
             findNavController().navigate(R.id.packageFragment_to_packageAddFragment, bundle)
-        }
+        }, viewLifecycleOwner.lifecycleScope)
         recyclerView.adapter = packageAdapter
     }
 }

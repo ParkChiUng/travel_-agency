@@ -10,11 +10,18 @@ import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.databinding.ItemLodgingBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import reactivecircus.flowbinding.android.view.clicks
 
 /**
  * Lodging RecyclerView의 데이터를 표시하기 위한 어댑터
  */
-class LodgingAdapter(val itemOnClick: (LodgingItem) -> (Unit)) :
+class LodgingAdapter(
+    val itemOnClick: (LodgingItem) -> (Unit),
+    private val scope: CoroutineScope
+) :
     ListAdapter<LodgingItem, LodgingAdapter.LodgingViewHolder>(diffUtil) {
 
     companion object {
@@ -43,9 +50,11 @@ class LodgingAdapter(val itemOnClick: (LodgingItem) -> (Unit)) :
                     lodgingRating.rating = lodging.starNum.toFloat()
 
                     // 카드 클릭시
-                    root.setOnClickListener {
-                        itemOnClick(lodging)
-                    }
+                    binding.root.clicks()
+                        .onEach {
+                            itemOnClick(lodging)
+                        }
+                        .launchIn(scope)
                 }
             }
         }

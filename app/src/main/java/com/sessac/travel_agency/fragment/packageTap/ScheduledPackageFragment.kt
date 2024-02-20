@@ -90,12 +90,12 @@ class ScheduledPackageFragment :
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        packageAdapter = PackageAdapter { packageItem ->
+        packageAdapter = PackageAdapter({ packageItem ->
             Bundle().apply {
                 putParcelable("packageItem", packageItem)
                 findNavController().navigate(R.id.packageFragment_to_packageAddFragment, this)
             }
-        }
+        }, viewLifecycleOwner.lifecycleScope)
         recyclerView.adapter = packageAdapter
     }
 }

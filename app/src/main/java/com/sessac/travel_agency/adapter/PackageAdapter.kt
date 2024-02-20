@@ -12,9 +12,13 @@ import com.sessac.travel_agency.common.CommonHandler
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.databinding.ItemPackageBinding
+import kotlinx.coroutines.CoroutineScope
 
 //tutor ListAdapter
-class PackageAdapter(val itemOnClick: (PackageItem) -> (Unit)) :
+class PackageAdapter(
+    val itemOnClick: (PackageItem) -> (Unit)
+    ,private val scope: CoroutineScope
+) :
     ListAdapter<PackageItem, PackageAdapter.PackageViewHolder>(diffUtil) {
 
     private val commonHandler = CommonHandler.generateCommonHandler()

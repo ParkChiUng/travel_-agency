@@ -499,14 +499,14 @@ class PackageAddFragment : Fragment(){
         packageRecyclerView.setHasFixedSize(true)
         packageRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        scheduleAdapter = ScheduleAdapter{ position->
+        scheduleAdapter = ScheduleAdapter({ position->
 
             /**
              * 스케줄 리스트의 +버튼 클릭 시 몇 번째 item인지 position 콜백
              */
             schedulePosition = position
             scheduleBottomSheetHandler()
-        }
+        }, viewLifecycleOwner.lifecycleScope)
 
         packageRecyclerView.adapter = scheduleAdapter
     }

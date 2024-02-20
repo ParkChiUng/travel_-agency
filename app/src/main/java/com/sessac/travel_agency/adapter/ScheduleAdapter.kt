@@ -9,6 +9,10 @@ import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.ScheduleItem
 import com.sessac.travel_agency.databinding.ItemScheduleBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import reactivecircus.flowbinding.android.view.clicks
 
 
 /**
@@ -18,6 +22,7 @@ import com.sessac.travel_agency.databinding.ItemScheduleBinding
 //tutor pyo rxbinding, flow binding
 class ScheduleAdapter(
     val itemOnClick: (Int) -> (Unit),
+    private val scope: CoroutineScope
 ) :
     RecyclerView.Adapter<ScheduleAdapter.ScheduleViewHolder>() {
 
@@ -63,16 +68,21 @@ class ScheduleAdapter(
             /**
              * 스케줄 리스트 클릭
              */
-            expandable.setOnClickListener {
-                toggleVisibility()
-            }
+            expandable.clicks()
+                .onEach {
+                    toggleVisibility()
+                }
+                .launchIn(scope)
 
             /**
              * 스케줄 +버튼 클릭
              */
-            btnAddSchedule.setOnClickListener {
-                itemOnClick(position)
-            }
+            btnAddSchedule.clicks()
+                .onEach {
+                    itemOnClick(position)
+                }
+                .launchIn(scope)
+
         }
     }
 
