@@ -74,4 +74,6 @@ dependencies {
     implementation("com.google.firebase:firebase-firestore:24.10.2")
 
     implementation("com.google.ai.client.generativeai:generativeai:0.2.0")
+
+    implementation("io.github.reactivecircus.flowbinding:flowbinding-android:1.0.0")
 }

@@ -1,6 +1,5 @@
 package com.sessac.travel_agency.adapter
 
-import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
@@ -9,13 +8,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.GuideItem
 import com.sessac.travel_agency.databinding.ItemGuideBinding
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import reactivecircus.flowbinding.android.view.clicks
 
-
-//tutor pyo Diff-Util ListAdapter 로 바꾸기
-//RxBinding, FlowBinding
-//tutor pyo ListAdapter
-
-class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
+class GuideAdapter(
+    val itemOnClick: (GuideItem) -> (Unit),
+    private val scope: CoroutineScope
+) :
     ListAdapter<GuideItem, GuideAdapter.GuideViewHolder>(diffUtil) {
 
     companion object {
@@ -39,10 +40,11 @@ class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
                         .into(guideImage)
                     guideName.text = guide.gName
 
-                    // 카드 클릭시
-                    root.setOnClickListener {
-                        itemOnClick(guide)
-                    }
+                    binding.root.clicks()
+                        .onEach {
+                            itemOnClick(guide)
+                        }
+                        .launchIn(scope) // 또는 다른 CoroutineScope
                 }
             }
         }

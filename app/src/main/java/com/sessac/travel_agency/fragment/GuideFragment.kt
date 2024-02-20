@@ -235,7 +235,7 @@ class GuideFragment :
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
-        guideAdapter = GuideAdapter { guide ->
+        guideAdapter = GuideAdapter({ guide ->
             with(guideDetailViewBinding) {
                 //imageView = guideDetailedImage
                 guideName = guideDetailedName
@@ -278,7 +278,7 @@ class GuideFragment :
                 }
                 commonHandler.showDialog(root, requireContext())
             }
-        }
+        }, viewLifecycleOwner.lifecycleScope)
 
         guideRecyclerView.adapter = guideAdapter
     }
