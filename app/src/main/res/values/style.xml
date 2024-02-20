@@ -2,7 +2,8 @@
 <resources>
     <!-- 커스텀 네비게이션 바텀 스타일 -->
     <style name="CustomBottomNav" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
-        <item name="android:color">@color/white</item>
+<!--        <item name="android:color">@color/divider_color</item>-->
+        <item name="android:color">#EEEEEE</item>
     </style>
 
     <!-- 커스텀 달력 스타일 -->

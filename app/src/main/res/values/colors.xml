@@ -10,4 +10,14 @@
     <color name="secondary_text">#757575</color>
     <color name="divider_color">#BDBDBD</color>
 
+    <color name="primaryLightColor">#FFFFFF</color>
+    <color name="primaryLightVariantColor">#F5F5F5</color>
+    <color name="secondaryLightColor">#FF4081</color>
+
+<!--    <color name="primaryDarkColor">#000000</color>-->
+<!--    <color name="primaryDarkVariantColor">#0A0A0A</color>-->
+    <color name="primaryDarkColor">#212121</color>
+    <color name="primaryDarkVariantColor">#424242</color>
+    <color name="secondaryDarkColor">#F48FB1</color>
+
 </resources>

@@ -4,11 +4,15 @@
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
 
-        <item name="colorAccent">#FFC107</item>
-        <item name="colorPrimary">#009688</item>
-        <item name="colorPrimaryDark">#00796B</item>
-        <item name="android:colorBackground">@color/white</item>
+<!--        <item name="colorAccent">#FFC107</item>-->
+<!--        <item name="colorPrimary">#009688</item>-->
+<!--        <item name="colorPrimaryDark">#00796B</item>-->
 
+        <item name="colorAccent">#FFC107</item>
+<!--        <item name="colorPrimary">@color/primaryDarkColor</item>-->
+        <item name="colorPrimary">@color/primaryDarkColor</item>
+        <item name="colorPrimaryDark">@color/primaryLightColor</item>
+        <item name="android:colorBackground">@color/white</item>
     </style>
 
     <style name="AppTheme.Starting" parent="Theme.SplashScreen">

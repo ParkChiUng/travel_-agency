@@ -42,6 +42,8 @@
         android:layout_marginBottom="@dimen/margin_bottom_fab"
         android:layout_marginEnd="@dimen/margin_end_fab"
         android:src="@drawable/ic_plus"
+        android:backgroundTint="#616161"
+        app:tint="@color/primaryLightColor"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
