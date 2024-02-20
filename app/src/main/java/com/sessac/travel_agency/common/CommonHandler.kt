@@ -26,21 +26,21 @@ import kotlin.math.abs
 /**
  * 모든 프래그먼트에서 사용하는 공통적 스피너, 이미지피커, 바텀시트, 알럿 다이얼로그 팩토리
  */
-class CommonHandler {
-    private lateinit var dialog: BottomSheetDialog
+//class CommonHandler {
+object CommonHandler {
     private lateinit var galleryLauncher: ActivityResultLauncher<Intent>
     private lateinit var onImageSelected: ((Uri) -> Unit)
     private val dialogMap = HashMap<View, BottomSheetDialog>()
 
-    companion object{
-        private  var commonHandler: CommonHandler? = null
-        fun generateCommonHandler() : CommonHandler{
-            if(commonHandler != null){
-                return commonHandler as CommonHandler
-            }
-            return CommonHandler()
-        }
-    }
+//    companion object{
+//        private  var commonHandler: CommonHandler? = null
+//        fun generateCommonHandler() : CommonHandler{
+//            if(commonHandler != null){
+//                return commonHandler as CommonHandler
+//            }
+//            return CommonHandler()
+//        }
+//    }
 
     /**
      * [spinner 핸들러]
@@ -48,8 +48,7 @@ class CommonHandler {
      * @param spinner 스피너 레이아웃
      * @param context 프레그먼트 context
      */
-    fun spinnerHandler(items: Array<String>, spinner: AutoCompleteTextView, context: Context) {
-//        val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, items)
+    fun spinnerHandler(items: Array<String>, spinner: AutoCompleteTextView) {
         val adapter = ArrayAdapter(getTravelApplication(), android.R.layout.simple_dropdown_item_1line, items)
         spinner.setAdapter(adapter)
     }
@@ -112,26 +111,23 @@ class CommonHandler {
      * dialog = BottomSheetDialog(requireContext(), R.style.AppBottomSheetDialogTheme) // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
      *         dialog.setContentView(view)
      *         dialog.show()*/
-    fun showDialog(view: View, context: Context) {
-        dialog = BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme)  // 키보드가 레이아웃 가리지 않게 & 모서리 둥글게
-
-        // viewGroup 삭제
+    fun showBottomSheet(view: View, context: Context) {
         if (view.parent != null) (view.parent as ViewGroup).removeView(view)
 
-        dialog.setContentView(view)
-        dialog.show()
+        val dialog = BottomSheetDialog(context, R.style.AppBottomSheetDialogTheme).apply {
+            setContentView(view)
+            show()
+        }
 
         dialogMap[view] = dialog
     }
 
-    fun dismissDialog(view: View) {
+    fun dismissBottomSheet(view: View) {
         dialogMap[view]?.dismiss()
     }
 
-    // 디버깅용 토스트메시지
-    fun toastMessage(message: String) {
-        Toast.makeText(TravelAgencyApplication.getTravelApplication(), message, Toast.LENGTH_SHORT)
-            .show()
+    fun commonToast(message: String){
+        Toast.makeText(getTravelApplication(), message, Toast.LENGTH_SHORT).show()
     }
 
     /**

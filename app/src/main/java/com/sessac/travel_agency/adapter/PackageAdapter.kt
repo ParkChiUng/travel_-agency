@@ -13,15 +13,18 @@ import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.databinding.ItemPackageBinding
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
+import reactivecircus.flowbinding.android.view.clicks
 
 //tutor ListAdapter
 class PackageAdapter(
-    val itemOnClick: (PackageItem) -> (Unit)
-    ,private val scope: CoroutineScope
+    val itemOnClick: (PackageItem) -> (Unit),
+    private val scope: CoroutineScope
 ) :
     ListAdapter<PackageItem, PackageAdapter.PackageViewHolder>(diffUtil) {
 
-    private val commonHandler = CommonHandler.generateCommonHandler()
+    private val commonHandler = CommonHandler
 
     companion object {
         val diffUtil = object : DiffUtil.ItemCallback<PackageItem>() {
@@ -48,10 +51,11 @@ class PackageAdapter(
                     packageRating.rating = packageItem.star?: 0F
                     packageDate.text = commonHandler.dateHandler(packageItem.pStartDate, packageItem.pEndDate)
 
-                    // 카드 클릭시
-                    root.setOnClickListener {
-                        itemOnClick(packageItem)
-                    }
+                    root.clicks()
+                        .onEach {
+                            itemOnClick(packageItem)
+                        }
+                        .launchIn(scope)
                 }
             }
         }

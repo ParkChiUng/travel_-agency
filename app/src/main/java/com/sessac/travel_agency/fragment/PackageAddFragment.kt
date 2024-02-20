@@ -10,7 +10,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +24,6 @@ import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.PackageAdapter
 import com.sessac.travel_agency.adapter.ScheduleAdapter
 import com.sessac.travel_agency.common.CommonHandler
-import com.sessac.travel_agency.common.commonToast
 import com.sessac.travel_agency.data.GuideScheduleItem
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
@@ -34,7 +32,6 @@ import com.sessac.travel_agency.databinding.BottomSheetImagePickerBinding
 import com.sessac.travel_agency.databinding.FragmentPackageAddBinding
 import com.sessac.travel_agency.databinding.FragmentPackageScheduleAddBinding
 import com.sessac.travel_agency.viewmodels.PackageViewModel
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Date
 
@@ -51,7 +48,7 @@ class PackageAddFragment : Fragment(){
     private lateinit var lodgingSpinnerAdapter: ArrayAdapter<String>
 
     private lateinit var packageRecyclerView: RecyclerView
-    private lateinit var commonHandler: CommonHandler
+    private var commonHandler = CommonHandler
 
     private var scheduleList = mutableListOf<ScheduleItem>()
 
@@ -91,7 +88,7 @@ class PackageAddFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commonHandler = CommonHandler.generateCommonHandler()
+//        commonHandler = CommonHandler.generateCommonHandler()
 
         parcelablePackageItem = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU){
             arguments?.getParcelable("packageItem", PackageItem::class.java)
@@ -239,7 +236,7 @@ class PackageAddFragment : Fragment(){
             Log.d(TAG, "isValid2: $calculatorDate")
 
             if (selectImageUri == null) {
-                commonToast("이미지를 선택해주세요.")
+                commonHandler.commonToast("이미지를 선택해주세요.")
                 check = false
             }
             if (packageAddNameET.text.toString() == "") {
@@ -320,8 +317,7 @@ class PackageAddFragment : Fragment(){
                     guideList.map {
                         it.gName
                     }.toTypedArray(),
-                    guideSpinner,
-                    requireContext()
+                    guideSpinner
                 )
 
                 guideSpinnerAdapter = ArrayAdapter(
@@ -357,8 +353,7 @@ class PackageAddFragment : Fragment(){
 
                 commonHandler.spinnerHandler(
                     lodgingList.map { it.lName }.toTypedArray(),
-                    lodgingSpinner,
-                    requireContext()
+                    lodgingSpinner
                 )
 
                 lodgingSpinnerAdapter = ArrayAdapter(
@@ -420,7 +415,7 @@ class PackageAddFragment : Fragment(){
     private fun imageClickHandler(imageView: ImageView) {
         with(galleryViewBinding) {
 
-            commonHandler.showDialog(root, requireContext())
+            commonHandler.showBottomSheet(root, requireContext())
 
             // 갤러리에서 가져오기 클릭
             textGallery.setOnClickListener {
@@ -430,12 +425,12 @@ class PackageAddFragment : Fragment(){
                     imageView.setImageURI(imageUri)
                 }
 
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
 
             // 닫기 클릭
             textClose.setOnClickListener {
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
         }
     }
@@ -483,8 +478,7 @@ class PackageAddFragment : Fragment(){
     private fun setAreaSpinner() {
         commonHandler.spinnerHandler(
             resources.getStringArray(R.array.select_region),
-            packageBinding.areaSpinner,
-            requireContext()
+            packageBinding.areaSpinner
         )
     }
 
@@ -516,7 +510,7 @@ class PackageAddFragment : Fragment(){
             Toast.makeText(context, "해당 지역에는 숙소 정보가 없습니다.", Toast.LENGTH_SHORT).show()
         }else{
             with(scheduleBinding) {
-                commonHandler.showDialog(root, requireContext())
+                commonHandler.showBottomSheet(root, requireContext())
 
                 viewLifecycleOwner.lifecycleScope.launch {
                     viewModel.findLodgingList(packageBinding.areaSpinner.text.toString())
@@ -525,8 +519,7 @@ class PackageAddFragment : Fragment(){
                 // 테마
                 commonHandler.spinnerHandler(
                     resources.getStringArray(R.array.select_theme),
-                    themeSpinner,
-                    requireContext()
+                    themeSpinner
                 )
 
                 buttonAdd.setOnClickListener {
@@ -547,7 +540,7 @@ class PackageAddFragment : Fragment(){
 
                         themeSpinner.setText("")
                         scheduleDescription.setText("")
-                        commonHandler.dismissDialog(root)
+                        commonHandler.dismissBottomSheet(root)
                     }
                 }
             }

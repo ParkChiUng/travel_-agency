@@ -6,13 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.AutoCompleteTextView
 import android.widget.Button
 import android.widget.EditText
 import android.widget.ImageView
-import android.widget.RatingBar
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,7 +21,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.bumptech.glide.Glide
-import com.google.android.material.textfield.TextInputLayout
 import com.sessac.travel_agency.adapter.LodgingAdapter
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.common.CommonHandler
@@ -45,7 +42,7 @@ class LodgingFragment : Fragment() {
     private lateinit var lodgingRecyclerView: RecyclerView
     private var lodgingAdapter: LodgingAdapter? = null
 
-    private lateinit var commonHandler: CommonHandler
+    private var commonHandler = CommonHandler
 
     private var selectImageUri: Uri? = null
     private lateinit var imageView: ImageView
@@ -83,8 +80,6 @@ class LodgingFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commonHandler = CommonHandler.generateCommonHandler()
-
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
                 lodgingViewModel.findAllLodgingList()
@@ -111,7 +106,7 @@ class LodgingFragment : Fragment() {
             is FragmentLodgingAddBinding -> lodgingAddViewBinding.areaListSpinner
             else -> return
         }
-        commonHandler.spinnerHandler(areaList, areaText, requireContext())
+        commonHandler.spinnerHandler(areaList, areaText)
     }
 
 
@@ -126,7 +121,7 @@ class LodgingFragment : Fragment() {
             is FragmentLodgingAddBinding -> lodgingAddViewBinding.lodgingStarList
             else -> return
         }
-        commonHandler.spinnerHandler(starList, starText, requireContext())
+        commonHandler.spinnerHandler(starList, starText)
     }
 
 
@@ -234,7 +229,7 @@ class LodgingFragment : Fragment() {
      */
     private fun setupFloatingButton() {
         lodgingBinding.fab.setOnClickListener {
-            commonHandler.showDialog(lodgingAddViewBinding.root, requireContext())
+            commonHandler.showBottomSheet(lodgingAddViewBinding.root, requireContext())
             setupAreaSpinnerUI(lodgingAddViewBinding)
             setupStarSpinnerUI(lodgingAddViewBinding)
             newLodgingButtonListener()
@@ -275,7 +270,7 @@ class LodgingFragment : Fragment() {
                 lodgingName.setText("")
                 selectImageUri = null
                 //TODO: 레이팅바 숙소등급, 지역
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
         }
     }
@@ -291,18 +286,18 @@ class LodgingFragment : Fragment() {
      */
     private fun handleImageClick(imageView: ImageView) {
         with(galleryViewBinding) {
-            commonHandler.showDialog(root, requireContext())
+            commonHandler.showBottomSheet(root, requireContext())
 
             textGallery.setOnClickListener {
                 commonHandler.imageSelectAndCallback(requireActivity().activityResultRegistry) { imageUri ->
                     selectImageUri = imageUri
                     imageView.setImageURI(imageUri)
                 }
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
 
             textClose.setOnClickListener {
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
         }
     }
@@ -346,7 +341,7 @@ class LodgingFragment : Fragment() {
 
                 buttonDelLodging.setOnClickListener {
                     lodgingViewModel.deleteLodging(lodging)
-                    commonHandler.dismissDialog(root)
+                    commonHandler.dismissBottomSheet(root)
                 }
 
                 buttonEditLodging.setOnClickListener {
@@ -361,10 +356,10 @@ class LodgingFragment : Fragment() {
                         )
                     )
                     selectImageUri = null
-                    commonHandler.dismissDialog(root)
+                    commonHandler.dismissBottomSheet(root)
                 }
 
-                commonHandler.showDialog(root, requireContext())
+                commonHandler.showBottomSheet(root, requireContext())
             }
         }, viewLifecycleOwner.lifecycleScope)
 

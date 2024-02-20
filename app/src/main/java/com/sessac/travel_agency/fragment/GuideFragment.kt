@@ -10,7 +10,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.Toast
 import androidx.core.net.toUri
-import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
@@ -26,7 +25,6 @@ import com.sessac.travel_agency.databinding.BottomSheetImagePickerBinding
 import com.sessac.travel_agency.databinding.FragmentGuideAddBinding
 import com.sessac.travel_agency.databinding.FragmentGuideBinding
 import com.sessac.travel_agency.databinding.FragmentGuideEditBinding
-import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
 import com.sessac.travel_agency.viewmodels.GuideViewModel
 import kotlinx.coroutines.launch
 
@@ -45,7 +43,7 @@ class GuideFragment :
     private lateinit var guideAddViewBinding: FragmentGuideAddBinding
     private lateinit var guideDetailViewBinding: FragmentGuideEditBinding
     private lateinit var galleryViewBinding: BottomSheetImagePickerBinding
-    private lateinit var commonHandler: CommonHandler
+    private var commonHandler = CommonHandler
 
    // private lateinit var imageView: ImageView
     private lateinit var addButton: Button
@@ -78,7 +76,7 @@ class GuideFragment :
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        commonHandler = CommonHandler.generateCommonHandler()
+//        commonHandler = CommonHandler.generateCommonHandler()
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.CREATED) {
@@ -123,7 +121,7 @@ class GuideFragment :
      */
     private fun setupFloatingButton() {
         guideBinding.fab.setOnClickListener {
-            commonHandler.showDialog(guideAddViewBinding.root, requireContext())
+            commonHandler.showBottomSheet(guideAddViewBinding.root, requireContext())
             newGuideButtonListener()
         }
     }
@@ -161,7 +159,7 @@ class GuideFragment :
                     guideNewImage.setImageResource(R.drawable.ic_guide)
                     guideName.setText("")
                     selectImageUri = null
-                    commonHandler.dismissDialog(root)
+                    commonHandler.dismissBottomSheet(root)
                 }
             }
         }
@@ -201,7 +199,7 @@ class GuideFragment :
     private fun handleImageClick(imageView: ImageView) {
         with(galleryViewBinding) {
 
-            commonHandler.showDialog(root, requireContext())
+            commonHandler.showBottomSheet(root, requireContext())
 
             // 갤러리에서 가져오기 클릭
             textGallery.setOnClickListener {
@@ -210,12 +208,12 @@ class GuideFragment :
                     imageView.setImageURI(imageUri)
                 }
 
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
 
             // 닫기 클릭
             textClose.setOnClickListener {
-                commonHandler.dismissDialog(root)
+                commonHandler.dismissBottomSheet(root)
             }
         }
     }
@@ -252,7 +250,7 @@ class GuideFragment :
 
                 buttonDelGuide.setOnClickListener {
                     viewModel.deleteGuide(guide.guideId)
-                    commonHandler.dismissDialog(root)
+                    commonHandler.dismissBottomSheet(root)
                 }
 
                 buttonEditGuide.setOnClickListener {
@@ -273,10 +271,10 @@ class GuideFragment :
                         )
                         guideName.setText("")
                         selectImageUri = null
-                        commonHandler.dismissDialog(root)
+                        commonHandler.dismissBottomSheet(root)
                     }
                 }
-                commonHandler.showDialog(root, requireContext())
+                commonHandler.showBottomSheet(root, requireContext())
             }
         }, viewLifecycleOwner.lifecycleScope)
 
