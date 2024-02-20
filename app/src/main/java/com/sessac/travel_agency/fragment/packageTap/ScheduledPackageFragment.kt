@@ -16,6 +16,7 @@ import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.PackageAdapter
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
+import com.sessac.travel_agency.fragment.ViewBindingBaseFragment
 import com.sessac.travel_agency.viewmodels.PackageViewModel
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
@@ -25,9 +26,8 @@ import java.util.Locale
 /**
  * 패키지(홈)의 예정 페이지
  */
-class ScheduledPackageFragment : Fragment() {
-
-    private lateinit var binding: FragmentOngoingPackageBinding
+class ScheduledPackageFragment :
+    ViewBindingBaseFragment<FragmentOngoingPackageBinding>(FragmentOngoingPackageBinding::inflate) {
 
     // 리사이클러뷰
     private lateinit var recyclerView: RecyclerView
@@ -35,14 +35,16 @@ class ScheduledPackageFragment : Fragment() {
 
     private val viewModel: PackageViewModel by viewModels()
 
+    companion object {
+        fun  newInstance() = ScheduledPackageFragment()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreate(savedInstanceState)
-
-        binding = FragmentOngoingPackageBinding.inflate(inflater, container, false)
+        super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
     }
 
@@ -70,11 +72,11 @@ class ScheduledPackageFragment : Fragment() {
     private fun setupObserver() {
         viewModel.packageLists.observe(viewLifecycleOwner) { packageItem ->
             packageItem.let {
-                if(packageItem.isNotEmpty()){
+                if (packageItem.isNotEmpty()) {
                     packageAdapter.setPackageList(it)
                     binding.emptyView.visibility = View.GONE
                     binding.ongoingPackageRecyclerview.visibility = View.VISIBLE
-                }else{
+                } else {
                     binding.emptyView.visibility = View.VISIBLE
                     binding.ongoingPackageRecyclerview.visibility = View.GONE
                 }
@@ -83,16 +85,16 @@ class ScheduledPackageFragment : Fragment() {
     }
 
     private fun setupRecyclerviewAdapter() {
-
+        //tutor pyo
         recyclerView = binding.ongoingPackageRecyclerview
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(activity)
 
-        packageAdapter = PackageAdapter {packageItem ->
-            val bundle = Bundle().apply {
+        packageAdapter = PackageAdapter { packageItem ->
+            Bundle().apply {
                 putParcelable("packageItem", packageItem)
+                findNavController().navigate(R.id.packageFragment_to_packageAddFragment, this)
             }
-            findNavController().navigate(R.id.packageFragment_to_packageAddFragment, bundle)
         }
         recyclerView.adapter = packageAdapter
     }

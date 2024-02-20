@@ -23,4 +23,24 @@ class GuideRepository {
     fun findAllGuides(): List<GuideItem> {
         return guideDao.getAllGuideList()
     }
+
+//    private val db = FirebaseFirestore.getInstance()
+//    private val guideCollection = db.collection("GuideItemFireStore")
+//
+////    fun findAllGuides(): Task<QuerySnapshot> {
+//    suspend fun findAllGuides(): List<GuideItemFireStore>{
+//        return guideCollection.get().await().toObjects(GuideItemFireStore::class.java)
+//    }
+//
+//    fun insertGuide(guideItem: GuideItemFireStore){
+//        guideCollection.document(guideItem.guideId.toString()).set(guideItem)
+//    }
+//
+//    fun deleteGuide(guideId: Int){
+//        guideCollection.document(guideId.toString()).delete()
+//    }
+//
+//    fun updateGuide(guideItem: GuideItemFireStore){
+//        guideCollection.document(guideItem.guideId.toString()).set(guideItem, SetOptions.merge())
+//    }
 }
