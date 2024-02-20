@@ -25,32 +25,18 @@ abstract class AppDatabase : RoomDatabase() {
 
     companion object {
         // tutor pyo lateinit
-        @Volatile
-        //private var INSTANCE: AppDatabase? = null
         private lateinit var instance : AppDatabase
 
         fun getDatabase(context: Context): AppDatabase {
             if(!::instance.isInitialized){
-
-            }
-            return instance
-           /* if (INSTANCE != null) return INSTANCE as AppDatabase
-            synchronized(this) {
-                val instance: AppDatabase = Room.databaseBuilder(
+                instance = Room.databaseBuilder(
                     context.applicationContext,
                     AppDatabase::class.java,
                     "travelAgency.db"
                 ).fallbackToDestructiveMigrationFrom(1, 2)
                     .build()
-
-//                val instance = Room.databaseBuilder(
-//                    context.applicationContext,
-//                    AppDatabase::class.java,
-//                    "travelAgency.db"
-//                ).build()
-                INSTANCE = instance
-                return instance
-            }*/
+            }
+            return instance
         }
     }
 }

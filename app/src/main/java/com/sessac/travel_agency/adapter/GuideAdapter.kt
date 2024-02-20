@@ -3,23 +3,50 @@ package com.sessac.travel_agency.adapter
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sessac.travel_agency.data.GuideItem
-import com.sessac.travel_agency.data.GuideItemFireStore
 import com.sessac.travel_agency.databinding.ItemGuideBinding
+
+
 //tutor pyo Diff-Util ListAdapter 로 바꾸기
-//RxBinding, Flow Binding
-//class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
-
+//RxBinding, FlowBinding
 //tutor pyo ListAdapter
-class GuideAdapter(val itemOnClick: (GuideItemFireStore) -> (Unit)) :
-    RecyclerView.Adapter<GuideAdapter.GuideViewHolder>() {
 
-//    private var guideList = emptyList<GuideItem>()
-    private var guideList = emptyList<GuideItemFireStore>()
+class GuideAdapter(val itemOnClick: (GuideItem) -> (Unit)) :
+    ListAdapter<GuideItem, GuideAdapter.GuideViewHolder>(diffUtil) {
 
-    class GuideViewHolder(val binding: ItemGuideBinding) : RecyclerView.ViewHolder(binding.root)
+    companion object {
+        val diffUtil = object : DiffUtil.ItemCallback<GuideItem>() {
+            override fun areItemsTheSame(oldItem: GuideItem, newItem: GuideItem): Boolean {
+                return oldItem.guideId == newItem.guideId
+            }
+
+            override fun areContentsTheSame(oldItem: GuideItem, newItem: GuideItem): Boolean {
+                return oldItem == newItem
+            }
+        }
+    }
+
+    inner class GuideViewHolder(val binding: ItemGuideBinding) : RecyclerView.ViewHolder(binding.root){
+        fun widgetBinding(guideItem: GuideItem){
+            guideItem.let{guide ->
+                with(binding){
+                    Glide.with(guideImage.context)
+                        .load(guide.gImage)
+                        .into(guideImage)
+                    guideName.text = guide.gName
+
+                    // 카드 클릭시
+                    root.setOnClickListener {
+                        itemOnClick(guide)
+                    }
+                }
+            }
+        }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GuideViewHolder {
         return GuideViewHolder(
@@ -32,26 +59,10 @@ class GuideAdapter(val itemOnClick: (GuideItemFireStore) -> (Unit)) :
     }
 
     override fun onBindViewHolder(holder: GuideViewHolder, position: Int) {
-        val guide = guideList[position]
-        with(holder.binding) {
-            Glide.with(guideImage.context)
-                .load(guide.gImage)
-                .into(guideImage)
-            guideName.text = guide.gName
-
-            // 카드 클릭시
-            root.setOnClickListener {
-                itemOnClick(guide)
-            }
-        }
+        holder.widgetBinding(getItem(position))
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-//    fun setGuideList(guide: List<GuideItem>) {
-    fun setGuideList(guide: List<GuideItemFireStore>) {
-        guideList = guide
-        notifyDataSetChanged()
+    fun setGuideList(guide: List<GuideItem>) {
+        submitList(guide)
     }
-
-    override fun getItemCount() = guideList.size
 }

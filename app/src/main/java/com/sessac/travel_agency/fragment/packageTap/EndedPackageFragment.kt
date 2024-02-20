@@ -11,10 +11,10 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.PackageAdapter
 import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
+import com.sessac.travel_agency.fragment.ViewBindingBaseFragment
 import com.sessac.travel_agency.viewmodels.PackageViewModel
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -23,24 +23,21 @@ import java.util.Calendar
  * 패키지(홈)의 종료 페이지
  */
 //tutor pyo BaseFragment 로 상속받아 바꾸기
-class EndedPackageFragment : Fragment() {
-
-    private lateinit var binding: FragmentOngoingPackageBinding
+class EndedPackageFragment :
+    ViewBindingBaseFragment<FragmentOngoingPackageBinding>(FragmentOngoingPackageBinding::inflate) {
 
     private lateinit var packageAdapter: PackageAdapter
 
     private val viewModel: PackageViewModel by viewModels()
     companion object {
-       fun  newInstance() = EndedPackageFragment()
+        fun newInstance() = EndedPackageFragment()
     }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreate(savedInstanceState)
-
-        binding = FragmentOngoingPackageBinding.inflate(inflater, container, false)
+        super.onCreateView(inflater, container, savedInstanceState)
         return binding.root
     }
 

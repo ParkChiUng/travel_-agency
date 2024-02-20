@@ -22,11 +22,11 @@ import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.GuideAdapter
 import com.sessac.travel_agency.common.CommonHandler
 import com.sessac.travel_agency.data.GuideItem
-import com.sessac.travel_agency.data.GuideItemFireStore
 import com.sessac.travel_agency.databinding.BottomSheetImagePickerBinding
 import com.sessac.travel_agency.databinding.FragmentGuideAddBinding
 import com.sessac.travel_agency.databinding.FragmentGuideBinding
 import com.sessac.travel_agency.databinding.FragmentGuideEditBinding
+import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
 import com.sessac.travel_agency.viewmodels.GuideViewModel
 import kotlinx.coroutines.launch
 
@@ -34,7 +34,11 @@ import kotlinx.coroutines.launch
  *
  */
 //tutor pyo
-class GuideFragment : Fragment() {
+//class GuideFragment : Fragment() {
+
+class GuideFragment :
+    ViewBindingBaseFragment<FragmentGuideBinding>(FragmentGuideBinding::inflate) {
+
     private lateinit var guideRecyclerView: RecyclerView
     private var guideAdapter: GuideAdapter? = null
     private lateinit var guideBinding: FragmentGuideBinding
@@ -48,6 +52,7 @@ class GuideFragment : Fragment() {
     private lateinit var guideName: EditText
     private var selectImageUri: Uri? = null
 
+//    private val viewModel: GuideViewModel_firebase by viewModels()
     private val viewModel: GuideViewModel by viewModels()
 
     /**
@@ -144,14 +149,14 @@ class GuideFragment : Fragment() {
                 guideName = guideNewName
                 if(isValid()) {
                     viewModel.insertGuide(
-//                        GuideItem(
-//                            gName = guideName.text.toString(),
-//                            gImage = selectImageUri.toString()
-//                        )
-                        GuideItemFireStore(
+                        GuideItem(
                             gName = guideName.text.toString(),
                             gImage = selectImageUri.toString()
                         )
+//                        GuideItemFireStore(
+//                            gName = guideName.text.toString(),
+//                            gImage = selectImageUri.toString()
+//                        )
                     )
                     guideNewImage.setImageResource(R.drawable.ic_guide)
                     guideName.setText("")
@@ -255,16 +260,16 @@ class GuideFragment : Fragment() {
                     guideName = guideDetailedName
                     if(isValid()) {
                         viewModel.updateGuide(
-//                            GuideItem(
-//                                guideId = guide.guideId,
-//                                gName = guideName.text.toString(),
-//                                gImage = selectImageUri.toString()
-//                            )
-                            GuideItemFireStore(
+                            GuideItem(
                                 guideId = guide.guideId,
                                 gName = guideName.text.toString(),
                                 gImage = selectImageUri.toString()
                             )
+//                            GuideItemFireStore(
+//                                guideId = guide.guideId,
+//                                gName = guideName.text.toString(),
+//                                gImage = selectImageUri.toString()
+//                            )
                         )
                         guideName.setText("")
                         selectImageUri = null

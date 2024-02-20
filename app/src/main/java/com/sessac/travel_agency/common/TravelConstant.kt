@@ -10,3 +10,5 @@ const val WARNING = "warning"
  * Fragment 종류
  */
 const val FRAGMENT_END = 0
+const val FRAGMENT_ING = 1
+const val FRAGMENT_COMING = 2

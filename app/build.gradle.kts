@@ -72,4 +72,6 @@ dependencies {
     annotationProcessor("com.github.bumptech.glide:compiler:4.16.0")
 
     implementation("com.google.firebase:firebase-firestore:24.10.2")
+
+    implementation("com.google.ai.client.generativeai:generativeai:0.2.0")
 }
