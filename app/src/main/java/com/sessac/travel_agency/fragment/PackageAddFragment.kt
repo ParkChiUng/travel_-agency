@@ -1,7 +1,6 @@
 package com.sessac.travel_agency.fragment
 
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -10,7 +9,6 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.RequiresApi
 import androidx.core.net.toUri
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -25,7 +23,6 @@ import com.sessac.travel_agency.R
 import com.sessac.travel_agency.adapter.PackageAdapter
 import com.sessac.travel_agency.adapter.ScheduleAdapter
 import com.sessac.travel_agency.common.CommonHandler
-import com.sessac.travel_agency.common.commonToast
 import com.sessac.travel_agency.data.GuideScheduleItem
 import com.sessac.travel_agency.data.LodgingItem
 import com.sessac.travel_agency.data.PackageItem
@@ -38,7 +35,7 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import java.util.Date
 
-//tutor pyo 주석
+
 class PackageAddFragment : Fragment(){
     private lateinit var packageBinding: FragmentPackageAddBinding
     private lateinit var scheduleBinding: FragmentPackageScheduleAddBinding
@@ -87,17 +84,12 @@ class PackageAddFragment : Fragment(){
 
         return packageBinding.root
     }
-    @Suppress("deprecation")
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         commonHandler = CommonHandler.generateCommonHandler()
-
-        parcelablePackageItem = if(Build.VERSION.SDK_INT > Build.VERSION_CODES.TIRAMISU){
-            arguments?.getParcelable("packageItem", PackageItem::class.java)
-        }else{
-            arguments?.getParcelable("packageItem")!!
-        }
+        parcelablePackageItem = arguments?.getParcelable("packageItem")
 
         initScheduleRecyclerView()
         setAreaSpinner()
@@ -239,7 +231,7 @@ class PackageAddFragment : Fragment(){
             Log.d(TAG, "isValid2: $calculatorDate")
 
             if (selectImageUri == null) {
-                commonToast("이미지를 선택해주세요.")
+                Toast.makeText(context, "이미지를 선택해주세요.", Toast.LENGTH_SHORT).show()
                 check = false
             }
             if (packageAddNameET.text.toString() == "") {
@@ -317,9 +309,7 @@ class PackageAddFragment : Fragment(){
                     guideSpinner.setText("")
 
                 commonHandler.spinnerHandler(
-                    guideList.map {
-                        it.gName
-                    }.toTypedArray(),
+                    guideList.map { it.gName }.toTypedArray(),
                     guideSpinner,
                     requireContext()
                 )
@@ -327,9 +317,7 @@ class PackageAddFragment : Fragment(){
                 guideSpinnerAdapter = ArrayAdapter(
                     requireContext(),
                     android.R.layout.simple_dropdown_item_1line,
-                    guideList.map {
-                        it.gName
-                    }.toTypedArray(),
+                    guideList.map { it.gName }.toTypedArray(),
                 )
 
                 guideSpinner.setOnItemClickListener { _, _, position, _ ->
@@ -403,6 +391,7 @@ class PackageAddFragment : Fragment(){
                     scheduleAdapter.setSchedule(it, lodgingItem, it.day)
                 }
             }
+
         }
 
         viewModel.lodgingItem.observe(viewLifecycleOwner) { lodgingItem->
@@ -494,7 +483,6 @@ class PackageAddFragment : Fragment(){
     }
 
     private fun initScheduleRecyclerView() {
-        //tutor pyo
         packageRecyclerView = packageBinding.scheduleRV
         packageRecyclerView.setHasFixedSize(true)
         packageRecyclerView.layoutManager = LinearLayoutManager(requireContext())

@@ -26,19 +26,13 @@ import com.sessac.travel_agency.databinding.BottomSheetImagePickerBinding
 import com.sessac.travel_agency.databinding.FragmentGuideAddBinding
 import com.sessac.travel_agency.databinding.FragmentGuideBinding
 import com.sessac.travel_agency.databinding.FragmentGuideEditBinding
-import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
 import com.sessac.travel_agency.viewmodels.GuideViewModel
 import kotlinx.coroutines.launch
 
 /**
  *
  */
-//tutor pyo
-//class GuideFragment : Fragment() {
-
-class GuideFragment :
-    ViewBindingBaseFragment<FragmentGuideBinding>(FragmentGuideBinding::inflate) {
-
+class GuideFragment : Fragment() {
     private lateinit var guideRecyclerView: RecyclerView
     private var guideAdapter: GuideAdapter? = null
     private lateinit var guideBinding: FragmentGuideBinding
@@ -46,13 +40,11 @@ class GuideFragment :
     private lateinit var guideDetailViewBinding: FragmentGuideEditBinding
     private lateinit var galleryViewBinding: BottomSheetImagePickerBinding
     private lateinit var commonHandler: CommonHandler
-
-   // private lateinit var imageView: ImageView
+    private lateinit var imageView: ImageView
     private lateinit var addButton: Button
     private lateinit var guideName: EditText
     private var selectImageUri: Uri? = null
 
-//    private val viewModel: GuideViewModel_firebase by viewModels()
     private val viewModel: GuideViewModel by viewModels()
 
     /**
@@ -101,13 +93,10 @@ class GuideFragment :
         viewModel.guideLists.observe(viewLifecycleOwner) { guides ->
             guides.let {
                 if(guides.isNotEmpty()){
-//                    guideAdapter?.setGuideList(it)
                     guideAdapter?.setGuideList(it)
-                    //tutor pyo
                     guideBinding.emptyView.visibility = View.GONE
                     guideBinding.guideRecyclerview.visibility = View.VISIBLE
                 }else{
-                    //tutor pyo
                     guideBinding.emptyView.visibility = View.VISIBLE
                     guideBinding.guideRecyclerview.visibility = View.GONE
                 }
@@ -138,12 +127,12 @@ class GuideFragment :
      */
     private fun newGuideButtonListener() {
         with(guideAddViewBinding) {
-            //imageView = guideNewImage
+            imageView = guideNewImage
             guideName = guideNewName
             addButton = buttonNewGuide
 
-            guideNewImage.setOnClickListener {
-                handleImageClick(guideNewImage)
+            imageView.setOnClickListener {
+                handleImageClick(imageView)
             }
             addButton.setOnClickListener {
                 guideName = guideNewName
@@ -153,12 +142,8 @@ class GuideFragment :
                             gName = guideName.text.toString(),
                             gImage = selectImageUri.toString()
                         )
-//                        GuideItemFireStore(
-//                            gName = guideName.text.toString(),
-//                            gImage = selectImageUri.toString()
-//                        )
                     )
-                    guideNewImage.setImageResource(R.drawable.ic_guide)
+                    imageView.setImageResource(R.drawable.ic_guide)
                     guideName.setText("")
                     selectImageUri = null
                     commonHandler.dismissDialog(root)
@@ -228,26 +213,26 @@ class GuideFragment :
      * 3. 가이드 상세 정보 bottomSheet 표출
      * 4. 가이드 수정, 삭제 이벤트 처리
      */
-
     private fun setupRecyclerviewAdapter() {
         guideRecyclerView = guideBinding.guideRecyclerview
         with(guideRecyclerView) {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(requireContext(), 2)
         }
+
         guideAdapter = GuideAdapter { guide ->
             with(guideDetailViewBinding) {
-                //imageView = guideDetailedImage
+                imageView = guideDetailedImage
                 guideName = guideDetailedName
 
-                Glide.with(guideDetailedImage.context)
+                Glide.with(imageView.context)
                     .load(guide.gImage)
-                    .into(guideDetailedImage)
+                    .into(imageView)
 
                 guideName.setText(guide.gName)
 
-                guideDetailedImage.setOnClickListener {
-                    handleImageClick(guideDetailedImage)
+                imageView.setOnClickListener {
+                    handleImageClick(imageView)
                 }
 
                 buttonDelGuide.setOnClickListener {
@@ -265,11 +250,6 @@ class GuideFragment :
                                 gName = guideName.text.toString(),
                                 gImage = selectImageUri.toString()
                             )
-//                            GuideItemFireStore(
-//                                guideId = guide.guideId,
-//                                gName = guideName.text.toString(),
-//                                gImage = selectImageUri.toString()
-//                            )
                         )
                         guideName.setText("")
                         selectImageUri = null

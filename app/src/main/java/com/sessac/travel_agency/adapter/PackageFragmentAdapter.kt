@@ -2,9 +2,6 @@ package com.sessac.travel_agency.adapter
 
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
-import com.sessac.travel_agency.common.FRAGMENT_COMING
-import com.sessac.travel_agency.common.FRAGMENT_END
-import com.sessac.travel_agency.common.FRAGMENT_ING
 import com.sessac.travel_agency.fragment.PackageFragment
 import com.sessac.travel_agency.fragment.packageTap.EndedPackageFragment
 import com.sessac.travel_agency.fragment.packageTap.OngoingPackageFragment
@@ -18,12 +15,14 @@ class PackageFragmentAdapter(fragmentActivity: PackageFragment) :
     override fun getItemCount(): Int {
         return NUM_PAGES
     }
-    //tutor pyo
-    override fun createFragment(position: Int) = when (position) {
-            //Fragment newInstance() companion object
-        FRAGMENT_END    -> EndedPackageFragment.newInstance()
-        FRAGMENT_ING    -> OngoingPackageFragment.newInstance()
-        FRAGMENT_COMING -> ScheduledPackageFragment.newInstance()
-        else -> OngoingPackageFragment()
+
+    override fun createFragment(position: Int): Fragment {
+        when(position) {
+            0 -> return EndedPackageFragment()
+            1 -> return OngoingPackageFragment()
+            2 -> return ScheduledPackageFragment()
+            else -> return OngoingPackageFragment()
+        }
     }
+
 }

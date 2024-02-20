@@ -7,7 +7,7 @@ import com.sessac.travel_agency.database.AppDatabase
 import java.util.Date
 
 class GuideScheduleRepository{
-    private val guideScheduleDao = TravelAgencyApplication.getRoomDatabase().guideScheduleDao()
+    private val guideScheduleDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).guideScheduleDao()
 
     fun insertGuideSchedule(newGuideSchedule: GuideScheduleItem) {
         guideScheduleDao.insertGuideSchedule(newGuideSchedule)

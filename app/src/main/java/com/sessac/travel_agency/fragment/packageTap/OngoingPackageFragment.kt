@@ -18,7 +18,6 @@ import com.sessac.travel_agency.common.TravelAgencyApplication
 import com.sessac.travel_agency.data.PackageItem
 import com.sessac.travel_agency.database.PackageDao
 import com.sessac.travel_agency.databinding.FragmentOngoingPackageBinding
-import com.sessac.travel_agency.fragment.ViewBindingBaseFragment
 import com.sessac.travel_agency.viewmodels.PackageViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,8 +29,9 @@ import java.util.Locale
 /**
  * 패키지(홈)의 진행중 페이지
  */
-class OngoingPackageFragment :
-    ViewBindingBaseFragment<FragmentOngoingPackageBinding>(FragmentOngoingPackageBinding::inflate) {
+class OngoingPackageFragment : Fragment() {
+
+    private lateinit var binding: FragmentOngoingPackageBinding
 
     // 리사이클러뷰
     private lateinit var recyclerView: RecyclerView
@@ -39,16 +39,14 @@ class OngoingPackageFragment :
 
     private val viewModel: PackageViewModel by viewModels()
 
-    companion object {
-        fun  newInstance() = OngoingPackageFragment()
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        super.onCreateView(inflater, container, savedInstanceState)
+        super.onCreate(savedInstanceState)
+
+        binding = FragmentOngoingPackageBinding.inflate(inflater, container, false)
         return binding.root
     }
 

@@ -16,12 +16,10 @@ import androidx.activity.result.ActivityResultRegistry
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.sessac.travel_agency.R
-import com.sessac.travel_agency.common.TravelAgencyApplication.Companion.getTravelApplication
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.concurrent.TimeUnit
-import kotlin.math.abs
 
 /**
  * 모든 프래그먼트에서 사용하는 공통적 스피너, 이미지피커, 바텀시트, 알럿 다이얼로그 팩토리
@@ -49,8 +47,7 @@ class CommonHandler {
      * @param context 프레그먼트 context
      */
     fun spinnerHandler(items: Array<String>, spinner: AutoCompleteTextView, context: Context) {
-//        val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, items)
-        val adapter = ArrayAdapter(getTravelApplication(), android.R.layout.simple_dropdown_item_1line, items)
+        val adapter = ArrayAdapter(context, android.R.layout.simple_dropdown_item_1line, items)
         spinner.setAdapter(adapter)
     }
 
@@ -70,7 +67,7 @@ class CommonHandler {
                 onImageSelected.invoke(result.data?.data!!)
             }
         }
-        //Tutor Pyo Photo Picker
+
         val galleryIntent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         galleryLauncher.launch(galleryIntent)
     }
@@ -85,7 +82,6 @@ class CommonHandler {
      *
      */
     fun dateHandler(startDate: Date, endDate: Date): String {
-        //tutor pyo
         val dateFormat = SimpleDateFormat("yyyy/MM/dd", Locale.getDefault())
         return dateFormat.format(startDate) + " ~ " + dateFormat.format(endDate)
     }
@@ -103,7 +99,7 @@ class CommonHandler {
      */
     fun dayCalculator(startDate: Date, endDate: Date): Int {
         return TimeUnit.DAYS.convert(
-            abs(endDate.time + TimeUnit.DAYS.toMillis(1) - startDate.time),
+            Math.abs(endDate.time + TimeUnit.DAYS.toMillis(1) - startDate.time),
             TimeUnit.MILLISECONDS
         ).toInt()
     }

@@ -5,7 +5,7 @@ import com.sessac.travel_agency.data.ScheduleItem
 import com.sessac.travel_agency.database.AppDatabase
 
 class ScheduleRepository {
-    private val scheduleDao =TravelAgencyApplication.getRoomDatabase().scheduleDao()
+    private val scheduleDao = AppDatabase.getDatabase(TravelAgencyApplication.getTravelApplication()).scheduleDao()
 
     fun insertSchedule(newSchedule: ScheduleItem) {
         scheduleDao.insertSchedule(newSchedule)
