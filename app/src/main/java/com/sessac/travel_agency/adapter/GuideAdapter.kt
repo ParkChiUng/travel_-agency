@@ -44,7 +44,7 @@ class GuideAdapter(
                         .onEach {
                             itemOnClick(guide)
                         }
-                        .launchIn(scope) // 또는 다른 CoroutineScope
+                        .launchIn(scope)
                 }
             }
         }
